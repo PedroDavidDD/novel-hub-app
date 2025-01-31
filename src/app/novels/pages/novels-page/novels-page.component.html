@@ -1,0 +1,60 @@
+<div class="p-6 text-dark min-h-screen">
+    <!-- Filtros superiores -->
+    <div class="flex flex-wrap gap-4 mb-6">
+      <div>
+        <h3 class="font-semibold">Languages</h3>
+        <div class="flex gap-2 mt-1">
+          <button 
+            *ngFor="let language of languages" 
+            [class.bg-gray-300]="language === selectedLanguage"
+            (click)="filterByLanguage(language)"
+            class="px-3 py-1 border-gray-700 border-2 rounded">
+            {{ language }}
+          </button>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold">Status</h3>
+        <div class="flex gap-2 mt-1">
+          <button 
+            *ngFor="let status of statuses" 
+            [class.bg-gray-300]="status === selectedStatus"
+            (click)="filterByStatus(status)"
+            class="px-3 py-1 border-gray-700 border-2 rounded">
+            {{ status }}
+          </button>
+        </div>
+      </div>
+  
+      <div>
+        <h3 class="font-semibold">Sort By</h3>
+        <div class="flex gap-2 mt-1">
+          <button 
+            *ngFor="let option of sortByOptions" 
+            [class.bg-gray-300]="option === selectedSort"
+            (click)="sortBy(option)"
+            class="px-3 py-1 border-gray-700 border-2 rounded">
+            {{ option }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Lista de novelas -->
+    <div class="grid grid-cols-2 gap-6">
+      <div *ngFor="let novel of novels" class="p-4 rounded-lg flex gap-4">
+        <img [src]="novel.image" alt="{{ novel.title }}" class="w-24 h-36 rounded-lg">
+        <div>
+          <h2 class="text-lg font-bold">{{ novel.title }}</h2>
+          <p class="text-gray-400 text-sm mt-1">{{ novel.description }}</p>
+          <div class="flex gap-2 mt-2">
+            <span *ngFor="let genre of novel.genres" class="px-2 py-1 border-gray-700 border-2 rounded">
+              {{ genre }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,22 @@
+
+
+
+<div class="p-4 bg-white shadow rounded-lg">
+    <img [src]="image" alt="{{ title }}" class="w-48 h-auto rounded-lg">
+    <div class="px-4">
+        <h1 class="text-xl font-semibold leading-tight tracking-tight pb-1">{{ title }}Make Dark Fantasy Great Again</h1>
+    </div>
+    <p class="text-gray-600 mt-2">{{ description }}description</p>
+    <div class="mt-4">
+      <h3 class="font-semibold">Genres:</h3>
+      <div class="flex gap-2 mt-1">
+        <app-tag *ngFor="let genre of genres" [label]="genre"></app-tag>
+      </div>
+    </div>
+    <div class="mt-4">
+      <h3 class="font-semibold">Tags:</h3>
+      <div class="flex gap-2 mt-1">
+        <app-tag *ngFor="let tag of tags" [label]="tag"></app-tag>
+      </div>
+    </div>
+  </div>
