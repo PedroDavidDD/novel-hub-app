@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { environments } from '../../../environments/environments';
 
-export interface Novel {
+export interface INovel {
   title: string;
   description: string;
   image: string;
@@ -21,7 +21,7 @@ export class NovelsService {
   private baseUrl: string = environments.baseUrl;
 
     // Datos manuales de prueba
-    private initialNovels: Novel[] = [
+    private initialNovels: INovel[] = [
       {
         title: 'Manual Novel 1',
         description: 'A manually added adventure novel.',
@@ -61,7 +61,7 @@ export class NovelsService {
     ];
 
   // Estado global de las novelas
-  private novelsSubject = new BehaviorSubject<Novel[]>( this.initialNovels );
+  private novelsSubject = new BehaviorSubject<INovel[]>( this.initialNovels );
 
   constructor(private http: HttpClient) {}
 
@@ -75,20 +75,20 @@ export class NovelsService {
   //     )
   //     .subscribe(novels => this.novelsSubject.next(novels));
   // }
-  getNovels(): Observable<Novel[]> {
+  getNovels(): Observable<INovel[]> {
     // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
     return this.novelsSubject.asObservable();
   }
 
-  getNovelById(id: string): Observable<Novel | undefined> {
-    return this.http.get<Novel>(`${this.baseUrl}/novels/${id}`)
+  getNovelById(id: string): Observable<INovel | undefined> {
+    return this.http.get<INovel>(`${this.baseUrl}/novels/${id}`)
       .pipe(
         catchError(() => of(undefined))
       );
   }
 
-  addNovel(novel: Novel): Observable<Novel> {
-    return this.http.post<Novel>(`${this.baseUrl}/novels`, novel)
+  addNovel(novel: INovel): Observable<INovel> {
+    return this.http.post<INovel>(`${this.baseUrl}/novels`, novel)
       .pipe(
         map(newNovel => {
           const currentNovels = this.novelsSubject.value;
@@ -102,8 +102,8 @@ export class NovelsService {
       );
   }
 
-  updateNovel(novel: Novel): Observable<Novel> {
-    return this.http.patch<Novel>(`${this.baseUrl}/novels/${novel.title}`, novel)
+  updateNovel(novel: INovel): Observable<INovel> {
+    return this.http.patch<INovel>(`${this.baseUrl}/novels/${novel.title}`, novel)
       .pipe(
         map(updatedNovel => {
           const updatedNovels = this.novelsSubject.value.map(n => 

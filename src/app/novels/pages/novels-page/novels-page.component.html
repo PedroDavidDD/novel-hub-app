@@ -49,7 +49,7 @@
 
   <!-- Lista de novelas -->
   <div [ngClass]="'novelList'">
-    <div *ngFor="let novel of novels" [ngClass]="'novelItem'">
+    <div *ngFor="let novel of novels$ | async as novels" [ngClass]="'novelItem'">
       <img [src]="novel.image" alt="{{ novel.title }}" [ngClass]="'novelItem__image'">
       <div>
         <h2 [ngClass]="'novelItem__title'">{{ novel.title }}</h2>
