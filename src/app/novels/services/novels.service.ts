@@ -62,19 +62,22 @@ export class NovelsService {
 
   // Estado global de las novelas
   private novelsSubject = new BehaviorSubject<Novel[]>( this.initialNovels );
-  novels$ = this.novelsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  loadNovels(): void {
-    this.http.get<Novel[]>(`${this.baseUrl}/novels`)
-      .pipe(
-        catchError(error => {
-          console.error('Error al cargar novelas:', error);
-          return of([]);
-        })
-      )
-      .subscribe(novels => this.novelsSubject.next(novels));
+  // getNovels(): void {
+  //   this.http.get<Novel[]>(`${this.baseUrl}/novels`)
+  //     .pipe(
+  //       catchError(error => {
+  //         console.error('Error al cargar novelas:', error);
+  //         return of([]);
+  //       })
+  //     )
+  //     .subscribe(novels => this.novelsSubject.next(novels));
+  // }
+  getNovels(): Observable<Novel[]> {
+    // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
+    return this.novelsSubject.asObservable();
   }
 
   getNovelById(id: string): Observable<Novel | undefined> {

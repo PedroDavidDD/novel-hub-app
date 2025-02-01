@@ -1,60 +1,66 @@
-<div class="p-6 text-dark min-h-screen">
-    <!-- Filtros superiores -->
-    <div class="flex flex-wrap gap-4 mb-6">
-      <div>
-        <h3 class="font-semibold">Languages</h3>
-        <div class="flex gap-2 mt-1">
-          <button 
-            *ngFor="let language of languages" 
-            [class.bg-gray-300]="language === selectedLanguage"
-            (click)="filterByLanguage(language)"
-            class="px-3 py-1 border-gray-700 border-2 rounded">
-            {{ language }}
-          </button>
-        </div>
-      </div>
-      
-      <div>
-        <h3 class="font-semibold">Status</h3>
-        <div class="flex gap-2 mt-1">
-          <button 
-            *ngFor="let status of statuses" 
-            [class.bg-gray-300]="status === selectedStatus"
-            (click)="filterByStatus(status)"
-            class="px-3 py-1 border-gray-700 border-2 rounded">
-            {{ status }}
-          </button>
-        </div>
-      </div>
-  
-      <div>
-        <h3 class="font-semibold">Sort By</h3>
-        <div class="flex gap-2 mt-1">
-          <button 
-            *ngFor="let option of sortByOptions" 
-            [class.bg-gray-300]="option === selectedSort"
-            (click)="sortBy(option)"
-            class="px-3 py-1 border-gray-700 border-2 rounded">
-            {{ option }}
-          </button>
-        </div>
+<div [ngClass]="'container'">
+  <!-- Filtros superiores -->
+  <div [ngClass]="'filters'">
+    <div [ngClass]="'filters__group'">
+      <h3 [ngClass]="'filters__title'">Languages</h3>
+      <div [ngClass]="'filters__buttonGroup'">
+        <button 
+          *ngFor="let language of languages"
+          [ngClass]="{
+            'button': true,
+            'button--selected': language === selectedLanguage
+          }"
+          (click)="filterByLanguage(language)">
+          {{ language }}
+        </button>
       </div>
     </div>
-  
-    <!-- Lista de novelas -->
-    <div class="grid grid-cols-2 gap-6">
-      <div *ngFor="let novel of novels" class="p-4 rounded-lg flex gap-4">
-        <img [src]="novel.image" alt="{{ novel.title }}" class="w-24 h-36 rounded-lg">
-        <div>
-          <h2 class="text-lg font-bold">{{ novel.title }}</h2>
-          <p class="text-gray-400 text-sm mt-1">{{ novel.description }}</p>
-          <div class="flex gap-2 mt-2">
-            <span *ngFor="let genre of novel.genres" class="px-2 py-1 border-gray-700 border-2 rounded">
-              {{ genre }}
-            </span>
-          </div>
+      
+    <div [ngClass]="'filters__group'">
+      <h3 [ngClass]="'filters__title'">Status</h3>
+      <div [ngClass]="'filters__buttonGroup'">
+        <button 
+          *ngFor="let status of statuses" 
+          [ngClass]="{
+            'button': true,
+            'button--selected': status === selectedStatus
+          }"
+          (click)="filterByStatus(status)">
+          {{ status }}
+        </button>
+      </div>
+    </div>
+
+    <div [ngClass]="'filters__group'">
+      <h3 [ngClass]="'filters__title'">Sort By</h3>
+      <div [ngClass]="'filters__buttonGroup'">
+        <button 
+          *ngFor="let option of sortByOptions" 
+          [ngClass]="{
+            'button': true,
+            'button--selected': option === selectedSort
+          }"
+          (click)="sortBy(option)">
+          {{ option }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de novelas -->
+  <div [ngClass]="'novelList'">
+    <div *ngFor="let novel of novels" [ngClass]="'novelItem'">
+      <img [src]="novel.image" alt="{{ novel.title }}" [ngClass]="'novelItem__image'">
+      <div>
+        <h2 [ngClass]="'novelItem__title'">{{ novel.title }}</h2>
+        <p [ngClass]="'novelItem__description'">{{ novel.description }}</p>
+        <div [ngClass]="'novelItem__genres'">
+          <span *ngFor="let genre of novel.genres" [ngClass]="'genre'">
+            {{ genre }}
+          </span>
         </div>
       </div>
     </div>
   </div>
   
+</div>
