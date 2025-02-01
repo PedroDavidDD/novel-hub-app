@@ -1,7 +1,7 @@
 <div [ngClass]="'container'">
   <!-- Filtros superiores -->
-  <div [ngClass]="'filters'">
-    <div [ngClass]="'filters__group'">
+  <div [ngClass]="'filters grid'">
+    <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
       <h3 [ngClass]="'filters__title'">Languages</h3>
       <div [ngClass]="'filters__buttonGroup'">
         <button 
@@ -16,7 +16,7 @@
       </div>
     </div>
       
-    <div [ngClass]="'filters__group'">
+    <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
       <h3 [ngClass]="'filters__title'">Status</h3>
       <div [ngClass]="'filters__buttonGroup'">
         <button 
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div [ngClass]="'filters__group'">
+    <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
       <h3 [ngClass]="'filters__title'">Sort By</h3>
       <div [ngClass]="'filters__buttonGroup'">
         <button 
@@ -45,6 +45,24 @@
         </button>
       </div>
     </div>
+    
+    <!-- Filtro por Géneros con Checkboxes -->
+    <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
+      <h3 [ngClass]="'filters__title'">Genres</h3>
+      <div [ngClass]="'filters__checkboxGroup'">
+        <label 
+          *ngFor="let genre of genres" 
+          [ngClass]="{'filters__checkboxLabel': true, 'filters__checkboxLabel--selected': selectedGenres.includes(genre)}">
+          <input 
+            type="checkbox"
+            [value]="genre"
+            [checked]="selectedGenres.includes(genre)"
+            (change)="onGenreChange(genre, $event)">
+          <span>{{ genre }}</span>
+        </label>
+      </div>
+    </div>
+    
   </div>
 
   <!-- Lista de novelas -->
