@@ -65,20 +65,24 @@ export class NovelsService {
 
   constructor(private http: HttpClient) {}
 
-  // getNovels(): void {
-  //   this.http.get<Novel[]>(`${this.baseUrl}/novels`)
-  //     .pipe(
-  //       catchError(error => {
-  //         console.error('Error al cargar novelas:', error);
-  //         return of([]);
-  //       })
-  //     )
-  //     .subscribe(novels => this.novelsSubject.next(novels));
-  // }
   getNovels(): Observable<INovel[]> {
-    // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
-    return this.novelsSubject.asObservable();
+    // Realiza la solicitud HTTP y maneja el error
+    this.http.get<INovel[]>(`${this.baseUrl}/novels`).pipe(
+      catchError(error => {
+        console.error('Error al cargar novelas:', error);
+        return of([]);  // Retorna un array vacío en caso de error
+      })
+    )
+    // .subscribe(novels => {
+    //   this.novelsSubject.next(novels);  // Actualiza el BehaviorSubject
+    // });
+
+    return this.novelsSubject.asObservable();  // Devuelve un Observable
   }
+  // getNovels(): Observable<INovel[]> {
+  //   // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
+  //   return this.novelsSubject.asObservable();
+  // }
 
   getNovelById(id: string): Observable<INovel | undefined> {
     return this.http.get<INovel>(`${this.baseUrl}/novels/${id}`)

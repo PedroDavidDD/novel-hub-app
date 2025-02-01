@@ -48,6 +48,7 @@ export class NovelsPageComponent {
   }
 
   private applyFilters(novels: INovel[]): INovel[] {
+    console.log(novels)
     let filteredNovels = novels.filter(novel => {
       const languageMatch = this.selectedLanguage === 'Any' || novel.language === this.selectedLanguage;
       const statusMatch = this.selectedStatus === 'Any' || novel.status === this.selectedStatus;
