@@ -4,6 +4,8 @@
   min-height: 100vh;
 }
 
+/* FILTROS */
+
 .filters {
   display: grid;
   gap: 1rem;
@@ -13,7 +15,6 @@
 
 .filters__group {
   display: block;
-  background-color: greenyellow;
 }
 
 .filters__title {
@@ -43,52 +44,6 @@
   background-color: #ffffff;
   color: #1a1a1a;
 }
-
-.novelList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 1.5rem;
-}
-
-.novelItem {
-  padding: 1rem;
-  border-radius: 0.375rem;
-  display: flex;
-  gap: 1rem;
-  background-color: #f9f9f9;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-}
-
-.novelItem__image {
-  width: 6rem;
-  height: 9rem;
-  border-radius: 0.375rem;
-}
-
-.novelItem__title {
-  font-size: 1.125rem;
-  font-weight: bold;
-}
-
-.novelItem__description {
-  color: #9ca3af;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-
-.novelItem__genres {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.genre {
-  padding: 0.25rem 0.75rem;
-  border: 2px solid #4a4a4a;
-  border-radius: 0.375rem;
-}
-
-
 
 .filters__checkboxGroup {
   display: flex;
@@ -125,4 +80,64 @@
   color: #ffffff;
   background-color: #ffffff;
   color: #1a1a1a;
+}
+
+/* Novelas */
+
+.novelList__item {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  transition: all .3s ease;
+  user-select: none;
+}
+.novelList__imageContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.novelList__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(120%);
+}
+.novelList__details {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;  
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.novelList__detailsTitle {
+  color: rgb(255, 200, 0);
+  text-align: center;
+  font-weight: 700;
+
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Para evitar el desbordamiento del texto */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.novelList__item:hover {
+  background-color: rgb(255, 200, 0);
+}
+.novelList__item:hover .novelList__details {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000b5;
+  padding: 1rem;  
+  opacity: 1;
 }

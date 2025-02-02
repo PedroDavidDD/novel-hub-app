@@ -1,84 +1,97 @@
-<div [ngClass]="'container'">
+<div [ngClass]="'container max-w-7xl mx-auto bg-cyan-300'">
   <!-- Filtros superiores -->
   <div [ngClass]="'filters grid'">
+    <!-- Filtro por lenguaje -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
       <h3 [ngClass]="'filters__title'">Languages</h3>
       <div [ngClass]="'filters__buttonGroup'">
-        <button 
+        <button
           *ngFor="let language of languages"
           [ngClass]="{
-            'button': true,
+            button: true,
             'button--selected': language === selectedLanguage
           }"
-          (click)="filterByLanguage(language)">
+          (click)="filterByLanguage(language)"
+        >
           {{ language }}
         </button>
       </div>
     </div>
-      
+
+    <!-- Filtro por estado -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
       <h3 [ngClass]="'filters__title'">Status</h3>
       <div [ngClass]="'filters__buttonGroup'">
-        <button 
-          *ngFor="let status of statuses" 
+        <button
+          *ngFor="let status of statuses"
           [ngClass]="{
-            'button': true,
+            button: true,
             'button--selected': status === selectedStatus
           }"
-          (click)="filterByStatus(status)">
+          (click)="filterByStatus(status)"
+        >
           {{ status }}
         </button>
       </div>
     </div>
 
+    <!-- Filtro por * -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
       <h3 [ngClass]="'filters__title'">Sort By</h3>
       <div [ngClass]="'filters__buttonGroup'">
-        <button 
-          *ngFor="let option of sortByOptions" 
+        <button
+          *ngFor="let option of sortByOptions"
           [ngClass]="{
-            'button': true,
+            button: true,
             'button--selected': option === selectedSort
           }"
-          (click)="sortBy(option)">
+          (click)="sortBy(option)"
+        >
           {{ option }}
         </button>
       </div>
     </div>
-    
-    <!-- Filtro por Géneros con Checkboxes -->
+
+    <!-- Filtro por Géneros -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
       <h3 [ngClass]="'filters__title'">Genres</h3>
       <div [ngClass]="'filters__checkboxGroup'">
-        <label 
-          *ngFor="let genre of genres" 
-          [ngClass]="{'filters__checkboxLabel': true, 'filters__checkboxLabel--selected': selectedGenres.includes(genre)}">
-          <input 
+        <label
+          *ngFor="let genre of genres"
+          [ngClass]="{
+            filters__checkboxLabel: true,
+            'filters__checkboxLabel--selected': selectedGenres.includes(genre)
+          }"
+        >
+          <input
             type="checkbox"
             [value]="genre"
             [checked]="selectedGenres.includes(genre)"
-            (change)="onGenreChange(genre, $event)">
+            (change)="onGenreChange(genre, $event)"
+          />
           <span>{{ genre }}</span>
         </label>
       </div>
     </div>
-    
   </div>
 
   <!-- Lista de novelas -->
-  <div [ngClass]="'novelList'">
-    <div *ngFor="let novel of novels$ | async as novels" [ngClass]="'novelItem'">
-      <img [src]="novel.image" alt="{{ novel.title }}" [ngClass]="'novelItem__image'">
-      <div>
-        <h2 [ngClass]="'novelItem__title'">{{ novel.title }}</h2>
-        <p [ngClass]="'novelItem__description'">{{ novel.description }}</p>
-        <div [ngClass]="'novelItem__genres'">
-          <span *ngFor="let genre of novel.genres" [ngClass]="'genre'">
-            {{ genre }}
-          </span>
+  <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div
+      *ngFor="let novel of novels$ | async as novels"
+      class="novelList__item aspect-[2/3]"
+    >
+      <div class="novelList__imageContainer">
+        <img
+          src="https://api.genesistudio.com/storage/v1/render/image/public/directus/3fbe4039-d705-4d39-bdd7-a928ff9742c8.png?width=400&height=600"
+          alt="{{ novel.title }}"
+          class="novelList__image"
+        />
+        <div class="novelList__details">
+          <h2 class="novelList__detailsTitle">{{ novel.title }}</h2>
         </div>
       </div>
     </div>
   </div>
-  
+
 </div>
