@@ -1,0 +1,59 @@
+/* 🏠 Navbar */
+.navbar {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar__container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar__brand, .navbar__button, .navbar__link {
+  font-size: 1rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.navbar__brand {
+  color: #1d4ed8;
+  user-select: none;
+}
+
+.navbar__links, .navbar__actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar__link {
+  font-weight: bold;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.navbar__link:hover {
+  color: #2563eb;
+}
+
+
+.navbar__button {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navbar__button:hover {
+  color: #2563eb;
+}
+
+.navbar__button--logout {
+  color: red;
+}
+
+.navbar__button--logout:hover {
+  color: darkred;
+}

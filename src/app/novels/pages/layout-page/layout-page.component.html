@@ -1,26 +1,35 @@
-<div class="flex flex-col h-screen">
+<div class="layout">
   <!-- Navbar -->
-  <nav class="bg-white shadow-md p-4 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-      <span class="text-lg font-semibold text-blue-700 select-none" >DukeTranslation</span>
-      <a routerLink="/" class="text-lg font-semibold hover:text-blue-500">Home</a>
-      <a routerLink="/novels" class="text-lg font-semibold hover:text-blue-500">Novels</a>
-    </div>
-    <div class="flex items-center gap-4">
-      <button class="text-lg hover:text-blue-500">🔍</button>
-      <button class="text-lg hover:text-blue-500">⚙️</button>
-      <button class="text-lg hover:text-red-500">Logout</button>
-    </div>
-  </nav>
+  <app-navbar />
+  
+  <!-- Contenido Principal -->
+  <main class="layout__main container max-w-max mx-auto">
+    
+    <!-- Sección de Anuncios -->
+    <section class="ads">
+        <p class="ads__text">Advertisements</p>
+    </section>
 
-  <!-- Contenido -->
-  <main class="flex-1 p-4">
     <router-outlet></router-outlet>
+    
+    <!-- Barra Lateral -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+          <h2 class="sidebar__brand">DukeTranslation</h2>
+      </div>
+      <nav class="sidebar__nav">
+          <div class="sidebar__item">
+              <p class="sidebar__text">Random Novel</p>
+          </div>
+          <div class="sidebar__item">
+              <p class="sidebar__text">Gift Novel</p>
+          </div>
+      </nav>
+    </aside>
+
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-100 text-center p-4 text-gray-700">
-    © 2025 Novel Hub. All rights reserved. | 📧  
-    <a href="mailto:duketranslation@gmail.com" class="hover:underline">Contact</a>
-  </footer>
+  <app-footer/>
+  
 </div>

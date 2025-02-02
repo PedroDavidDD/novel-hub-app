@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { environments } from '../../../environments/environments';
 
 export interface INovel {
+  id: string;
   title: string;
   description: string;
   image: string;
@@ -23,6 +24,7 @@ export class NovelsService {
     // Datos manuales de prueba
     private initialNovels: INovel[] = [
       {
+        id: '1',
         title: 'Manual Novel 1',
         description: 'A manually added adventure novel.',
         image: 'https://static.wikia.nocookie.net/ftblbv/images/d/da/Dowd_Campbell.png/revision/latest?cb=20230330071943',
@@ -35,6 +37,7 @@ export class NovelsService {
         rating: 4.5
       },
       {
+        id: '2',
         title: 'Manual Novel 2',
         description: 'A manually added romantic novel.',
         image: 'https://static.wikia.nocookie.net/ftblbv/images/5/55/Eleanor_Official.png/revision/latest?cb=20241102181705',
@@ -47,6 +50,7 @@ export class NovelsService {
         rating: 4.7
       },
       {
+        id: '3',
         title: 'Manual Novel 3',
         description: 'A manually added sci-fi story.',
         image: 'https://static.wikia.nocookie.net/ftblbv/images/e/ed/Illiya_Official.png/revision/latest?cb=20241102182837',
@@ -59,6 +63,7 @@ export class NovelsService {
         rating: 4.3
       },
       {
+        id: '4',
         title: 'Manual Novel 4',
         description: 'A manually added sci-fi story.',
         image: 'https://static.wikia.nocookie.net/ftblbv/images/1/1c/Yuria_Official_1.png/revision/latest?cb=20241102182018',
@@ -71,6 +76,7 @@ export class NovelsService {
         rating: 4.3
       },
       {
+        id: '5',
         title: 'Manual Novel 5',
         description: 'A manually added sci-fi story.',
         image: 'https://static.wikia.nocookie.net/ftblbv/images/d/dc/Cover.jpg/revision/latest?cb=20240701021349',

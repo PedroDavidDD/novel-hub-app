@@ -1,40 +1,62 @@
-<p>home-page works!</p>
-  
-<div class="baraja01">
-    <div class="baraja01__frame">
-        <span class="lines"></span>
-        <div class="baraja01__frame__item-img"></div>
-        <div class="baraja01__frame__item-title">
-            <h3>assassin cinderella</h3>
+<div class="container max-w-7xl mx-auto bg-red-500">
+    <!-- Banner -->
+    <div class="banner">
+        <p class="banner__text">Banner</p>
+    </div>
+
+    <div class="novels">
+        <!-- Novela Destacada -->
+        <div class="novels__latest">
+
+            <p class="novels__latest-text">Latest Novels</p>
+
+            <div class="novelCard grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="novelCard__frame">
+                    <span class="novelCard__lines"></span>
+                    <div class="novelCard__image"></div>
+                    <div class="novelCard__title">
+                        <h3>Assassin Cinderella</h3>
+                    </div>
+                    <div class="novelCard__badge novelCard__badge--primary">
+                        <div class="novelCard__badge-text">A</div>
+                        <div class="novelCard__badge-icon"></div>
+                    </div>
+                    <div class="novelCard__badge novelCard__badge--secondary">
+                        <div class="novelCard__badge-text">A</div>
+                        <div class="novelCard__badge-icon"></div>
+                    </div>
+                </div>
+                <span class="novelCard__marker novelCard__marker--tl"></span>
+                <span class="novelCard__marker novelCard__marker--tr"></span>
+                <span class="novelCard__marker novelCard__marker--bl"></span>
+                <span class="novelCard__marker novelCard__marker--br"></span>
+            </div>
         </div>
-        <div class="polygon" id="polygon__1">
-            <div class="polygon__letter">A</div>
-            <div class="polygon__img"></div>
-        </div>
-        <div class="polygon" id="polygon__2">
-            <div class="polygon__letter">A</div>
-            <div class="polygon__img"></div>
+
+        <!-- Novelas Populares -->
+        <div class="novels__popular">
+
+            <p class="novels__popular-text">Popular Novels</p>
+            <!-- Lista de novelas -->
+            <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div *ngFor="let novel of novels$ | async as novels" class="novelItem col-span-12 lg:col-span-2">
+                    <p class="novels__popular-text">{{ novel.id }}</p>
+                    <img [src]="novel.image" alt="{{ novel.title }}" class="novelItem__image">
+                    <div class="novelItem__content">
+                        <h2 class="novelItem__title">{{ novel.title }}</h2>
+                        <div class="novelItem__genres">
+                            <span *ngFor="let genre of novel.genres" class="novelItem__genre">
+                                {{ genre }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-    <span class="points" id="pt1"></span>
-    <span class="points" id="pt2"></span>
-    <span class="points" id="pt3"></span>
-    <span class="points" id="pt4"></span>
+    
+    <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        otro
+    </div>
 </div>
-  <!-- Lista de novelas
-<div [ngClass]="'novelList'">
-<div
-    *ngFor="let novel of novels$ | async as novels"
-    [ngClass]="'novelItem'"
->
-    <img [src]="novel.image" alt="{{ novel.title }}" [ngClass]="'novelItem__image'">
-    <div>
-    <h2 [ngClass]="'novelItem__title'">{{ novel.title }}</h2>
-    <div [ngClass]="'novelItem__genres'">
-        <span *ngFor="let genre of novel.genres" [ngClass]="'genre'">
-        {{ genre }}
-        </span>
-    </div>
-    </div>
-</div>
-</div>-->

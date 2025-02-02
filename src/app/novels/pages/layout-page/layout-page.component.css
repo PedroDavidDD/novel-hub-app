@@ -1,0 +1,65 @@
+/* 🌐 Layout */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout__main {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* 📢 Ads */
+.ads {
+  background-color: #fb923c;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.ads__text {
+  font-weight: bold;
+  color: white;
+}
+
+/* 🎛️ Sidebar */
+.sidebar {
+  width: 200px;
+  padding: 1rem;
+  background-color: #f3f4f6;
+}
+
+.sidebar__header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.sidebar__brand {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar__item {
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sidebar__item:hover {
+  background-color: #e5e7eb;
+}
+
+.sidebar__text {
+  font-weight: bold;
+}
