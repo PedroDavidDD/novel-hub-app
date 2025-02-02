@@ -25,7 +25,7 @@ export class NovelsService {
       {
         title: 'Manual Novel 1',
         description: 'A manually added adventure novel.',
-        image: 'assets/images/novel1.jpg',
+        image: 'https://static.wikia.nocookie.net/ftblbv/images/d/da/Dowd_Campbell.png/revision/latest?cb=20230330071943',
         genres: ['Sci-Fi', 'Action'],
         language: 'Chinese',
         status: 'Ongoing',
@@ -37,7 +37,7 @@ export class NovelsService {
       {
         title: 'Manual Novel 2',
         description: 'A manually added romantic novel.',
-        image: 'assets/images/novel2.jpg',
+        image: 'https://static.wikia.nocookie.net/ftblbv/images/5/55/Eleanor_Official.png/revision/latest?cb=20241102181705',
         genres: ['Romance', 'Drama'],
         language: 'Korean',
         status: 'Completed',
@@ -49,7 +49,7 @@ export class NovelsService {
       {
         title: 'Manual Novel 3',
         description: 'A manually added sci-fi story.',
-        image: 'assets/images/novel3.jpg',
+        image: 'https://static.wikia.nocookie.net/ftblbv/images/e/ed/Illiya_Official.png/revision/latest?cb=20241102182837',
         genres: ['Action', 'Romance','Drama','Fantasia','Adventure'],
         language: 'Chinese',
         status: 'Hiatus',
@@ -61,7 +61,7 @@ export class NovelsService {
       {
         title: 'Manual Novel 4',
         description: 'A manually added sci-fi story.',
-        image: 'assets/images/novel3.jpg',
+        image: 'https://static.wikia.nocookie.net/ftblbv/images/1/1c/Yuria_Official_1.png/revision/latest?cb=20241102182018',
         genres: ['Action', 'Romance','Drama','Fantasia','Adventure'],
         language: 'Chinese',
         status: 'Hiatus',
@@ -73,7 +73,7 @@ export class NovelsService {
       {
         title: 'Manual Novel 5',
         description: 'A manually added sci-fi story.',
-        image: 'assets/images/novel3.jpg',
+        image: 'https://static.wikia.nocookie.net/ftblbv/images/d/dc/Cover.jpg/revision/latest?cb=20240701021349',
         genres: ['Action', 'Romance','Drama','Fantasia','Adventure'],
         language: 'Chinese',
         status: 'Hiatus',
@@ -94,14 +94,14 @@ export class NovelsService {
     this.http.get<INovel[]>(`${this.baseUrl}/novels`).pipe(
       catchError(error => {
         console.error('Error al cargar novelas:', error);
-        return of([]);  // Retorna un array vacío en caso de error
+        return of([]);
       })
     )
     // .subscribe(novels => {
-    //   this.novelsSubject.next(novels);  // Actualiza el BehaviorSubject
+    //   this.novelsSubject.next(novels);
     // });
 
-    return this.novelsSubject.asObservable();  // Devuelve un Observable
+    return this.novelsSubject.asObservable(); 
   }
   // getNovels(): Observable<INovel[]> {
   //   // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
