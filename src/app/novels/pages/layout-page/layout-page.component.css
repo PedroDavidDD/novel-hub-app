@@ -2,7 +2,6 @@
 .layout {
   display: flex;
   flex-direction: column;
-  background-color: aqua;
   min-height: 100vh;
 }
 
@@ -11,19 +10,18 @@
   padding: 1rem;
   display: flex;
   flex-wrap: nowrap;
-  background-color: aquamarine;
 }
 
 /* 📢 Ads */
 .ads {
-  background-color: #fb923c;
+  background-color: #f3f4f6;
   padding: 1rem;
   text-align: center;
 }
 
 .ads__text {
   font-weight: bold;
-  color: white;
+  color: black;
 }
 
 /* 🎛️ Sidebar */
