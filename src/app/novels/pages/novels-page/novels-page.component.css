@@ -22,9 +22,6 @@
 }
 
 .filters__buttonGroup {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
 }
 
 .button {
@@ -36,20 +33,22 @@
 }
 
 .filters__checkboxGroup {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px;
 }
+
+.filters__buttonGroup, .filters__checkboxGroup {
+
+  /* display: flex;
+  flex-wrap: wrap; */
+  gap: 0.5rem;
+  padding: 0.625rem;
+}
+
 .filters__checkboxLabel {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  border: 1px solid #fff;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: .375rem .75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease;  
 }
 
 .button, .filters__checkboxLabel {
@@ -60,6 +59,9 @@
   
   background-color: #ffffff;
   color: #000;
+}
+.button, .filters__checkboxLabel {
+  text-align: center;
 }
 .button--selected, .filters__checkboxLabel:hover, .filters__checkboxLabel--selected {
   color: rgb(255, 200, 0);
@@ -86,14 +88,16 @@
 }
 
 /* Novelas */
-
+.novelList {
+  padding: 0.625rem;
+}
 .novelList__item {
   background-color: #f9f9f9;
-  padding: 1rem;
+  padding: 0.625rem;
   transition: all .3s ease;
   user-select: none;
   border: 1px solid #1a1a1a;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
 }
 .novelList__imageContainer {
   width: 100%;

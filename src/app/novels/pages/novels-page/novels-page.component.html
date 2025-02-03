@@ -4,10 +4,10 @@
     <!-- Filtro por lenguaje -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
       <h3 [ngClass]="'filters__title'">Languages</h3>
-      <div [ngClass]="'filters__buttonGroup'">
+      <div [ngClass]="'filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2'">
         <button
           *ngFor="let language of languages"
-          [ngClass]="{
+          [ngClass]="{            
             button: true,
             'button--selected': language === selectedLanguage
           }"
@@ -21,10 +21,10 @@
     <!-- Filtro por estado -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
       <h3 [ngClass]="'filters__title'">Status</h3>
-      <div [ngClass]="'filters__buttonGroup'">
+      <div [ngClass]="'filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2'">
         <button
           *ngFor="let status of statuses"
-          [ngClass]="{
+          [ngClass]="{            
             button: true,
             'button--selected': status === selectedStatus
           }"
@@ -38,10 +38,10 @@
     <!-- Filtro por * -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
       <h3 [ngClass]="'filters__title'">Sort By</h3>
-      <div [ngClass]="'filters__buttonGroup'">
+      <div [ngClass]="'filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'">
         <button
           *ngFor="let option of sortByOptions"
-          [ngClass]="{
+          [ngClass]="{            
             button: true,
             'button--selected': option === selectedSort
           }"
@@ -55,10 +55,10 @@
     <!-- Filtro por Géneros -->
     <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
       <h3 [ngClass]="'filters__title'">Genres</h3>
-      <div [ngClass]="'filters__checkboxGroup'">
+      <div [ngClass]="'filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6'">
         <label
           *ngFor="let genre of genres"
-          [ngClass]="{
+          [ngClass]="{            
             filters__checkboxLabel: true,
             'filters__checkboxLabel--selected': selectedGenres.includes(genre)
           }"
