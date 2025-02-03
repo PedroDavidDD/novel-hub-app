@@ -3,17 +3,19 @@
   <app-navbar />
   
   <!-- Contenido Principal -->
-  <main class="layout__main container max-w-max mx-auto">
+  <main class="layout__main container max-w-7xl mx-auto">
     
     <!-- Sección de Anuncios -->
     <section class="ads">
         <p class="ads__text">Advertisements</p>
     </section>
 
-    <router-outlet></router-outlet>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
     
     <!-- Barra Lateral -->
-    <aside class="sidebar">
+    <aside class="sidebar hidden md:block">
       <div class="sidebar__header">
           <h2 class="sidebar__brand">DukeTranslation</h2>
       </div>

@@ -2,6 +2,7 @@
 .layout {
   display: flex;
   flex-direction: column;
+  background-color: aqua;
   min-height: 100vh;
 }
 
@@ -9,7 +10,8 @@
   flex: 1;
   padding: 1rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  background-color: aquamarine;
 }
 
 /* 📢 Ads */
