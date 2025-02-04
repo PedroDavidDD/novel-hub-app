@@ -31,23 +31,31 @@ export class HomePageComponent {
   
   private refreshNovels(): void {
     this.latestNovels$ = this.novelsService.getNovels().pipe(
-      map(novels => this.applyLatestFilter(novels)),
+      map(novels => this.applyLatestFilter(novels).slice(0, 12)),
     );
-    this.latestNovels = this.latestNovels$
+  
+    this.latestNovels = this.latestNovels$;
+  
     this.popularNovels$ = this.novelsService.getNovels().pipe(
-      map(novels => this.applyPopularFilter(novels)),
-      take(3),
+      map(novels => this.applyPopularFilter(novels).slice(0, 6)),
     );
-    this.popularNovels = this.popularNovels$
-
+  
+    this.popularNovels = this.popularNovels$;
   }
   
+  
   private applyLatestFilter(novels: INovel[]): INovel[] {
-    return novels.filter(novel => novel.releaseDate);
+    return novels
+      .filter(novel => novel.releaseDate)
+      .sort((a, b) => {
+        const dateA = new Date(a.releaseDate);
+        const dateB = new Date(b.releaseDate);
+        return dateB.getTime() - dateA.getTime();
+      });
   }
 
   private applyPopularFilter(novels: INovel[]): INovel[] {
-    return novels.sort((a, b) => a.popularity - b.popularity);
+    return novels.sort((a, b) => b.popularity - a.popularity);
   }
   
 }
