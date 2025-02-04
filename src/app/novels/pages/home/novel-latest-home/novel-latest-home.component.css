@@ -10,8 +10,6 @@
 } */
 
 .novelItem {
-  width: 100%;
-  min-width: 10rem;
   background-color: #000000;
   position: relative;
   padding: 0.5rem 0.25rem;
@@ -19,6 +17,8 @@
   
   width: 100%;
   min-width: 5rem;
+  height: 100%;
+  min-height: 18rem;
 }
 
 .novelItem__frame {
