@@ -1,4 +1,4 @@
-<div class="container max-w-7xl mx-auto bg-red-500">
+<div class="container max-w-7xl mx-auto bg-red-700">
     <!-- Banner -->
     <div class="banner">
         <p class="banner__text">Banner</p>
@@ -6,57 +6,29 @@
 
     <div class="novels">
         <!-- Novela Destacada -->
-        <div class="novels__latest">
+        <div class="novels__latest">            
 
             <p class="novels__latest-text">Latest Novels</p>
 
-            <div class="novelCard grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div class="novelCard__frame">
-                    <span class="novelCard__lines"></span>
-                    <div class="novelCard__image"></div>
-                    <div class="novelCard__title">
-                        <h3>Assassin Cinderella</h3>
-                    </div>
-                    <div class="novelCard__badge novelCard__badge--primary">
-                        <div class="novelCard__badge-text">A</div>
-                        <div class="novelCard__badge-icon"></div>
-                    </div>
-                    <div class="novelCard__badge novelCard__badge--secondary">
-                        <div class="novelCard__badge-text">A</div>
-                        <div class="novelCard__badge-icon"></div>
-                    </div>
-                </div>
-                <span class="novelCard__marker novelCard__marker--tl"></span>
-                <span class="novelCard__marker novelCard__marker--tr"></span>
-                <span class="novelCard__marker novelCard__marker--bl"></span>
-                <span class="novelCard__marker novelCard__marker--br"></span>
+            <div class="novels__list bg-green-600">
+                <app-novel-latest-home [novels]="latestNovels | async  " />
             </div>
+
         </div>
 
         <!-- Novelas Populares -->
         <div class="novels__popular">
 
             <p class="novels__popular-text">Popular Novels</p>
-            <!-- Lista de novelas -->
-            <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div *ngFor="let novel of novels$ | async as novels" class="novelItem col-span-12 lg:col-span-2">
-                    <p class="novels__popular-text">{{ novel.id }}</p>
-                    <img [src]="novel.image" alt="{{ novel.title }}" class="novelItem__image">
-                    <div class="novelItem__content">
-                        <h2 class="novelItem__title">{{ novel.title }}</h2>
-                        <div class="novelItem__genres">
-                            <span *ngFor="let genre of novel.genres" class="novelItem__genre">
-                                {{ genre }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            
+            <div class="novels__list">
+                <app-novel-popular-home [novels]="popularNovels | async " />
             </div>
 
         </div>
     </div>
     
-    <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="novels__list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         otro
     </div>
 </div>

@@ -96,18 +96,14 @@ export class NovelsService {
   constructor(private http: HttpClient) {}
 
   getNovels(): Observable<INovel[]> {
-    // Realiza la solicitud HTTP y maneja el error
-    this.http.get<INovel[]>(`${this.baseUrl}/novels`).pipe(
+    return this.http.get<INovel[]>(`${this.baseUrl}/novels`).pipe(
+      // Si la llamada HTTP es exitosa, actualizamos el subject con los datos obtenidos
+      map(novels => novels ?? this.initialNovels), // Si `novels` es `null` o `undefined`, usamos las novelas de prueba
       catchError(error => {
         console.error('Error al cargar novelas:', error);
-        return of([]);
+        return of(this.initialNovels); // Si hay error, retornamos novelas de prueba
       })
-    )
-    // .subscribe(novels => {
-    //   this.novelsSubject.next(novels);
-    // });
-
-    return this.novelsSubject.asObservable(); 
+    );
   }
   // getNovels(): Observable<INovel[]> {
   //   // this.http.get<Novel[]>(`${this.baseUrl}/novels`)

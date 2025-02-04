@@ -1,0 +1,205 @@
+/* Novelas CARDs novels__latest */
+/* .container__novelItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(#ff5c00, #963700); 
+} */
+
+.novelItem {
+  width: 100%;
+  min-width: 10rem;
+  background-color: #000000;
+  position: relative;
+  padding: 0.5rem 0.25rem;
+  padding: .5rem;
+  
+  width: 100%;
+  min-width: 5rem;
+}
+
+.novelItem__frame {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  border: .1rem solid #ff5c00;
+  border-radius: 0.3125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  padding: .5rem;
+}
+
+.novelItem__lines {
+  width: 7.125rem;
+  height: 0.0625rem;
+  background-color: #ff5c00;
+
+  width: 100%;
+}
+
+.novelItem__image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  border-radius: .5rem;
+  margin: .5rem .1rem;
+}
+.novelItem__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(110%);
+}
+
+.novelItem__title {
+  width: 100%;
+  height: 2rem;
+  background-color: #000000;
+  border-top: .1rem solid #ff5c00;
+  border-bottom: .1rem solid #ff5c00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.novelItem__title h3 {
+  font-size: clamp(.1rem, .7rem, 1rem);
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.novelItem__marker {
+  position: absolute;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  z-index: 2;
+  background-color: #ff5c00;
+}
+
+.novelItem__marker--tl {
+  top: .25rem;
+  left: .25rem;
+}
+
+.novelItem__marker--tr {
+  top: .25rem;
+  right: .25rem;
+}
+
+.novelItem__marker--bl {
+  bottom: .25rem;
+  left: .25rem;
+}
+
+.novelItem__marker--br {
+  bottom: .25rem;
+  right: .25rem;
+}
+
+.novelItem__badge {
+  display: none;
+}
+
+.novelItem__image.active {
+  background: url("https://scontent.flim19-1.fna.fbcdn.net/v/t39.30808-6/315816724_624657716025403_6330640683063997492_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeFT6y59FXd29yE1gWfFDFx5wArYTC1GSjXACthMLUZKNe2Rpcgp2HT13CBcW_OJI7cyYjX8QjR2yBwTBfELU7WM&_nc_ohc=jsk7oQgY3wAAX83CGfQ&tn=XC4WLWVSLMwXazFw&_nc_ht=scontent.flim19-1.fna&oh=00_AfAOZ85EA42GZLLrwME6HG4rbab9Obw4cSRrTruYHhEFXA&oe=637DCBB9")
+    center/80% no-repeat;
+  filter: contrast(2) saturate(10);
+}
+
+.novelItem .novelItem__image.active,
+.novelItem .novelItem__badge.active {
+  transition: filter 500ms ease;
+  animation: rotateImg 900ms linear forwards;
+}
+
+@keyframes rotateImg {
+  to {
+    transform: rotateY(0deg);
+  }
+  from {
+    transform: rotateY(360deg);
+  }
+}
+.novelItem:hover .novelItem__image.active,
+.novelItem:hover .novelItem__badge.active {
+  filter: contrast(2) saturate(10) drop-shadow(0 0 0.5rem #ff0000);
+}
+
+.novelItem__title.active {
+  border-top: 0px solid #ff5c00;
+}
+
+.novelItem__title.active h3 {
+  display: none;
+}
+
+.novelItem__badge.active {
+  position: absolute;
+  width: 0.75rem;
+  height: 1.4375rem;
+  top: 0.25rem;
+  left: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.novelItem__badge-text {
+  font-size: 0.625rem;
+  color: #dfdfdf;
+}
+
+.novelItem__badge-icon {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: linear-gradient(
+    330deg,
+    #ff5e00 1%,
+    #eb4a00 43%,
+    #d13400 50%,
+    #bd1c00 51%,
+    #a80000 51%,
+    #940000 49%,
+    #800000 49%,
+    #6b0000 50%,
+    #5c0000 57%,
+    #000000 99%
+  );
+  transform: rotate(45deg);
+}
+
+.novelItem__badge--secondary {
+  top: 10rem;
+  left: 6.625rem;
+  transform: rotate(180deg);
+}
+
+.novelItem__badge--secondary .novelItem__badge-icon {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: linear-gradient(
+    60deg,
+    #ff5e00 1%,
+    #d63900 42%,
+    #ad0600 49%,
+    #8a0000 51%,
+    #6b0000 51%,
+    #000000 50%,
+    #750000 49%,
+    #940000 49%,
+    #b80000 51%,
+    #db0000 58%,
+    #ff0000 99%
+  );
+  transform: rotate(45deg);
+}

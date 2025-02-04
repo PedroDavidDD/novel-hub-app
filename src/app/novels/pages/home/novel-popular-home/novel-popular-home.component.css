@@ -1,0 +1,43 @@
+
+/* CARD novel details novels__popular */
+.novelItem {
+  padding: 1rem;
+  border-radius: 0.375rem;
+  display: flex;
+  gap: 1rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.novelItem__image {
+  width: 6rem;
+  height: 9rem;
+  border-radius: 0.375rem;
+}
+
+.novelItem__title {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.novelItem__description {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.novelItem__genres {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  user-select: none;
+}
+
+.novelItem__genre {
+  font-size: .6rem;
+  text-align: center;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #4a4a4a;
+  border-radius: 0.375rem;
+}

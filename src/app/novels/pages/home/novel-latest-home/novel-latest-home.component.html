@@ -1,0 +1,26 @@
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+    <div *ngFor="let novel of novels" class="novelItem">
+        <div class="novelItem__frame">
+            <span class="novelItem__lines"></span>
+            <div class="novelItem__image">
+                <!-- <img [src]="novel.image" alt="{{ novel.title }}"> -->
+                <img src="https://pbs.twimg.com/media/Gi5NAk5a4AEN-nD?format=jpg&name=small" alt="{{ novel.title }}">
+            </div>
+            <div class="novelItem__title">
+                <h3>{{ novel.title }}</h3>
+            </div>
+            <div class="novelItem__badge novelItem__badge--primary">
+                <div class="novelItem__badge-text">A</div>
+                <div class="novelItem__badge-icon"></div>
+            </div>
+            <div class="novelItem__badge novelItem__badge--secondary">
+                <div class="novelItem__badge-text">A</div>
+                <div class="novelItem__badge-icon"></div>
+            </div>
+        </div>
+        <span class="novelItem__marker novelItem__marker--tl"></span>
+        <span class="novelItem__marker novelItem__marker--tr"></span>
+        <span class="novelItem__marker novelItem__marker--bl"></span>
+        <span class="novelItem__marker novelItem__marker--br"></span>
+    </div>
+</div>
