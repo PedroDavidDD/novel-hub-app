@@ -1,5 +1,5 @@
 .container {
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   color: #333;
   min-height: 100vh;
 }
@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(#ff5c00, #963700);
+  background: #ccc;
   height: 10rem;
   color: white;
   font-size: 1.5rem;
