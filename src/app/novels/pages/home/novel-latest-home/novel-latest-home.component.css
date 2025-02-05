@@ -13,8 +13,8 @@
   background-color: #000000;
   position: relative;
   padding: 0.5rem 0.25rem;
-  padding: .5rem;
-  
+  padding: 0.5rem;
+
   width: 100%;
   min-width: 5rem;
   height: 100%;
@@ -25,14 +25,14 @@
   width: 100%;
   height: 100%;
   background-color: #000000;
-  border: .1rem solid #ff5c00;
+  border: 0.1rem solid #ff5c00;
   border-radius: 0.3125rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.25rem;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .novelItem__lines {
@@ -48,8 +48,8 @@
   height: 100%;
   overflow: hidden;
   border-radius: 0.625rem;
-  border-radius: .5rem;
-  margin: .5rem .1rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0.1rem;
 }
 .novelItem__image img {
   width: 100%;
@@ -60,18 +60,24 @@
 
 .novelItem__title {
   width: 100%;
-  height: 2rem;
   background-color: #000000;
-  border-top: .1rem solid #ff5c00;
-  border-bottom: .1rem solid #ff5c00;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 0;
+  border-top: 0.1rem solid #ff5c00;
+  border-bottom: 0.1rem solid #ff5c00;
+  padding: .5rem;
+  /* Estilos para truncar en 3 líneas */
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  /* text-overflow: ellipsis; */
+  /* white-space: nowrap; */
+  word-break: break-word;
 }
 
 .novelItem__title h3 {
-  font-size: clamp(.1rem, .7rem, 1rem);
+  font-size: clamp(0.1rem, 0.7rem, 1rem);
   text-transform: uppercase;
   color: #fff;
 }
@@ -86,23 +92,23 @@
 }
 
 .novelItem__marker--tl {
-  top: .25rem;
-  left: .25rem;
+  top: 0.25rem;
+  left: 0.25rem;
 }
 
 .novelItem__marker--tr {
-  top: .25rem;
-  right: .25rem;
+  top: 0.25rem;
+  right: 0.25rem;
 }
 
 .novelItem__marker--bl {
-  bottom: .25rem;
-  left: .25rem;
+  bottom: 0.25rem;
+  left: 0.25rem;
 }
 
 .novelItem__marker--br {
-  bottom: .25rem;
-  right: .25rem;
+  bottom: 0.25rem;
+  right: 0.25rem;
 }
 
 .novelItem__badge {
