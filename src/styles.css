@@ -34,6 +34,8 @@
     --color-sidebar: #f3f4f6;
     --color-sidebar-dark: #e5e7eb;
 
+    --color-black-fit: #000000;
+    --color-white-fit: #ffffff;
 }
 
 /* Variables de Sombras */
@@ -91,6 +93,6 @@ body.dark-mode {
     --color-secondary-dark: rgb(255, 158, 0);
     
     /* sidebar / ads */
-    --color-sidebar: #2a2a2a;
-    --color-sidebar-dark: #3e3e3e;
+    /* --color-sidebar: #2a2a2a;
+    --color-sidebar-dark: #3e3e3e; */
 }

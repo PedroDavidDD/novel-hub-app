@@ -14,21 +14,23 @@
 
 /* 📢 Ads */
 .ads {
-  background-color: var(--color-sidebar);
   padding: 1rem;
   text-align: center;
 }
 
 .ads__text {
   font-weight: bold;
-  color: var(--color-black);
 }
 
 /* 🎛️ Sidebar */
 .sidebar {
   width: 12.5rem;
   padding: 1rem;
-  background-color: var(--color-sidebar);
+}
+
+.ads, 
+.sidebar {
+  background-color: var(--color-primary);
 }
 
 .sidebar__header {
@@ -39,7 +41,12 @@
 .sidebar__brand {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--color-black);
+  color: var(--color-black-fit);
+}
+
+.ads__text,
+.sidebar__brand {
+  color: var(--color-black-fit);
 }
 
 .sidebar__nav {
@@ -58,12 +65,12 @@
 }
 
 .sidebar__item:hover {
-  background-color: var(--color-sidebar-dark);
+  background-color: var(--color-black);
 }
 
 .sidebar__text {
   font-weight: bold;
-  color: var(--color-black);
+  color: var(--color-primary);
 }
 
 .ads,
