@@ -1,6 +1,6 @@
 /* 🏠 Navbar */
 .navbar {
-  background-color: white;
+  background-color: var(--color-background);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   display: flex;
@@ -21,7 +21,7 @@
 }
 
 .navbar__brand {
-  color: #1d4ed8;
+  color: var(--color-primary-dark);
   user-select: none;
 }
 
@@ -32,14 +32,13 @@
 
 .navbar__link {
   font-weight: bold;
-  color: black;
+  color: var(--color-black);
   transition: color 0.3s ease;
 }
 
 .navbar__link:hover {
-  color: #2563eb;
+  color: var(--color-primary);
 }
-
 
 .navbar__button {
   cursor: pointer;
@@ -47,13 +46,19 @@
 }
 
 .navbar__button:hover {
-  color: #2563eb;
+  color: var(--color-primary);
 }
 
 .navbar__button--logout {
-  color: red;
+  color: var(--color-primary-light);
 }
 
 .navbar__button--logout:hover {
-  color: darkred;
+  color: var(--color-primary-dark);
+}
+
+/* 🌓 Dark Mode */
+
+body.dark-mode .navbar__brand {
+  /* color: var(--color-black); */
 }

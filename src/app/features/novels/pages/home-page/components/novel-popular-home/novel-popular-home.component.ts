@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { INovel } from '../../../services/novels.service';
-import { Observable } from 'rxjs';
+import { INovel } from '../../../../services/novels.service';
 
 @Component({
   selector: 'app-novel-popular-home',

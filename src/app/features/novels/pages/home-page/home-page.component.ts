@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { map, Observable, of, startWith, take } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { INovel, NovelsService } from '../../services/novels.service';
-import { NovelLatestHomeComponent } from "../home/novel-latest-home/novel-latest-home.component";
-import { NovelPopularHomeComponent } from "../home/novel-popular-home/novel-popular-home.component";
+import { NovelLatestHomeComponent } from './components/novel-latest-home/novel-latest-home.component';
+import { NovelPopularHomeComponent } from './components/novel-popular-home/novel-popular-home.component';
+
 
 @Component({
   selector: 'app-home-page',

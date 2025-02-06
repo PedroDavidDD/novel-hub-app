@@ -1,0 +1,12 @@
+<div class="modal-backdrop" *ngIf="show" (click)="onClose()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>{{ title }}</h2>
+        <ng-content></ng-content>
+        <button class="close-btn" (click)="onClose()">Cerrar</button>
+    </div>
+</div>
+<!-- <app-modal [title]="'Ejemplo de Modal'" [show]="isModalOpen" (close)="isModalOpen = false">
+    <p>¡Este es un contenido de prueba!</p>
+  </app-modal>
+  <button (click)="isModalOpen = true">Abrir Modal</button>
+   -->

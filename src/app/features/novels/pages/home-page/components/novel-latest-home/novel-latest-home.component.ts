@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { INovel } from '../../../services/novels.service';
 
 @Component({
   selector: 'app-novel-latest-home',

@@ -3,3 +3,78 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {   
+    /* Colores de Estado */
+    --color-error: #bb2929;
+    --color-success: #1ed12d;
+    --color-info: #0791e6;
+    --color-alert: #FFCF00;
+
+    /* Colores de fondo */
+    --color-background: #ffffff;
+    --color-background-dark: #1D1616;
+    /* Colores de texto */
+    --color-black: #1D1616;
+    --color-white: #ffffff;
+    --bg-body: #C1c5c5;
+    
+    /* Colores MAIN */
+    --color-primary: rgb(255, 200, 0);
+    --color-primary-light: rgb(255, 211, 51);
+    --color-primary-dark: rgb(255, 158, 0);
+
+    --color-secondary: rgb(0, 255, 200);
+    --color-secondary-light: rgb(51, 255, 211);
+    --color-secondary-dark: rgb(0, 204, 160);
+
+}
+
+/* Variables de Sombras */
+:root {
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-dark: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
+}
+/* Variables de Transiciones */
+:root {
+    --transition-fast: all 0.3s ease;
+    --transition-medium: all 0.5s ease;
+    --transition-slow: all 0.7s ease;
+}
+/* Variables de Z-Index */
+:root {
+    --z-index-tooltip: 1000; /* Para tooltips */
+    --z-index-modal: 2000; /* Para modales */
+    --z-index-overlay: 3000; /* Para overlays */
+    --z-index-dropdown: 4000; /* Para dropdowns */
+}
+/* Variables para Botones */
+:root {
+    --button-primary-bg: var(--color-primary);
+    --button-primary-bg-hover: var(--color-primary-dark);
+    --button-secondary-bg: var(--color-secondary);
+    --button-secondary-bg-hover: var(--color-secondary-dark);
+
+    --button-text-color: var(--color-text-inverse);
+    --button-border-radius: 25px;
+    --button-padding: var(--space-sm) var(--space-md);
+}
+
+/* Variables específicas para el Modo Oscuro */
+body.dark-mode {
+    /* Colores de fondo */
+    --color-background: #1D1616;
+    --color-background-dark: #ffffff;
+    /* Colores de texto */
+    --color-black: #ffffff;
+    --color-white: #1D1616;
+    --bg-body: #C1c5c5;
+
+    --color-primary: rgb(0, 255, 200);
+    --color-primary-light: rgb(51, 255, 211);
+    --color-primary-dark: rgb(0, 204, 160);
+
+    --color-secondary: rgb(255, 200, 0);
+    --color-secondary-light: rgb(255, 211, 51);
+    --color-secondary-dark: rgb(255, 158, 0);
+}

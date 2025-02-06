@@ -1,0 +1,51 @@
+/* Estilos para el Modo Claro */
+body {
+  background-color: white;
+  color: black;
+}
+
+/* Estilos del botón */
+.theme-toggle {
+  padding: 12px 18px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.05);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:focus {
+  outline: none;
+  border-color: #1d4ed8;
+}
+
+/* Estilos para el Modo Oscuro */
+
+body.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+body.dark-mode .theme-toggle {
+  background-color: #f1c40f;
+  color: black;
+}
+
+body.dark-mode .theme-toggle:hover {
+  background-color: #f39c12;
+}
+
+body.dark-mode .theme-toggle:focus {
+  border-color: #f39c12;
+}
+

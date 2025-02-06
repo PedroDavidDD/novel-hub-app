@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
-import { environments } from '../../../environments/environments';
+import { environments } from '../../../../environments/environments';
 
 export interface INovel {
   id: string;
@@ -121,20 +121,20 @@ export class NovelsService {
 
   constructor(private http: HttpClient) {}
 
-  getNovels(): Observable<INovel[]> {
-    return this.http.get<INovel[]>(`${this.baseUrl}/novels`).pipe(
-      // Si la llamada HTTP es exitosa, actualizamos el subject con los datos obtenidos
-      map(novels => novels ?? this.initialNovels), // Si `novels` es `null` o `undefined`, usamos las novelas de prueba
-      catchError(error => {
-        console.error('Error al cargar novelas:', error);
-        return of(this.initialNovels); // Si hay error, retornamos novelas de prueba
-      })
-    );
-  }
   // getNovels(): Observable<INovel[]> {
-  //   // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
-  //   return this.novelsSubject.asObservable();
+  //   return this.http.get<INovel[]>(`${this.baseUrl}/novels`).pipe(
+  //     // Si la llamada HTTP es exitosa, actualizamos el subject con los datos obtenidos
+  //     map(novels => novels ?? this.initialNovels), // Si `novels` es `null` o `undefined`, usamos las novelas de prueba
+  //     catchError(error => {
+  //       console.error('Error al cargar novelas:', error);
+  //       return of(this.initialNovels); // Si hay error, retornamos novelas de prueba
+  //     })
+  //   );
   // }
+  getNovels(): Observable<INovel[]> {
+    // this.http.get<Novel[]>(`${this.baseUrl}/novels`)
+    return this.novelsSubject.asObservable();
+  }
 
   getNovelById(id: string): Observable<INovel | undefined> {
     return this.http.get<INovel>(`${this.baseUrl}/novels/${id}`)
