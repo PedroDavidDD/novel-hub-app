@@ -110,3 +110,7 @@ body.dark-mode {
     --button-primary-bg: var(--color-primary);
     --button-text-color: var(--color-black);
 }
+
+.father__container {
+    background-color: var(--color-section);
+}
