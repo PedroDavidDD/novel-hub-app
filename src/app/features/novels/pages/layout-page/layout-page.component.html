@@ -6,28 +6,14 @@
   <main class="layout__main container max-w-7xl mx-auto max-md:flex-col">
     
     <!-- Sección de Anuncios -->
-    <section class="ads">
-        <p class="ads__text">Advertisements</p>
-    </section>
+    <app-ads />
 
     <div class="container max-w-7xl">
       <router-outlet></router-outlet>
     </div>
     
     <!-- Barra Lateral -->
-    <aside class="sidebar max-md:hidden">
-      <div class="sidebar__header">
-          <h2 class="sidebar__brand">DukeTranslation</h2>
-      </div>
-      <nav class="sidebar__nav">
-          <div class="sidebar__item">
-              <p class="sidebar__text">Random Novel</p>
-          </div>
-          <div class="sidebar__item">
-              <p class="sidebar__text">Gift Novel</p>
-          </div>
-      </nav>
-    </aside>
+    <app-aside />
 
   </main>
 

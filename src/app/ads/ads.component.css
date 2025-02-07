@@ -1,0 +1,13 @@
+/* 📢 Ads */
+.ads {
+  padding: 1rem;
+  text-align: center;
+  background-color: var(--color-section);
+  height: 100%;
+  user-select: none;
+}
+
+.ads__text {
+  font-weight: bold;
+  color: var(--color-black);
+}

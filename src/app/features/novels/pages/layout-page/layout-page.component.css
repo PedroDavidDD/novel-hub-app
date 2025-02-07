@@ -1,4 +1,3 @@
-
 /* 🌐 Layout */
 .layout {
   display: flex;
@@ -12,71 +11,4 @@
   padding: 1rem;
   display: flex;
   flex-wrap: nowrap;
-}
-
-/* 📢 Ads */
-.ads {
-  padding: 1rem;
-  text-align: center;
-}
-
-.ads__text {
-  font-weight: bold;
-}
-
-/* 🎛️ Sidebar */
-.sidebar {
-  width: 12.5rem;
-  padding: 1rem;
-}
-
-.ads, 
-.sidebar {
-  background-color: var(--color-section);
-}
-
-.sidebar__header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.sidebar__brand {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--color-black);
-}
-
-.ads__text,
-.sidebar__brand {
-  color: var(--color-black);
-}
-
-.sidebar__nav {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.sidebar__item {
-  padding: 0.5rem;
-  border-radius: .5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  background-color: var(--button-primary-bg);
-}
-
-.sidebar__item:hover {
-  background-color: var(--color-primary-dark);
-}
-
-.sidebar__text {
-  font-weight: bold;
-  color: var(--button-text-color);
-}
-
-.ads,
-.sidebar__brand,
-.sidebar__text {
-  user-select: none;
 }
