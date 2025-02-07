@@ -16,7 +16,7 @@
     /* Colores de texto */
     --color-black: #16151D;
     --color-white: #ffffff;
-    --bg-body: #C1c5c5;
+    --color-moon: #C1c5c5;
     /* Colores de border */
     --color-border: #ffffff;
     --color-border-dark: #16151D;
@@ -41,6 +41,8 @@
     --color-navbar-dark: #16151D;
     
     --color-section: #ffffff;
+
+    --color-switch: var(--color-moon);
 }
 
 /* Variables de Sombras */
@@ -85,7 +87,6 @@ body.dark-mode {
     /* Colores de texto */
     --color-black: #ffffff;
     --color-white: #16151D;
-    --bg-body: #C1c5c5;
     /* Colores de border */
     --color-border: #16151D;
     --color-border-dark: #ffffff;
@@ -109,6 +110,8 @@ body.dark-mode {
 
     --button-primary-bg: var(--color-primary);
     --button-text-color: var(--color-black);
+
+    --color-switch:rgb(255, 158, 0);
 }
 
 .father__container {

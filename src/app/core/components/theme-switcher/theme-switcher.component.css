@@ -49,3 +49,48 @@ body.dark-mode .theme-toggle:focus {
   border-color: #f39c12;
 }
 
+/* FOCO */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.bulb {
+  width: 30px;
+  height: 30px;
+  background: var(--color-switch);
+  border-radius: 50%;
+  position: relative;
+  /* box-shadow: 0px 0px 15px var(--color-switch); */
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input:checked + .bulb {
+  /* box-shadow: none; */
+}
+
+.sun {
+  display: none;
+}
+
+.moon {
+  display: block;
+}
+
+input:checked + .bulb .sun {
+  display: block;
+}
+
+input:checked + .bulb .moon {
+  display: none;
+}

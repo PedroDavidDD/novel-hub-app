@@ -1,3 +1,11 @@
-<button class="theme-toggle" (click)="toggleTheme()">
+<!-- <button class="theme-toggle" (click)="toggleTheme()">
     {{ isDarkMode ? '☀️ Modo Claro' : '🌙 Modo Oscuro' }}
-</button>
+</button> -->
+<label class="theme-switch select-none">
+    <input type="checkbox" (change)="toggleTheme()" [checked]="isDarkMode">
+    <span class="bulb">
+      <span class="icon sun">☀️</span>
+      <span class="icon moon">🌙</span>
+    </span>
+</label>
+  
