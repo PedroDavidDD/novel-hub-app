@@ -19,7 +19,7 @@
 .novels .novels__latest p,
 .novels .novels__popular p {
   color: var(--color-black-fit);
-  background-color: var(--color-sidebar);
+  background-color: var(--color-primary);
   border-radius: .5rem;
   font-weight: bold;
   margin: 1rem 0;

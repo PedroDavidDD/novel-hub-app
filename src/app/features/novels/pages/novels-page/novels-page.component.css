@@ -1,3 +1,7 @@
+.novels__container {
+  background-color: var(--color-section);
+}
+
 .container {
   padding: 1.5rem;
   color: var(--color-black);
@@ -54,7 +58,7 @@
 
 .button, .filters__checkboxLabel {
   border: 1px solid var(--color-primary);
-  background-color: var(--color-background);
+  background-color: var(--color-primary);
   color: var(--color-black);
 }
 .button, .filters__checkboxLabel {
@@ -63,15 +67,15 @@
 .button--selected, 
 .filters__checkboxLabel--selected {
   background-color: var(--color-background-dark);
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
+  border: 1px solid var(--color-white);
+  color: var(--color-white);
 }
 
 .button:hover,
 .filters__checkboxLabel:hover {
-  background-color: var(--color-background);
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
+  background-color: var(--color-background-dark);
+  border: 1px solid var(--color-white);
+  color: var(--color-white);
 }
 
 .filters__checkboxLabel input[type="checkbox"] {

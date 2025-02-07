@@ -1,8 +1,10 @@
+
 /* 🌐 Layout */
 .layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--color-background);
 }
 
 .layout__main {
@@ -30,7 +32,7 @@
 
 .ads, 
 .sidebar {
-  background-color: var(--color-primary);
+  background-color: var(--color-section);
 }
 
 .sidebar__header {
@@ -41,12 +43,12 @@
 .sidebar__brand {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--color-black-fit);
+  color: var(--color-black);
 }
 
 .ads__text,
 .sidebar__brand {
-  color: var(--color-black-fit);
+  color: var(--color-black);
 }
 
 .sidebar__nav {
@@ -57,20 +59,20 @@
 
 .sidebar__item {
   padding: 0.5rem;
-  background-color: var(--color-white);
   border-radius: .5rem;
   text-align: center;
   cursor: pointer;
   transition: background 0.3s ease;
+  background-color: var(--button-primary-bg);
 }
 
 .sidebar__item:hover {
-  background-color: var(--color-black);
+  background-color: var(--color-primary-dark);
 }
 
 .sidebar__text {
   font-weight: bold;
-  color: var(--color-primary);
+  color: var(--button-text-color);
 }
 
 .ads,
