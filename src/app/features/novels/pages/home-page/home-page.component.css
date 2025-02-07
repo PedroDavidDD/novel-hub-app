@@ -1,6 +1,6 @@
 
 .container {
-  padding: 0 1.5rem;
+  padding: 1.5rem;
   color: #333;
   min-height: 100vh;
 }
@@ -25,4 +25,8 @@
   font-weight: bold;
   margin: 1rem 0;
   padding: .5rem;
+}
+
+.novels .novels__latest p {
+  margin: 0 0 1rem 0;
 }

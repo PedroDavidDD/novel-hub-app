@@ -114,3 +114,15 @@ body.dark-mode {
 .father__container {
     background-color: var(--color-section);
 }
+.section-mt {
+    margin: 1rem 0 0 0;
+}
+.section-mr {
+    margin: 0 1rem 0 0;
+}
+.section-mb {
+    margin: 0 0 1rem 0;
+}
+.section-ml {
+    margin: 0 0 0 1rem;
+}
