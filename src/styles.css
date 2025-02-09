@@ -30,10 +30,6 @@
   --color-secondary-light: rgb(51, 255, 211);
   --color-secondary-dark: rgb(0, 255, 255);
 
-  /* sidebar / ads */
-  --color-sidebar: #f3f4f6;
-  --color-sidebar-dark: #e5e7eb;
-
   --color-black-fit: #000000;
   --color-white-fit: #ffffff;
 
@@ -43,31 +39,26 @@
   --color-section: #ffffff;
 
   --color-switch: var(--color-moon);
-}
 
-/* Variables de Sombras */
-:root {
+  /* Variables de Sombras */
   --bg-transparent: #000000b5;
 
   --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   --shadow-dark: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
-}
-/* Variables de Transiciones */
-:root {
+
+  /* Variables de Transiciones */
   --transition-fast: all 0.3s ease;
   --transition-medium: all 0.5s ease;
   --transition-slow: all 0.7s ease;
-}
-/* Variables de Z-Index */
-:root {
+
+  /* Variables de Z-Index */
   --z-index-tooltip: 1000; /* Para tooltips */
   --z-index-modal: 2000; /* Para modales */
   --z-index-overlay: 3000; /* Para overlays */
   --z-index-dropdown: 4000; /* Para dropdowns */
-}
-/* Variables para Botones */
-:root {
+
+  /* Variables para Botones */
   --button-primary-bg: var(--color-primary);
   --button-primary-bg-hover: var(--color-primary-dark);
   --button-secondary-bg: var(--color-secondary);
@@ -103,7 +94,7 @@ body.dark-mode {
   /* Filtros */
   --button-bg: var(--color-background-dark);
   --button-bg-selected: var(--color-primary);
-
+  /* Colores de texto */
   --button-tc: var(--color-white);
   --button-tc-selected: var(--color-white);
 }
