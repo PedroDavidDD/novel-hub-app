@@ -1,31 +1,33 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-  <div *ngFor="let novel of novels" class="novelItem">
-    <div class="novelItem__image">
-      <img [src]="novel.image" alt="{{ novel.title }}" />
-    </div>
-    <div class="novelItem__content">
-      <div class="novelItem__tp">
-        <h2 class="novelItem__title">
-          {{ novel.title }}
-        </h2>
-        <p class="novelItem__popularity">
-          {{ novel.id }}
-        </p>
+    @for (novel of novels; track novel.id) {
+      <div class="novelItem">
+        <div class="novelItem__image">
+          <img [src]="novel.image" alt="{{ novel.title }}" />
+        </div>
+        <div class="novelItem__content">
+          <div class="novelItem__tp">
+            <h2 class="novelItem__title">
+              {{ novel.title }}
+            </h2>
+            <p class="novelItem__popularity">
+                {{ $index + 1 }}
+            </p>
+          </div>
+          <div class="novelItem__description">
+            <span class="novelItem__description--text">
+              {{ novel.description }}
+            </span>
+          </div>
+          <p class="novelItem__genres--text">Gender:</p>
+          <div class="novelItem__genres">
+            @for (genre of novel.genres.slice(0, 6); track $index) {
+              <span class="novelItem__genre--text">
+                {{ genre }}
+              </span>
+            }
+          </div>
+        </div>
       </div>
-      <div class="novelItem__description">
-        <span class="novelItem__description--text">
-          {{ novel.description }}
-        </span>
-      </div>
-      <p class="novelItem__genres--text">Gender:</p>
-      <div class="novelItem__genres">
-        <span
-          *ngFor="let genre of novel.genres.slice(0, 6)"
-          class="novelItem__genre--text"
-        >
-          {{ genre }}
-        </span>
-      </div>
-    </div>
+    }
   </div>
-</div>
+  
