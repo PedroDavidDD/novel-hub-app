@@ -1,18 +1,16 @@
-  /* 📌 Footer */
-  .footer {
-    background-color: #f3f4f6;
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.9rem; 
-    color: rgb(55 65 81 / var(--tw-text-opacity, 1)) /* #374151 */;
-  }
-  
-  .footer__link {
-    color: #2563eb;
-    text-decoration: underline;
-  }
-  
-  .footer__link:hover {
-    color: #1d4ed8;
-  }
-  
+/* 📌 Footer */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: rgb(55 65 81 / var(--color-black, 1)) /* #374151 */;
+}
+
+.footer__link {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.footer__link:hover {
+  color: #1d4ed8;
+}

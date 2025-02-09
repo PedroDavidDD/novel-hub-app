@@ -5,10 +5,6 @@
   padding: 1rem;
 }
 
-.sidebar {
-  background-color: var(--color-section);
-}
-
 .sidebar__header {
   text-align: center;
   margin-bottom: 1rem;
@@ -40,7 +36,7 @@
 }
 
 .sidebar__item:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--button-primary-bg-hover);
 }
 
 .sidebar__text {
