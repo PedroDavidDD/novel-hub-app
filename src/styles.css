@@ -72,6 +72,9 @@
 
   --button-tc: var(--color-black);
   --button-tc-selected: var(--color-white);
+
+  --color-description: #9ca3af;
+  --color-bg-card: #f9f9f9;
 }
 
 /* Variables específicas para el Modo Oscuro */
@@ -97,6 +100,9 @@ body.dark-mode {
   /* Colores de texto */
   --button-tc: var(--color-white);
   --button-tc-selected: var(--color-white);
+  
+  --color-description: rgb(190, 199, 214);
+  --color-bg-card: rgb(66, 66, 66);
 }
 
 .ads,
