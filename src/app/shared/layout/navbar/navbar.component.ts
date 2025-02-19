@@ -12,5 +12,7 @@ import { CommonModule } from '@angular/common';
   encapsulation: ViewEncapsulation.None,
 })
 export class NavbarComponent {
+  public isLoggedIn: boolean = true;
+  public isMenuOpen: boolean = true;
 
 }
