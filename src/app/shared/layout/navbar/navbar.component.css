@@ -76,12 +76,31 @@
   height: auto;
   background: var(--color-burger);
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
-
   top: 4rem;
-  left: -1000px;
-  left: 0px;
+  left: 0;
+
+  /* Estado inicial oculto */
+  opacity: 0;
+  transform: translateX(-200px);
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: 
+    opacity 0.3s ease-in-out, 
+    transform 0.3s ease-in-out, 
+    visibility 0.3s ease-in-out;
 }
+
+.navbar__burger--menu.open {
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
 
 .navbar__burger--menu ul {
   display: block;

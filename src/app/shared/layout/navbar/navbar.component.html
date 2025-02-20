@@ -76,7 +76,12 @@
   </div>
 
   <!-- Menú desplegable -->
-  <div *ngIf="isMenuOpen" class="navbar__burger--menu">
+  <div 
+    [ngClass]="{
+      'navbar__burger--menu': true,
+      'open': isMenuOpen
+    }"
+  >
     <ul>
       <li>
         <a routerLink="/" class="navbar__link">Home</a>
