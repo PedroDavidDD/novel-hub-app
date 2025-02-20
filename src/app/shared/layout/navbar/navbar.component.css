@@ -127,7 +127,7 @@
 
 /*  md - TailwindCSS  */
 @media (width >= 48rem) {
-  .navbar__burger--menu {
+  .navbar__burger--menu, .navbar__button--burger {
     display: none;
   }
 }
