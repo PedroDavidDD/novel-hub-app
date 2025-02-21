@@ -51,23 +51,15 @@
 }
 
 .navbar__button {
-  cursor: pointer;
   transition: color 0.3s ease;
+}
 
+.navbar__button--login {
   display: flex;
-  gap: 0.5rem;
 }
 
 .navbar__button:hover {
   color: var(--color-primary);
-}
-
-.navbar__button--logout {
-  color: var(--color-primary-light);
-}
-
-.navbar__button--logout:hover {
-  color: var(--color-primary-dark);
 }
 
 .navbar__burger--menu {
@@ -124,6 +116,15 @@
   color: var(--color-black);
   user-select: none;
 }
+
+
+
+
+
+
+
+
+
 
 /*  md - TailwindCSS  */
 @media (width >= 48rem) {

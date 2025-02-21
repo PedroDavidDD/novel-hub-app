@@ -1,0 +1,127 @@
+/* quitar el hover color con la clase del boton contenedor */
+
+/* userMenu: Contenedor */
+
+.user-menu {
+    position: relative;
+    display: flex;
+}
+
+.user-menu_dropdown__li__container {
+    display: flex;
+    gap: .2rem;
+}
+
+.user-menu__dropdown {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    top: 0rem;
+    left: 50px;
+    color: var(--color-black-fit);
+
+    overflow: hidden;
+    transition: top 1s ease, left .5s ease ;
+}
+
+.user-menu__dropdown--open {
+    position: absolute;
+
+    visibility: visible;
+    pointer-events: visible;
+
+    background-color: var(--color-white-fit);
+    border: 3px solid var(--color-primary);
+    top: 3rem;
+    left: -10.5rem;
+
+    width: 15rem;
+    height: 20rem;
+    border-radius: 10px;
+    /* padding: 0 1rem; */
+}
+
+.user-menu__line {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    user-select: none;
+    pointer-events: none;
+    opacity: 0;
+
+    border-radius: 0px;
+    top: 0;
+    right: 0;
+
+    transition: opacity 5ms linear 1s;
+}
+
+.user-menu__line--open {
+    visibility: visible;
+    user-select: all;
+    pointer-events: visible;
+    opacity: 1;
+
+    position: absolute;
+    width: 1rem;
+    height: .3rem;
+    border-radius: 10px;
+
+    background-color: var(--color-primary);
+    top: 35px;
+    right: 5px;
+}
+
+/* userMenu: info */
+
+.user-menu__profile {
+    height: 5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.user-menu__image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+}
+
+.user-menu__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: saturate(2);
+}
+
+.user-menu__name {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-white-fit);
+    text-shadow: 2px 2px var(--color-black-fit);
+}
+
+.user-menu__info {
+    padding: .5rem 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(6.25rem, 100%), 1fr));
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.user-menu__info, .user-menu__list {
+    font-size: x-small;
+}
+
+.user-menu__list {
+    padding: .5rem 1rem;
+    background-color: var(--color-primary);
+}
