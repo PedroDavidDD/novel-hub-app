@@ -26,18 +26,20 @@
   >
     <div class="user-menu__profile">
       <div class="user-menu__image">
-        <img src="https://pbs.twimg.com/media/GkQJXGkXcAELxia?format=jpg&name=900x900" alt="image" />
+        <img
+          src="https://pbs.twimg.com/media/GkQJXGkXcAELxia?format=jpg&name=900x900"
+          alt="image"
+        />
       </div>
-      <span 
-        class="user-menu__name">
+      <span class="user-menu__name">
         {{ userName }}
       </span>
     </div>
 
     <div class="user-menu__info">
-      <div class="info__range"> <span>Range: </span>Platino </div>
-      <div class="info__points"> <span>Points: </span>10000 </div>
-      <div class="info__levels"> <span>Level: </span>10000 </div>
+      <div class="user-menu__info__items"><span>Range: </span>Platino</div>
+      <div class="user-menu__info__items"><span>Points: </span>10000</div>
+      <div class="user-menu__info__items"><span>Level: </span>10000</div>
     </div>
 
     <ul class="user-menu__list">
@@ -58,7 +60,7 @@
               d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
             />
           </svg>
-          <a [href]="item.link">{{ item.label }}</a>
+          <a [routerLink]="item.link">{{ item.label }}</a>
         </div>
       </li>
       }

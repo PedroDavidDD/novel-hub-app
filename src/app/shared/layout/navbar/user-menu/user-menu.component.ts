@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'navbar-user-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.css'
 })
@@ -15,8 +16,8 @@ export class UserMenuComponent {
   public isUserMenu: boolean = false;
 
   userMenuItems = [
-    { label: 'Perfil', link: '/novels' },
-    { label: 'Configuración', link: '/novels' },
+    { label: 'Perfil', link: '/profile' },
+    { label: 'Configuración', link: '/setting' },
     { label: 'Cerrar sesión', link: '/novels' },
   ];
 

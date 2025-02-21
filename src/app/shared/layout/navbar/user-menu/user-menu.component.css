@@ -31,7 +31,7 @@
     position: absolute;
 
     visibility: visible;
-    pointer-events: visible;
+    pointer-events: auto;
 
     background-color: var(--color-white-fit);
     border: 3px solid var(--color-primary);
@@ -61,8 +61,8 @@
 
 .user-menu__line--open {
     visibility: visible;
-    user-select: all;
-    pointer-events: visible;
+    user-select: auto;
+    pointer-events: auto;
     opacity: 1;
 
     position: absolute;
@@ -117,11 +117,17 @@
     grid-template-rows: repeat(2, 1fr);
 }
 
-.user-menu__info, .user-menu__list {
+.user-menu__info__items,
+.user-menu__list {
     font-size: x-small;
 }
 
 .user-menu__list {
     padding: .5rem 1rem;
     background-color: var(--color-primary);
+}
+
+.user-menu__info__items span {
+    color: var(--color-primary);
+    font-weight: bold;
 }
