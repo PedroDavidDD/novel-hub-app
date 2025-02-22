@@ -9,14 +9,16 @@
 
   <div class="navbar__actions">
     <app-theme-switcher class="navbar__button" />
-    
-    <navbar-user-menu 
-      class="navbar__button navbar__button--login"
 
+    <navbar-user-menu
+      class="navbar__button navbar__button--login"
       [isLoggedIn]="true"
     />
 
-    <button class="navbar__button navbar__button--search">
+    <button
+      class="navbar__button navbar__button--search"
+      (click)="toggleNavbarSearch()"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -31,7 +33,10 @@
       </svg>
     </button>
 
-    <button class="navbar__button navbar__button--burger" (click)="isMenuOpen = !isMenuOpen">
+    <button
+      class="navbar__button navbar__button--burger"
+      (click)="toggleMenuOpen()"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -50,7 +55,7 @@
   </div>
 
   <!-- Menú desplegable -->
-  <div 
+  <div
     [ngClass]="{
       'navbar__burger--menu': true,
       'open': isMenuOpen
@@ -65,4 +70,13 @@
       </li>
     </ul>
   </div>
+
+  <navbar-search
+    [ngClass]="{
+      'navbar-search': true,
+      'navbar-search--open': isNavbarSearch
+    }"
+    [isNavbarSearch]="isNavbarSearch"
+  />
+  
 </nav>

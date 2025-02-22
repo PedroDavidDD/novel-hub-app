@@ -62,6 +62,8 @@
   color: var(--color-primary);
 }
 
+/* Navbar Burger */
+
 .navbar__burger--menu {
   position: fixed;
   width: 100%;
@@ -117,8 +119,21 @@
   user-select: none;
 }
 
+/* Search */
 
+.navbar-search {
+  position: fixed;
 
+  visibility: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.navbar-search--open {
+  visibility: visible;
+  user-select: auto;
+  pointer-events: auto;
+}
 
 
 

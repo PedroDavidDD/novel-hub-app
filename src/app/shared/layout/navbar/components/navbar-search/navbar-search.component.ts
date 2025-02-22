@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ModalComponent } from '../../../../components';
 
 @Component({
-  selector: 'app-navbar-search',
-  imports: [],
+  selector: 'navbar-search',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    RouterLink,
+    ModalComponent,  
+  ],
   templateUrl: './navbar-search.component.html',
-  styleUrl: './navbar-search.component.css'
+  styleUrl: './navbar-search.component.css',
 })
 export class NavbarSearchComponent {
-
+  @Input() public isNavbarSearch: boolean = false;
+  
 }
