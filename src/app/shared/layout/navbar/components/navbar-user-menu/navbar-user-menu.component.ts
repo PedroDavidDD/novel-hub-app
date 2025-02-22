@@ -6,10 +6,10 @@ import { RouterLink } from '@angular/router';
   selector: 'navbar-user-menu',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './user-menu.component.html',
-  styleUrl: './user-menu.component.css'
+  templateUrl: './navbar-user-menu.component.html',
+  styleUrl: './navbar-user-menu.component.css'
 })
-export class UserMenuComponent {
+export class NavbarUserMenuComponent {
   @Input() isLoggedIn: boolean = false;
   
   public userName = 'Duke';

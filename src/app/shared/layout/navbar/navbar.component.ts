@@ -2,7 +2,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ThemeSwitcherComponent } from '../../../core/components';
 import { CommonModule } from '@angular/common';
-import { UserMenuComponent } from "./components";
+import { NavbarUserMenuComponent } from "./components";
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +11,7 @@ import { UserMenuComponent } from "./components";
     RouterLink, 
     ThemeSwitcherComponent, 
     CommonModule, 
-    UserMenuComponent,
+    NavbarUserMenuComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
