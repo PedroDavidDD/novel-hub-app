@@ -19,13 +19,18 @@
     position: relative;
   }
   
+  .modal-content h2 {
+    font-size: 2rem;
+  }
+  
   .close-btn {
     margin-top: 10px;
-    padding: 5px 20px;
-    background: var(--color-primary);
-    color: var(-color-black);
+    padding: 10px 20px;
+    background: var(--color-black);
+    color: var(--color-white);
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
   }
   
