@@ -1,7 +1,7 @@
 <app-modal
   [title]="'~ Buscador ~'"
   [show]="isNavbarSearch"
-  (close)="isNavbarSearch = false"
+  (close)="closeModal()"
 >
   <div class="search">
     <div class="search__input">
@@ -39,154 +39,94 @@
     <div class="search__container">
       <ul>
         <li class="search__items">
-          <span class="search__items-title">Novela 1</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 101</span>
+          <span class="search__items-title">Novela 1</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 2</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 102</span>
+          <span class="search__items-title">Novela 2</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 3</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 103</span>
+          <span class="search__items-title">Novela 3</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 4</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 104</span>
+          <span class="search__items-title">Novela 4</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 5</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 105</span>
+          <span class="search__items-title">Novela 5</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 6</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 106</span>
+          <span class="search__items-title">Novela 6</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 7</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 107</span>
+          <span class="search__items-title">Novela 7</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 8</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 108</span>
+          <span class="search__items-title">Novela 8</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 9</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 109</span>
+          <span class="search__items-title">Novela 9</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 10</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1010</span>
+          <span class="search__items-title">Novela 10</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 11</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1011</span>
+          <span class="search__items-title">Novela 11</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 12</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1012</span>
+          <span class="search__items-title">Novela 12</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 13</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1013</span>
+          <span class="search__items-title">Novela 13</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 14</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1014</span>
+          <span class="search__items-title">Novela 14</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 15</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1015</span>
+          <span class="search__items-title">Novela 15</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 16</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1016</span>
+          <span class="search__items-title">Novela 16</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 17</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1017</span>
+          <span class="search__items-title">Novela 17</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 18</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1018</span>
+          <span class="search__items-title">Novela 18</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 19</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1019</span>
+          <span class="search__items-title">Novela 19</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 20</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1020</span>
+          <span class="search__items-title">Novela 20</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 21</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1021</span>
+          <span class="search__items-title">Novela 21</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 22</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1022</span>
+          <span class="search__items-title">Novela 22</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 23</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1023</span>
+          <span class="search__items-title">Novela 23</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 24</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1024</span>
+          <span class="search__items-title">Novela 24</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 25</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1025</span>
+          <span class="search__items-title">Novela 25</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 26</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1026</span>
+          <span class="search__items-title">Novela 26</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 27</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1027</span>
+          <span class="search__items-title">Novela 27</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 28</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1028</span>
+          <span class="search__items-title">Novela 28</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 29</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1029</span>
+          <span class="search__items-title">Novela 29</span>
         </li>
         <li class="search__items">
-          <span class="search__items-title">Novela 30</span
-          ><span class="search__separator"> | </span
-          ><span class="search__items-chapter">Cap 1030</span>
+          <span class="search__items-title">Novela 30</span>
         </li>
       </ul>
     </div>

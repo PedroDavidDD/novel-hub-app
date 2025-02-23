@@ -102,7 +102,7 @@ body.dark-mode {
   /* Colores de texto */
   --button-tc: var(--color-white);
   --button-tc-selected: var(--color-white);
-  
+
   --color-description: rgb(190, 199, 214);
   --color-bg-card: rgb(66, 66, 66);
 

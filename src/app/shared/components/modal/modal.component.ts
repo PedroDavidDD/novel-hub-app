@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { NavbarService } from '../../layout/navbar/services/navbar.service';
 
 @Component({
   selector: 'app-modal',
@@ -11,9 +12,16 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ModalComponent {
   @Input() title: string = 'Título del Modal';
   @Input() show: boolean = false;
-  @Output() close = new EventEmitter<void>();
+  
+  public isNavbarSearch: boolean = false;
 
-  onClose() {
-    this.close.emit();
+  constructor(private navbarService: NavbarService) {
+    navbarService.isNavbarSearch$.subscribe((state) => {
+      this.isNavbarSearch = state;
+    });
+  }
+
+  closeModal() {
+    this.navbarService.closeModal();
   }
 }
