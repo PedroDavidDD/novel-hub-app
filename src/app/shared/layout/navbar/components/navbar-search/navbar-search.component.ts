@@ -7,7 +7,7 @@ import { NavbarService } from '../../services/navbar.service';
 @Component({
   selector: 'navbar-search',
   standalone: true,
-  imports: [CommonModule, RouterLink, ModalComponent],
+  imports: [CommonModule, ModalComponent],
   templateUrl: './navbar-search.component.html',
   styleUrl: './navbar-search.component.css',
 })
