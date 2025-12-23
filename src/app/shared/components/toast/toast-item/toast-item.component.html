@@ -1,0 +1,56 @@
+<div class="toast-item"
+     [ngClass]="['toast-' + toast.type, 'toast-' + variant]"
+     [style.--duration]="(toast.duration || 3000) + 'ms'">
+  
+  <!-- === SOLID VARIANT STRUCTURE === -->
+  <ng-container *ngIf="variant === 'solid'">
+      <!-- Background Progress Fill (Solid Only) -->
+      <div class="toast-bg-progress"></div>
+
+      <!-- Icon Section -->
+      <div class="toast-icon">
+          <span *ngIf="toast.type === 'success'" class="icon-success"><i class="fa-solid fa-circle-check"></i></span>
+          <span *ngIf="toast.type === 'error'" class="icon-error"><i class="fa-solid fa-circle-xmark"></i></span>
+          <span *ngIf="toast.type === 'info'" class="icon-info"><i class="fa-solid fa-circle-info"></i></span>
+          <span *ngIf="toast.type === 'warning'" class="icon-warning"><i class="fa-solid fa-triangle-exclamation"></i></span>
+      </div>
+
+      <!-- Content Section -->
+      <div class="toast-content">
+        <h4 *ngIf="toast.title" class="toast-title">{{ toast.title }}</h4>
+        <p class="toast-message">{{ toast.message }}</p>
+      </div>
+  </ng-container>
+
+
+  <!-- === BLUR VARIANT STRUCTURE (New Request) === -->
+  <ng-container *ngIf="variant === 'blur'">
+      <!-- Icon Section (Added for Modern Design) -->
+      <div class="toast-icon">
+          <span *ngIf="toast.type === 'success'" class="icon-success"><i class="fa-solid fa-circle-check"></i></span>
+          <span *ngIf="toast.type === 'error'" class="icon-error"><i class="fa-solid fa-circle-xmark"></i></span>
+          <span *ngIf="toast.type === 'info'" class="icon-info"><i class="fa-solid fa-circle-info"></i></span>
+          <span *ngIf="toast.type === 'warning'" class="icon-warning"><i class="fa-solid fa-triangle-exclamation"></i></span>
+      </div>
+
+      <!-- Content Section -->
+      <div class="toast-content">
+        <!-- Colored Text for Title in Blur Mode -->
+        <h4 *ngIf="toast.title" class="toast-title text-colored">{{ toast.title }}</h4>
+        <p class="toast-message text-colored">{{ toast.message }}</p>
+      </div>
+
+      <!-- Counter -->
+      <div class="toast-counter">
+          {{ remainingTime }}s
+      </div>
+
+      <!-- Bottom White Progress Bar -->
+      <div class="toast-bottom-progress"></div>
+  </ng-container>
+
+  <!-- Close Button (Common) -->
+  <button (click)="onClose()" class="toast-close">
+    ✕
+  </button>
+</div>

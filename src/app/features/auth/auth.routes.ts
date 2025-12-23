@@ -1,14 +1,17 @@
 import { Routes } from "@angular/router";
 import { Error404PageComponent } from "../../shared/pages";
-import { 
-    LoginPageComponent, 
+import {
+    LoginPageComponent,
     RegisterPageComponent,
- } from "./pages";
+    ProfilePageComponent,
+    SettingsPageComponent
+} from "./pages";
 
 export const AUTH_ROUTES: Routes = [
     {
         path: '',
         redirectTo: 'login',
+        pathMatch: 'full'
     },
     {
         path: 'login',
@@ -17,6 +20,14 @@ export const AUTH_ROUTES: Routes = [
     {
         path: 'register',
         component: RegisterPageComponent,
+    },
+    {
+        path: 'profile',
+        component: ProfilePageComponent,
+    },
+    {
+        path: 'settings',
+        component: SettingsPageComponent,
     },
 
     { path: '404', component: Error404PageComponent },

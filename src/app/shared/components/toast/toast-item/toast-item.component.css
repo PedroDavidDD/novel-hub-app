@@ -1,0 +1,268 @@
+/* --- Common Container --- */
+.toast-item {
+    pointer-events: auto;
+    min-width: 320px;
+    max-width: 400px;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    /* Aligned center for blur variant look */
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* =========================================
+   SOLID VARIANT STYLES
+   ========================================= */
+.toast-solid {
+    background: white;
+    border: 1px solid transparent;
+    /* Colored provided by type classes below if needed, or left border */
+}
+
+/* Colors for Solid */
+.toast-solid.toast-success {
+    border: 2px solid var(--color-success, #28a745);
+}
+
+.toast-solid.toast-error {
+    border: 2px solid var(--color-error, #dc3545);
+}
+
+.toast-solid.toast-info {
+    border: 2px solid var(--color-info, #17a2b8);
+}
+
+.toast-solid.toast-warning {
+    border: 2px solid var(--color-alert, #ffc107);
+}
+
+/* Solid Icons */
+.toast-solid .icon-success {
+    color: var(--color-success, #28a745);
+}
+
+.toast-solid .icon-error {
+    color: var(--color-error, #dc3545);
+}
+
+.toast-solid .icon-info {
+    color: var(--color-info, #17a2b8);
+}
+
+.toast-solid .icon-warning {
+    color: var(--color-alert, #ffc107);
+}
+
+/* Blur Icons (Same colors) */
+.toast-blur .icon-success {
+    color: var(--color-success, #28a745);
+}
+
+.toast-blur .icon-error {
+    color: var(--color-error, #dc3545);
+}
+
+.toast-blur .icon-info {
+    color: var(--color-info, #17a2b8);
+}
+
+.toast-blur .icon-warning {
+    color: var(--color-alert, #ffc107);
+}
+
+/* Background Fill (Solid Only as per HTML) */
+.toast-bg-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    z-index: 0;
+    opacity: 0.15;
+    animation: progress-fill linear forwards;
+    animation-duration: var(--duration, 3000ms);
+}
+
+.toast-success .toast-bg-progress {
+    background-color: var(--color-success, #28a745);
+}
+
+.toast-error .toast-bg-progress {
+    background-color: var(--color-error, #dc3545);
+}
+
+.toast-info .toast-bg-progress {
+    background-color: var(--color-info, #17a2b8);
+}
+
+.toast-warning .toast-bg-progress {
+    background-color: var(--color-alert, #ffc107);
+}
+
+
+/* =========================================
+   BLUR VARIANT STYLES (New Request)
+   ========================================= */
+.toast-blur {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    /* White border 1px */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    align-items: flex-start;
+}
+
+/* Distinct Text Colors for Blur */
+.toast-blur.toast-success .text-colored {
+    color: var(--color-success, #28a745);
+}
+
+.toast-blur.toast-error .text-colored {
+    color: var(--color-error, #dc3545);
+}
+
+.toast-blur.toast-info .text-colored {
+    color: var(--color-info, #17a2b8);
+}
+
+.toast-blur.toast-warning .text-colored {
+    color: var(--color-alert, #ffc107);
+}
+
+.toast-blur .text-colored-light {
+    color: #e0e0e0;
+    /* Light text for readability on dark or blur? Image showed white text on colored bg? 
+                     Wait, user said "Transparent Background White". Text should be dark?
+                     User said "Conserva el Titulo y contenido del mensaje de color distintivo segun el tipo".
+                     Let's use the Type color for Title and maybe white or grey for message. */
+    color: #fff;
+    /* Assuming the blur is over a dark background or just generic nice contrast */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Be safer with colors on blur: */
+.toast-blur .toast-title {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+
+/* Bottom Colored Progress Bar */
+.toast-bottom-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    animation: progress-fill linear forwards;
+    animation-duration: var(--duration, 3000ms);
+}
+
+.toast-blur.toast-success .toast-bottom-progress {
+    background-color: var(--color-success, #28a745);
+}
+
+.toast-blur.toast-error .toast-bottom-progress {
+    background-color: var(--color-error, #dc3545);
+}
+
+.toast-blur.toast-info .toast-bottom-progress {
+    background-color: var(--color-info, #17a2b8);
+}
+
+.toast-blur.toast-warning .toast-bottom-progress {
+    background-color: var(--color-alert, #ffc107);
+}
+
+/* Counter */
+.toast-counter {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: auto;
+    /* Push to right */
+    white-space: nowrap;
+}
+
+.toast-blur.toast-success .toast-counter {
+    background-color: var(--color-success, #28a745);
+}
+
+.toast-blur.toast-error .toast-counter {
+    background-color: var(--color-error, #dc3545);
+}
+
+.toast-blur.toast-info .toast-counter {
+    background-color: var(--color-info, #17a2b8);
+}
+
+.toast-blur.toast-warning .toast-counter {
+    background-color: var(--color-alert, #ffc107);
+}
+
+/* =========================================
+   COMMON ANIMATIONS
+   ========================================= */
+@keyframes progress-fill {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+/* --- Icons --- */
+.toast-icon {
+    font-size: 1.5rem;
+}
+
+/* --- Common Content --- */
+.toast-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.toast-title {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.toast-message {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #555;
+    /* Default for Solid */
+}
+
+/* --- Close Button --- */
+.toast-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: #999;
+    padding: 0;
+    margin-left: 8px;
+    z-index: 2;
+}
+
+.toast-close:hover {
+    color: #333;
+}

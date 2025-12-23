@@ -1,0 +1,9 @@
+<div class="toast-container">
+    <app-toast-item 
+        *ngFor="let toast of toastService.toasts()"
+        @slideIn
+        [toast]="toast"
+        [variant]="isBlur ? 'blur' : 'solid'"
+        (close)="toastService.remove($event)">
+    </app-toast-item>
+</div>
