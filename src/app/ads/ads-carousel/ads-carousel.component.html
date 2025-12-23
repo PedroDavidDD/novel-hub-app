@@ -1,0 +1,10 @@
+<div 
+  class="carousel-container"
+  [class.carousel]="carousel"
+  [class.horizontal]="direction === 'horizontal'"
+  [class.vertical]="direction === 'vertical'"
+>
+  <div class="carousel-track">
+    <div><ng-content></ng-content></div>
+  </div>
+</div>

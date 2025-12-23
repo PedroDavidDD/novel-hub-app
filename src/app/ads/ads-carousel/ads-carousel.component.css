@@ -1,0 +1,103 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.carousel-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+/* Default flex direction is row (horizontal) */
+.carousel-track {
+  display: flex;
+  gap: 1rem; /* Spacing between items */
+}
+
+/* Vertical layout adjustments */
+.carousel-container.vertical {
+  height: 500px; /* Or a dynamic height if you prefer */
+}
+
+.carousel-container.vertical .carousel-track {
+  flex-direction: column;
+  height: 200%; /* For vertical animation */
+}
+
+/* Horizontal layout adjustments */
+.carousel-container.horizontal .carousel-track {
+  flex-direction: row;
+  width: 200%; /* For horizontal animation */
+}
+
+/* Carousel animation */
+.carousel-container.carousel.vertical .carousel-track {
+  animation: scroll-vertical 20s linear infinite;
+}
+
+.carousel-container.carousel.horizontal .carousel-track {
+  animation: scroll-horizontal 20s linear infinite;
+}
+
+/* Keyframes for animations */
+@keyframes scroll-vertical {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile-specific horizontal carousel (right to left) */
+@media (max-width: 768px) { /* Example breakpoint for mobile */
+  .carousel-container.carousel.horizontal .carousel-track {
+    animation: scroll-horizontal-rtl 20s linear infinite;
+  }
+}
+
+@keyframes scroll-horizontal-rtl {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* Pause animation on hover */
+.carousel-container:hover .carousel-track {
+  animation-play-state: paused;
+}
+
+/* Styles for when carousel is off */
+.carousel-container:not(.carousel) .carousel-track {
+  animation: none;
+  flex-wrap: wrap; /* Allow items to wrap */
+  width: 100%;
+  height: auto;
+}
+
+/* Basic styling for projected ad items */
+.carousel-track > div > .ad {
+  min-width: 200px; /* Ensure ads have a minimum width for horizontal scroll */
+  min-height: 100px; /* Ensure ads have a minimum height for vertical scroll */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

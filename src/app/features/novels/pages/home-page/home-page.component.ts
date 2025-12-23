@@ -11,9 +11,9 @@ import { NovelPopularHomeComponent } from './components/novel-popular-home/novel
   selector: 'app-home-page',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    NovelLatestHomeComponent, 
+    CommonModule,
+    FormsModule,
+    NovelLatestHomeComponent,
     NovelPopularHomeComponent
   ],
   templateUrl: './home-page.component.html',
@@ -22,29 +22,29 @@ import { NovelPopularHomeComponent } from './components/novel-popular-home/novel
 export class HomePageComponent {
   latestNovels$: Observable<INovel[]> = of([]);
   popularNovels$: Observable<INovel[]> = of([]);
-  
+
   latestNovels: Observable<INovel[]> = of([]);
   popularNovels: Observable<INovel[]> = of([]);
 
   constructor(private novelsService: NovelsService) {
     this.refreshNovels();
   }
-  
+
   private refreshNovels(): void {
     this.latestNovels$ = this.novelsService.getNovels().pipe(
       map(novels => this.applyLatestFilter(novels).slice(0, 12)),
     );
-  
+
     this.latestNovels = this.latestNovels$;
-  
+
     this.popularNovels$ = this.novelsService.getNovels().pipe(
       map(novels => this.applyPopularFilter(novels).slice(0, 6)),
     );
-  
+
     this.popularNovels = this.popularNovels$;
   }
-  
-  
+
+
   private applyLatestFilter(novels: INovel[]): INovel[] {
     return novels
       .filter(novel => novel.releaseDate)
@@ -58,5 +58,5 @@ export class HomePageComponent {
   private applyPopularFilter(novels: INovel[]): INovel[] {
     return novels.sort((a, b) => b.popularity - a.popularity);
   }
-  
+
 }

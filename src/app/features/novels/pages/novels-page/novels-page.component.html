@@ -83,7 +83,7 @@
     >
       <div class="novelList__imageContainer">
         <img
-          src="https://api.genesistudio.com/storage/v1/render/image/public/directus/3fbe4039-d705-4d39-bdd7-a928ff9742c8.png?width=400&height=600"
+          [src]="novel.image"
           alt="{{ novel.title }}"
           class="novelList__image"
         />
@@ -92,8 +92,7 @@
         </div>
       </div>
       <p class="novelList__detailsTitle novel__list__title">
-        {{ novel.title }}
-        aaaaaaaaaaaaafffffffffffffffffsssssssssssdddddddddddddggggggggghhhhhhh
+        {{ novel.description | truncate: 50 }}
       </p>
     </div>
   </div>

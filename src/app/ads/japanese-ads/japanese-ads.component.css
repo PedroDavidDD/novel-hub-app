@@ -1,0 +1,55 @@
+/* Mobile-first styles */
+.ads-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  height: 100px;
+}
+
+.ad {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 147px;
+  height: 40px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem; /* Adjusted font size for the smaller boxes */
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+  flex-shrink: 0; /* Prevent items from shrinking */
+  overflow: hidden;
+}
+
+.ad:hover {
+  transform: scale(1.05);
+}
+
+.ad p {
+  margin: 0;
+}
+
+.ad-1 { background-color: #ff4e50; }
+.ad-2 { background-color: #fc913a; }
+.ad-3 { background-color: #f9d62e; }
+.ad-4 { background-color: #22a7f0; }
+.ad-5 { background-color: #54d669; }
+.ad-6 { background-color: #9b59b6; }
+.ad-7 { background-color: #34495e; }
+.ad-8 { background-color: #e74c3c; }
+
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .ads-container {
+    flex-direction: column;
+    align-items: center;
+    height: auto; /* Height adjusts to content */
+    width: auto; /* Width adjusts to content, centered by parent */
+    display: inline-flex; /* To make the container wrap its content */
+  }
+}

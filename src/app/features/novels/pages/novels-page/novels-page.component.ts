@@ -4,11 +4,12 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INovel, NovelsService } from '../../services/novels.service';
 import { FormsModule } from '@angular/forms';
+import { TruncatePipe } from '../../../../shared/pipes/truncate.pipe';
 
 @Component({
   selector: 'app-novels-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TruncatePipe],
   templateUrl: './novels-page.component.html',
   styleUrls: ['./novels-page.component.css'],
 })
