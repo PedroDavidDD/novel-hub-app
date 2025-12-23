@@ -1,0 +1,44 @@
+<div class="modal-backdrop" [class.show]="animateIn" (click)="onBackdropClick($event)">
+    <div class="modal-dialog" [class.show]="animateIn" (click)="$event.stopPropagation()">
+        
+        <!-- Header -->
+        <div class="modal-header" *ngIf="title && !loading">
+            <h5 class="modal-title">{{ title }}</h5>
+            <button type="button" class="btn-close" (click)="cancel()" *ngIf="!isStatic && !loading">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Body: Loading State -->
+        <div class="modal-body loading-body" *ngIf="loading">
+            <div class="spinner"></div>
+            <p>Procesando...</p>
+        </div>
+
+        <!-- Body: Content State -->
+        <div class="modal-body content-body" *ngIf="!loading">
+            <div class="icon-container">
+                <i [class]="iconClass" class="modal-icon"></i>
+            </div>
+            <p class="modal-message">{{ message }}</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer" *ngIf="!loading && !hideButtons">
+            <!-- Confirm / Primary Action -->
+             <!-- Reusing standard HTML buttons styled via CSS instead of app-button for simplicity as generic implementation -->
+            <button class="btn btn-primary" 
+                    [ngClass]="'btn-' + type"
+                    (click)="confirm()">
+                {{ type === 'confirm' ? 'Sí, continuar' : 'Entendido' }}
+            </button>
+
+            <!-- Cancel / Secondary Action (Only for confirm or non-static) -->
+            <button class="btn btn-secondary" 
+                    *ngIf="type === 'confirm' || (!isStatic && type !== 'success' && type !== 'error')" 
+                    (click)="cancel()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
