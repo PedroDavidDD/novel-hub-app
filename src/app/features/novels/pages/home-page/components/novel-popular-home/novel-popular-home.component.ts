@@ -1,17 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { INovel } from '../../../../services/novels.service';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Novel } from '../../../../interfaces/novel.interface';
 
 @Component({
   selector: 'app-novel-popular-home',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [],
   templateUrl: './novel-popular-home.component.html',
-  styleUrl: './novel-popular-home.component.css'
+  styleUrl: './novel-popular-home.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NovelPopularHomeComponent {
-  @Input() novels:any= [];
-
+  novels = input<Novel[]>([]);
 }

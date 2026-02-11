@@ -11,7 +11,7 @@
             <p class="novels__latest-text">Latest Novels</p>
 
             <div class="novels__list">
-                <app-novel-latest-home [novels]="latestNovels | async  " />
+                <app-novel-latest-home [novels]="latestNovels()" />
             </div>
 
         </div>
@@ -22,7 +22,7 @@
             <p class="novels__popular-text">Popular Novels</p>
 
             <div class="novels__list">
-                <app-novel-popular-home [novels]="popularNovels | async " />
+                <app-novel-popular-home [novels]="popularNovels()" />
             </div>
 
         </div>

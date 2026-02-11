@@ -1,100 +1,96 @@
-<div [ngClass]="'father__container container max-w-7xl mx-auto '">
-  <!-- Filtros superiores -->
-  <div [ngClass]="'filters grid'">
+<div class="father__container container max-w-7xl mx-auto">
+  <div class="filters grid">
     <!-- Filtro por lenguaje -->
-    <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
-      <h3 [ngClass]="'filters__title'">Languages</h3>
-      <div [ngClass]="'filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2'">
-        <button
-          *ngFor="let language of languages"
-          [ngClass]="{            
-            button: true,
-            'button--selected': language === selectedLanguage
-          }"
-          (click)="filterByLanguage(language)"
-        >
-          {{ language }}
-        </button>
+    <div class="filters__group col-span-12 lg:col-span-2">
+      <h3 class="filters__title">Languages</h3>
+      <div class="filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2">
+        @for (language of languages; track language) {
+          <button
+            [class.button]="true"
+            [class.button--selected]="language === selectedLanguage()"
+            [attr.aria-pressed]="language === selectedLanguage()"
+            (click)="filterByLanguage(language)"
+          >
+            {{ language }}
+          </button>
+        }
       </div>
     </div>
 
     <!-- Filtro por estado -->
-    <div [ngClass]="'filters__group col-span-12 lg:col-span-2'">
-      <h3 [ngClass]="'filters__title'">Status</h3>
-      <div [ngClass]="'filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2'">
-        <button
-          *ngFor="let status of statuses"
-          [ngClass]="{            
-            button: true,
-            'button--selected': status === selectedStatus
-          }"
-          (click)="filterByStatus(status)"
-        >
-          {{ status }}
-        </button>
+    <div class="filters__group col-span-12 lg:col-span-2">
+      <h3 class="filters__title">Status</h3>
+      <div class="filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2">
+        @for (status of statuses; track status) {
+          <button
+            [class.button]="true"
+            [class.button--selected]="status === selectedStatus()"
+            [attr.aria-pressed]="status === selectedStatus()"
+            (click)="filterByStatus(status)"
+          >
+            {{ status }}
+          </button>
+        }
       </div>
     </div>
 
-    <!-- Filtro por * -->
-    <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
-      <h3 [ngClass]="'filters__title'">Sort By</h3>
-      <div [ngClass]="'filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'">
-        <button
-          *ngFor="let option of sortByOptions"
-          [ngClass]="{            
-            button: true,
-            'button--selected': option === selectedSort
-          }"
-          (click)="sortBy(option)"
-        >
-          {{ option }}
-        </button>
+    <!-- Filtro por ordenamiento -->
+    <div class="filters__group col-span-12 lg:col-span-4">
+      <h3 class="filters__title">Sort By</h3>
+      <div class="filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        @for (option of sortByOptions; track option) {
+          <button
+            [class.button]="true"
+            [class.button--selected]="option === selectedSort()"
+            [attr.aria-pressed]="option === selectedSort()"
+            (click)="sortBy(option)"
+          >
+            {{ option }}
+          </button>
+        }
       </div>
     </div>
 
     <!-- Filtro por Géneros -->
-    <div [ngClass]="'filters__group col-span-12 lg:col-span-4'">
-      <h3 [ngClass]="'filters__title'">Genres</h3>
-      <div [ngClass]="'filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6'">
-        <label
-          *ngFor="let genre of genres"
-          [ngClass]="{            
-            filters__checkboxLabel: true,
-            'filters__checkboxLabel--selected': selectedGenres.includes(genre)
-          }"
-        >
-          <input
-            type="checkbox"
-            [value]="genre"
-            [checked]="selectedGenres.includes(genre)"
-            (change)="onGenreChange(genre, $event)"
-          />
-          <span>{{ genre }}</span>
-        </label>
+    <div class="filters__group col-span-12 lg:col-span-4">
+      <h3 class="filters__title">Genres</h3>
+      <div class="filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+        @for (genre of genres; track genre) {
+          <label
+            [class.filters__checkboxLabel]="true"
+            [class.filters__checkboxLabel--selected]="selectedGenres().includes(genre)"
+          >
+            <input
+              type="checkbox"
+              [value]="genre"
+              [checked]="selectedGenres().includes(genre)"
+              (change)="onGenreChange(genre, $event)"
+            />
+            <span>{{ genre }}</span>
+          </label>
+        }
       </div>
     </div>
   </div>
 
   <!-- Lista de novelas -->
   <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <div
-      *ngFor="let novel of novels$ | async as novels"
-      class="novelList__item aspect-[2/3]"
-    >
-      <div class="novelList__imageContainer">
-        <img
-          [src]="novel.image"
-          alt="{{ novel.title }}"
-          class="novelList__image"
-        />
-        <div class="novelList__details">
-          <h2 class="novelList__detailsTitle">{{ novel.title }}</h2>
+    @for (novel of filteredNovels(); track novel.id) {
+      <div class="novelList__item aspect-[2/3]">
+        <div class="novelList__imageContainer">
+          <img
+            [src]="novel.image"
+            [alt]="novel.title"
+            class="novelList__image"
+          />
+          <div class="novelList__details">
+            <h2 class="novelList__detailsTitle">{{ novel.title }}</h2>
+          </div>
         </div>
+        <p class="novelList__detailsTitle novel__list__title">
+          {{ novel.description | truncate: 50 }}
+        </p>
       </div>
-      <p class="novelList__detailsTitle novel__list__title">
-        {{ novel.description | truncate: 50 }}
-      </p>
-    </div>
+    }
   </div>
-
 </div>

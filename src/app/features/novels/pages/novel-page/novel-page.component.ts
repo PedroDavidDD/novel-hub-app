@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TagComponent } from '../../components/tag/tag.component';
 
 @Component({
@@ -6,13 +6,13 @@ import { TagComponent } from '../../components/tag/tag.component';
   standalone: true,
   imports: [TagComponent],
   templateUrl: './novel-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NovelPageComponent {
-  @Input() title!: string;
-  @Input() image!: string;
-  @Input() description!: string;
-  @Input() genres!: string[];
-  @Input() tags!: string[];
-  @Input() associatedNames!: string[];
-
+  title = input.required<string>();
+  image = input<string>('');
+  description = input<string>('');
+  genres = input<string[]>([]);
+  tags = input<string[]>([]);
+  associatedNames = input<string[]>([]);
 }

@@ -1,8 +1,8 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    @for (novel of novels; track novel.id) {
+    @for (novel of novels(); track novel.id) {
       <div class="novelItem">
         <div class="novelItem__image">
-          <img [src]="novel.image" alt="{{ novel.title }}" />
+          <img [src]="novel.image" [alt]="novel.title" />
         </div>
         <div class="novelItem__content">
           <div class="novelItem__tp">
@@ -30,4 +30,3 @@
       </div>
     }
   </div>
-  

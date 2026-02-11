@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-tag',
   standalone: true,
   templateUrl: './tag.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TagComponent {
-  @Input() label!: string;
+  label = input.required<string>();
 }

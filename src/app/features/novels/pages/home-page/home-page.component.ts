@@ -1,49 +1,34 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { map, Observable, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { INovel, NovelsService } from '../../services/novels.service';
 import { NovelLatestHomeComponent } from './components/novel-latest-home/novel-latest-home.component';
 import { NovelPopularHomeComponent } from './components/novel-popular-home/novel-popular-home.component';
 
+const LATEST_NOVELS_LIMIT = 12;
+const POPULAR_NOVELS_LIMIT = 6;
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
     NovelLatestHomeComponent,
     NovelPopularHomeComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  latestNovels$: Observable<INovel[]> = of([]);
-  popularNovels$: Observable<INovel[]> = of([]);
+  private readonly novelsService = inject(NovelsService);
 
-  latestNovels: Observable<INovel[]> = of([]);
-  popularNovels: Observable<INovel[]> = of([]);
+  readonly latestNovels = computed(() => {
+    const novels = this.novelsService.novels();
+    return this.applyLatestFilter(novels).slice(0, LATEST_NOVELS_LIMIT);
+  });
 
-  constructor(private novelsService: NovelsService) {
-    this.refreshNovels();
-  }
-
-  private refreshNovels(): void {
-    this.latestNovels$ = this.novelsService.getNovels().pipe(
-      map(novels => this.applyLatestFilter(novels).slice(0, 12)),
-    );
-
-    this.latestNovels = this.latestNovels$;
-
-    this.popularNovels$ = this.novelsService.getNovels().pipe(
-      map(novels => this.applyPopularFilter(novels).slice(0, 6)),
-    );
-
-    this.popularNovels = this.popularNovels$;
-  }
-
+  readonly popularNovels = computed(() => {
+    const novels = this.novelsService.novels();
+    return this.applyPopularFilter(novels).slice(0, POPULAR_NOVELS_LIMIT);
+  });
 
   private applyLatestFilter(novels: INovel[]): INovel[] {
     return novels
@@ -56,7 +41,6 @@ export class HomePageComponent {
   }
 
   private applyPopularFilter(novels: INovel[]): INovel[] {
-    return novels.sort((a, b) => b.popularity - a.popularity);
+    return [...novels].sort((a, b) => b.popularity - a.popularity);
   }
-
 }
