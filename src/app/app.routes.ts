@@ -1,33 +1,36 @@
 import { Routes } from '@angular/router';
 import { Error404PageComponent } from './shared/pages';
 import { 
-  LayoutPageComponent,
   NovelsPageComponent,
   HomePageComponent,
  } from './features/novels/pages';
+import { NovelsLayoutComponent } from './features/novels/layout/novels-layout/novels-layout.component';
 
 export const routes: Routes = [
   {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES),
+  },
+  {
     path: '',
-    component: LayoutPageComponent,
+    redirectTo: 'auth',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    component: NovelsLayoutComponent,
     children: 
     [
       {
-        path: '',
+        path: 'home',
         component: HomePageComponent,
       },
-      { path: 'auth',
-        loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES),
-      },
-
-      { path: 'novels', component: NovelsPageComponent },
       {
-        path: 'novel',
-        loadChildren: () => import('./features/novels/novel.routes').then(m => m.NOVEL_ROUTES),
+        path: 'novels',
+        loadChildren: () => import('./features/novels/novels.routes').then(m => m.NOVELS_ROUTES),
       },
-
-      { path: '404', component: Error404PageComponent },
-      { path: '**', redirectTo: '404' }
     ]
-  }
-  ];
+  },
+  { path: '404', component: Error404PageComponent },
+  { path: '**', redirectTo: '404' }
+];

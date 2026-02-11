@@ -6,7 +6,7 @@ import { AsideComponent } from '../../../../shared/layout/aside/aside.component'
 import { AdsComponent } from '../../../../ads/ads.component';
 
 @Component({
-  selector: 'app-layout-page',
+  selector: 'novels-layout',
   standalone: true,
   imports: [
     RouterOutlet, 
@@ -15,9 +15,7 @@ import { AdsComponent } from '../../../../ads/ads.component';
     AsideComponent,
     AdsComponent,
   ],
-  templateUrl: './layout-page.component.html',
-  styleUrl: './layout-page.component.css',
+  templateUrl: './novels-layout.component.html',
+  styleUrl: './novels-layout.component.css',
 })
-export class LayoutPageComponent {
-
-}
+export class NovelsLayoutComponent {}

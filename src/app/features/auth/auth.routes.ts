@@ -6,28 +6,35 @@ import {
     ProfilePageComponent,
     SettingsPageComponent
 } from "./pages";
+import { AuthLayoutComponent } from "./layout/auth-layout/auth-layout.component";
 
 export const AUTH_ROUTES: Routes = [
     {
         path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
-    },
-    {
-        path: 'login',
-        component: LoginPageComponent,
-    },
-    {
-        path: 'register',
-        component: RegisterPageComponent,
-    },
-    {
-        path: 'profile',
-        component: ProfilePageComponent,
-    },
-    {
-        path: 'settings',
-        component: SettingsPageComponent,
+        component: AuthLayoutComponent,
+        children: [
+            {
+                path: 'login',
+                component: LoginPageComponent,
+            },
+            {
+                path: 'register',
+                component: RegisterPageComponent,
+            },
+            {
+                path: 'profile',
+                component: ProfilePageComponent,
+            },
+            {
+                path: 'settings',
+                component: SettingsPageComponent,
+            },
+            {
+                path: '',
+                redirectTo: 'login',
+                pathMatch: 'full'
+            },
+        ]
     },
 
     { path: '404', component: Error404PageComponent },
