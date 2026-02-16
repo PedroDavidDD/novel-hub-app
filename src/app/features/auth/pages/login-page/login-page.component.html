@@ -5,6 +5,28 @@
       <p class="text-[var(--color-description)]">Please sign in to continue</p>
     </div>
 
+    <!-- Social Login Buttons -->
+    <div class="space-y-3 mb-6">
+      <app-google-login-button
+        [isLoading]="isSocialLoading()"
+        (clicked)="onSocialLogin('google')"
+      />
+      <!-- <app-facebook-login-button
+        [isLoading]="isSocialLoading()"
+        (clicked)="onSocialLogin('facebook')"
+      /> -->
+    </div>
+
+    <!-- Divider -->
+    <div class="relative my-6">
+      <div class="absolute inset-0 flex items-center">
+        <div class="w-full border-t border-[var(--color-border)]"></div>
+      </div>
+      <div class="relative flex justify-center text-sm">
+        <span class="px-2 bg-[var(--color-bg-card)] text-[var(--color-description)]">Or continue with email</span>
+      </div>
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <!-- Email Field -->
       <div class="space-y-2">
