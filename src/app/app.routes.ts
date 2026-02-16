@@ -5,6 +5,8 @@ import {
   HomePageComponent,
  } from './features/novels/pages';
 import { NovelsLayoutComponent } from './features/novels/layout/novels-layout/novels-layout.component';
+import { authGuard } from './core/guards/auth.guard';
+import { UserRole } from './core/models/user.model';
 
 export const routes: Routes = [
   {
@@ -19,15 +21,18 @@ export const routes: Routes = [
   {
     path: '',
     component: NovelsLayoutComponent,
+    canActivate: [authGuard],
     children: 
     [
       {
         path: 'home',
         component: HomePageComponent,
+        data: { roles: [UserRole.USER_HOME] } // Solo accesible por USER_HOME y ADMIN
       },
       {
         path: 'novels',
         loadChildren: () => import('./features/novels/novels.routes').then(m => m.NOVELS_ROUTES),
+        data: { roles: [UserRole.USER_NOVELS] } // Solo accesible por USER_NOVELS y ADMIN
       },
     ]
   },

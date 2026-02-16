@@ -2,7 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, delay, tap } from 'rxjs/operators';
-import { LoginCredentials, RegisterData, User, AuthResponse } from '../interfaces/auth.interface';
+import { LoginCredentials, RegisterData, AuthResponse } from '../interfaces/auth.interface';
+import { User } from '../../../core/models/user.model';
 import { AuthAdapter } from '../adapters/auth.adapter';
 import { environments } from '../../../../environments/environments';
 
@@ -70,9 +71,11 @@ export class AuthService {
 
           return throwError(() => new Error('Invalid credentials (Mock)'));
         }),
-        tap(user => {
-          this._currentUser = user;
-          localStorage.setItem('token', user.token || '');
+        tap((data: any) => {
+          this._currentUser = data as User;
+          if (data.token) {
+            localStorage.setItem('token', data.token);
+          }
         })
       );
   }
@@ -90,20 +93,26 @@ export class AuthService {
           }
 
           const newMockUser: AuthResponse = {
-            uuid: crypto.randomUUID(),
-            email: data.email,
-            full_name: data.fullName,
-            roles: ['user'],
-            access_token: 'mock-jwt-token-register-' + Date.now()
+            access_token: 'mock-jwt-token-register-' + Date.now(),
+            refresh_token: 'mock-refresh-token',
+            expires_in: 3600,
+            user_info: {
+              uid: crypto.randomUUID(),
+              mail: data.email,
+              display_name: data.fullName,
+              user_roles: ['user']
+            }
           };
 
           this.saveMockUser(newMockUser);
 
           return of(AuthAdapter.adapt(newMockUser)).pipe(delay(800));
         }),
-        tap(user => {
-          this._currentUser = user;
-          localStorage.setItem('token', user.token || '');
+        tap((data: any) => {
+          this._currentUser = data as User;
+          if (data.token) {
+            localStorage.setItem('token', data.token);
+          }
         })
       );
   }
