@@ -12,5 +12,5 @@ import { AuthService } from '../../services/auth.service';
 export class ProfilePageComponent {
   private authService = inject(AuthService);
 
-  public user = this.authService.currentUser;
+  public user = this.authService.user;
 }

@@ -27,7 +27,8 @@ export class RegisterPageComponent {
   private actionHandler = new ActionHandler(this.toastService);
 
   public registerForm: FormGroup = this.fb.group({
-    fullName: ['', [Validators.required, Validators.minLength(3)]],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    username: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required]]
@@ -70,13 +71,16 @@ export class RegisterPageComponent {
     }
 
     this.isLoading = true;
-    const { fullName, email, password, confirmPassword } = this.registerForm.value;
+    const { name, username, email, password } = this.registerForm.value;
 
     this.actionHandler.execute({
-      action: this.authService.register({ fullName, email, password, confirmPassword }),
-      onSuccess: () => {
+      action: this.authService.register({ name, username, email, password }),
+      onSuccess: (result) => {
         this.isLoading = false;
-        this.router.navigateByUrl('/');
+        // Verificar que el resultado sea exitoso antes de navegar
+        if (result.success) {
+          this.router.navigateByUrl('/home');
+        }
       },
       onError: () => {
         this.isLoading = false;

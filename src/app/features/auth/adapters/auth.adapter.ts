@@ -1,31 +1,42 @@
 import { User, UserRole } from '../../../core/models/user.model';
-import { AuthResponseDto } from '../interfaces/auth.interface';
+import { AuthData } from '../interfaces/auth.interface';
 
+/**
+ * Adaptador para transformar respuestas de autenticación
+ * del backend al modelo de dominio de la aplicación
+ */
 export class AuthAdapter {
   /**
-   * Adapts the API DTO to the Domain User Model.
-   * Strictly follows the AuthResponseDto structure.
+   * Adapta la respuesta de la API al modelo de dominio User
    */
-  static toDomain(dto: AuthResponseDto): User {
-    const { user_info } = dto;
+  static toDomain(data: AuthData): User {
+    const { user } = data;
+
+    // El backend retorna role como string (ej: "ROLE_COMMON")
+    // O como array en roles (opcional)
+    const primaryRole = (user.role as UserRole) || UserRole.USER_COMMON;
+    const roles = user.roles?.map(role => role as UserRole) || [primaryRole];
 
     return {
-      id: user_info?.uid,
-      email: user_info?.mail,
-      name: user_info?.display_name,
-      role: (user_info?.user_roles[0] as UserRole) || UserRole.USER_HOME
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      username: user.username,
+      isActive: user.isActive,
+      roles: roles,
+      role: primaryRole
     };
   }
 
   /**
-   * Legacy adapter for backward compatibility.
-   * Maps domain user back to a flat structure if needed by old services.
+   * @deprecated Usar toDomain con AuthData
+   * Mantener por compatibilidad temporal
    */
-  static adapt(dto: AuthResponseDto): any {
-    const user = this.toDomain(dto);
+  static adaptLegacy(data: any): any {
+    const user = this.toDomain(data);
     return {
       ...user,
-      token: dto.access_token
+      token: data.token
     };
   }
 }

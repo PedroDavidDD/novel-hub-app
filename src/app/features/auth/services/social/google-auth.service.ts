@@ -27,7 +27,7 @@ export class GoogleAuthService implements SocialProvider {
       // Configurar OAuth para Google
       this.oauthService.configure(this.configService.getGoogleConfig());
 
-      // this.oauthService.setupAutomaticSilentRefresh();
+      this.oauthService.setupAutomaticSilentRefresh();
 
       // Cargar documento de descubrimiento
       if (!this.isInitialized) {

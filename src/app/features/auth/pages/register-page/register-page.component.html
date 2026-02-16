@@ -6,19 +6,35 @@
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <!-- Full Name Field -->
+      <!-- Name Field -->
       <div class="space-y-2">
-        <label for="fullName" class="block text-sm font-medium text-[var(--color-black)]">Full Name</label>
+        <label for="name" class="block text-sm font-medium text-[var(--color-black)]">Full Name</label>
         <input
           type="text"
-          id="fullName"
-          formControlName="fullName"
+          id="name"
+          formControlName="name"
           class="w-full px-4 py-3 rounded-[var(--button-border-radius)] bg-[var(--color-background)] border border-[var(--color-border)] text-[var(--color-black)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all duration-300"
-          [class.border-[var(--color-error)]]="isValidField('fullName')"
+          [class.border-[var(--color-error)]]="isValidField('name')"
           placeholder="Enter your full name"
         >
-        <span *ngIf="isValidField('fullName')" class="text-sm text-[var(--color-error)]">
-          {{ getFieldError('fullName') }}
+        <span *ngIf="isValidField('name')" class="text-sm text-[var(--color-error)]">
+          {{ getFieldError('name') }}
+        </span>
+      </div>
+
+      <!-- Username Field -->
+      <div class="space-y-2">
+        <label for="username" class="block text-sm font-medium text-[var(--color-black)]">Username</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="w-full px-4 py-3 rounded-[var(--button-border-radius)] bg-[var(--color-background)] border border-[var(--color-border)] text-[var(--color-black)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all duration-300"
+          [class.border-[var(--color-error)]]="isValidField('username')"
+          placeholder="Choose a username"
+        >
+        <span *ngIf="isValidField('username')" class="text-sm text-[var(--color-error)]">
+          {{ getFieldError('username') }}
         </span>
       </div>
 

@@ -17,6 +17,9 @@ export class SocialUserMapper {
       id: socialUser.id,
       email: socialUser.email,
       name: socialUser.name,
+      username: socialUser.email.split('@')[0], // Generar username del email
+      isActive: true,
+      roles: [UserRole.USER_HOME],
       role: UserRole.USER_HOME,
       avatar: socialUser.avatar
     };

@@ -1,125 +1,74 @@
-import { inject, Injectable, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, switchMap, of, finalize, catchError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../features/auth/services/auth.service';
 import { AuthState, User } from '../models/user.model';
 import { Result } from '../models/result.model';
-import { AuthRequestDto, AuthResponseDto, LoginCredentials } from '../../features/auth/interfaces/auth.interface';
-import { AuthAdapter } from '../../features/auth/adapters/auth.adapter';
-import { environments } from '../../../environments/environments';
-import { SocialAuthService } from '../../features/auth/services/social/social-auth.service';
-import { SocialProviderType, SocialAuthResponse } from '../../features/auth/interfaces/social/social-auth.interface';
-import { SocialUserMapper } from '../../features/auth/mappers/social/social-user.mapper';
+import { LoginCredentials, RegisterData } from '../../features/auth/interfaces/auth.interface';
+import { SocialProviderType } from '../../features/auth/interfaces/social/social-auth.interface';
 
+/**
+ * @deprecated Usar AuthService directamente
+ * AuthFacade ahora es un proxy hacia AuthService para mantener compatibilidad
+ * Todos los métodos delegan a AuthService
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthFacade {
-  private readonly http = inject(HttpClient);
-  private readonly baseUrl = environments.baseUrl;
-  private readonly socialAuth = inject(SocialAuthService);
-  private readonly socialUserMapper = inject(SocialUserMapper);
+  private authService = inject(AuthService);
 
-  private readonly state = signal<AuthState>({
-    user: this.getUserFromStorage(),
-    isAuthenticated: !!sessionStorage.getItem('access_token'),
-    token: sessionStorage.getItem('access_token')
-  });
-
-  readonly user = computed(() => this.state().user);
-  readonly isAuthenticated = computed(() => this.state().isAuthenticated);
-
-  // Estado específico para login social
-  readonly isSocialLoading = signal<boolean>(false);
-  readonly socialError = signal<string | null>(null);
+  // Delegar propiedades computadas
+  get user() { return this.authService.user; }
+  get _user() { return this.authService._user; }
+  get isAuthenticated() { return this.authService.isAuthenticated; }
+  get authStatus() { return this.authService.authStatus; }
+  get isSocialLoading() { return this.authService.isSocialLoading; }
+  get socialError() { return this.authService.socialError; }
 
   /**
-   * Login using UI Credentials
-   * Maps 'email' to 'username' for OAuth2 compliance
+   * Login con credenciales
    */
   login(credentials: LoginCredentials): Observable<Result<User>> {
-    const payload: AuthRequestDto = {
-      grant_type: 'password',
-      client_id: 'novel-hub-client',
-      username: credentials.email,
-      password: credentials.password
-    };
-
-    return this.http.post<AuthResponseDto>(`${this.baseUrl}/auth/login`, payload).pipe(
-      map(response => {
-        this.saveSession(response);
-        const user = AuthAdapter.toDomain(response);
-        this.state.update(s => ({ ...s, user, isAuthenticated: true, token: response.access_token }));
-        return Result.ok(user);
-      }),
-      catchError(() => of(Result.fail<User>('Credenciales inválidas', 'AUTH_001')))
-    );
+    return this.authService.login(credentials);
   }
 
   /**
-   * Login con proveedor OAuth 2.0 (Google, Facebook, etc.)
-   * Facilita la integración de nuevos proveedores
+   * Registro de usuario
+   */
+  register(data: RegisterData): Observable<Result<User>> {
+    return this.authService.register(data);
+  }
+
+  /**
+   * Login con proveedor social
    */
   loginWithSocial(provider: SocialProviderType): Observable<Result<User>> {
-    this.isSocialLoading.set(true);
-    this.socialError.set(null);
-
-    return this.socialAuth.login(provider).pipe(
-      switchMap((socialResult: Result<SocialAuthResponse>): Observable<Result<User>> => {
-        if (!socialResult.success) {
-          this.isSocialLoading.set(false);
-          this.socialError.set(socialResult.error || 'Social login failed');
-          return of(Result.fail<User>(socialResult.error || 'Social login failed'));
-        }
-
-        // Transformar a payload del backend
-        const payload = this.socialUserMapper.mapToBackendPayload(
-          socialResult.data!.user
-        );
-
-        // Enviar al backend para validación y generación de token propio
-        return this.http.post<AuthResponseDto>(
-          `${this.baseUrl}/auth/social/login`,
-          payload
-        ).pipe(
-          map((response: AuthResponseDto): Result<User> => {
-            this.saveSession(response);
-            const user = AuthAdapter.toDomain(response);
-            this.state.update(s => ({
-              ...s,
-              user,
-              isAuthenticated: true,
-              token: response.access_token
-            }));
-            return Result.ok(user);
-          }),
-          catchError((error): Observable<Result<User>> => {
-            const errorMsg = error.error?.message || 'Failed to complete social login';
-            this.socialError.set(errorMsg);
-            return of(Result.fail<User>(errorMsg));
-          })
-        );
-      }),
-      finalize(() => this.isSocialLoading.set(false))
-    );
+    return this.authService.loginWithSocial(provider);
   }
 
+  /**
+   * Logout
+   */
   logout(): void {
-    sessionStorage.clear();
-    this.state.set({ user: null, isAuthenticated: false, token: null });
+    this.authService.logout().subscribe();
   }
 
-  private saveSession(response: AuthResponseDto): void {
-    sessionStorage.setItem('access_token', response.access_token);
-    sessionStorage.setItem('refresh_token', response.refresh_token);
-    sessionStorage.setItem('user_data', JSON.stringify(AuthAdapter.toDomain(response)));
+  /**
+   * Refrescar token
+   */
+  refreshToken(): Observable<Result<User>> {
+    return this.authService.refreshToken();
   }
 
-  private getUserFromStorage(): User | null {
-    const data = sessionStorage.getItem('user_data');
-    if (!data) return null;
-    try {
-      return JSON.parse(data);
-    } catch {
-      return null;
-    }
+  /**
+   * Verificar si token está expirado
+   */
+  isTokenExpired(): boolean {
+    return this.authService.isTokenExpired();
+  }
+
+  /**
+   * Verificar token con backend
+   */
+  checkToken(): Observable<Result<User>> {
+    return this.authService.checkToken();
   }
 }

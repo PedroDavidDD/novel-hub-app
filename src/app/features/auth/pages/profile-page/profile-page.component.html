@@ -2,13 +2,13 @@
   <div class="bg-[var(--color-bg-card)] rounded-[1.25rem] shadow-[var(--shadow-medium)] p-8 max-w-2xl mx-auto">
     <div class="flex items-center gap-6 mb-8">
       <div class="w-24 h-24 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-4xl font-bold text-[var(--color-white)]">
-        {{ user?.name?.charAt(0) || 'U' }}
+        {{ user()?.name?.charAt(0) || 'U' }}
       </div>
       <div>
-        <h2 class="text-3xl font-bold text-[var(--color-black)]">{{ user?.name || 'User Name' }}</h2>
-        <p class="text-[var(--color-description)]">{{ user?.email || 'user@example.com' }}</p>
+        <h2 class="text-3xl font-bold text-[var(--color-black)]">{{ user()?.name || 'User Name' }}</h2>
+        <p class="text-[var(--color-description)]">{{ user()?.email || 'user@example.com' }}</p>
         <span class="inline-block mt-2 px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-primary-light)] text-[var(--color-black-fit)]">
-          {{ user?.role || 'User' }}
+          {{ user()?.role || 'User' }}
         </span>
       </div>
     </div>
@@ -18,11 +18,11 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <p class="text-sm text-[var(--color-description)] mb-1">User ID</p>
-          <p class="text-[var(--color-black)] font-medium">{{ user?.id || 'N/A' }}</p>
+          <p class="text-[var(--color-black)] font-medium">{{ user()?.id || 'N/A' }}</p>
         </div>
         <div>
           <p class="text-sm text-[var(--color-description)] mb-1">Email</p>
-          <p class="text-[var(--color-black)] font-medium">{{ user?.email || 'N/A' }}</p>
+          <p class="text-[var(--color-black)] font-medium">{{ user()?.email || 'N/A' }}</p>
         </div>
       </div>
     </div>

@@ -73,9 +73,12 @@ export class LoginPageComponent {
 
     this.actionHandler.execute({
       action: this.authFacade.login({ email, password }),
-      onSuccess: () => {
+      onSuccess: (result) => {
         this.isLoading = false;
-        this.router.navigateByUrl('/');
+        // Verificar que el resultado sea exitoso antes de navegar
+        if (result.success) {
+          this.router.navigateByUrl('/home');
+        }
       },
       onError: () => {
         this.isLoading = false;
@@ -94,7 +97,7 @@ export class LoginPageComponent {
     this.actionHandler.execute({
       action: this.authFacade.loginWithSocial(provider),
       onSuccess: () => {
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/home');
       },
       onError: () => {
         // El error ya se maneja en el facade
