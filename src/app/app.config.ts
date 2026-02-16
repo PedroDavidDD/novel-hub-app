@@ -4,15 +4,14 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    // provideRouter(routes),
-    provideRouter(routes, withHashLocation()), // Aquí se habilita el uso de hash
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(withFetch()),
-    provideAnimations(), // Required for Toast animations and other Angular animations (replaces BrowserAnimationsModule)
-    // { provide: LocationStrategy, useClass: HashLocationStrategy } // useHash
+    provideAnimations(),
+    provideOAuthClient()
   ]
 };

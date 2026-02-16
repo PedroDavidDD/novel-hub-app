@@ -1,16 +1,15 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { environments } from '../../../../../environments/environments';
-import { GoogleAdapter } from '../../adapters/social/google.adapter';
+import { Injectable, inject } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthConfigService } from './oauth-config.service';
 import {
   SocialProvider,
   SocialAuthResponse,
   SocialUser
 } from '../../interfaces/social/social-auth.interface';
-import { GoogleCredentialResponse } from '../../interfaces/social/google.interface';
 
 /**
- * Servicio específico para Google OAuth 2.0
- * Maneja la integración con Google Identity Services
+ * Servicio de autenticación con Google usando angular-oauth2-oidc
+ * Implementa OpenID Connect (OIDC)
  */
 @Injectable({ providedIn: 'root' })
 export class GoogleAuthService implements SocialProvider {
@@ -18,89 +17,129 @@ export class GoogleAuthService implements SocialProvider {
   readonly icon = 'google';
   readonly color = '#4285F4';
 
-  private googleAdapter = inject(GoogleAdapter);
-  private scriptLoaded = signal(false);
+  private oauthService = inject(OAuthService);
+  private configService = inject(OAuthConfigService);
+  private isInitialized = false;
 
   async login(): Promise<SocialAuthResponse> {
-    await this.loadGoogleScript();
+    try {
 
-    return new Promise((resolve) => {
-      window.google!.accounts.id.initialize({
-        client_id: environments.oauth.google.clientId,
-        callback: (response: GoogleCredentialResponse) => {
-          this.handleCredentialResponse(response, resolve);
-        },
-        ux_mode: environments.oauth.google.uxMode,
-        auto_select: false,
-        cancel_on_tap_outside: true
-      });
+      // Configurar OAuth para Google
+      this.oauthService.configure(this.configService.getGoogleConfig());
 
-      window.google!.accounts.id.prompt((notification: any) => {
-        if (notification.isSkippedMoment && notification.isSkippedMoment()) {
+      // this.oauthService.setupAutomaticSilentRefresh();
+
+      // Cargar documento de descubrimiento
+      if (!this.isInitialized) {
+        await this.oauthService.loadDiscoveryDocument();
+        // await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+        this.isInitialized = true;
+      }
+    
+      // Iniciar flujo de login implicit
+      this.oauthService.initLoginFlow();
+
+      // Esperar a que el usuario complete el login
+      return new Promise((resolve) => {
+        const checkLogin = setInterval(() => {
+          if (this.oauthService.hasValidAccessToken()) {
+            clearInterval(checkLogin);
+            const claims = this.oauthService.getIdentityClaims();
+            const user = this.mapClaimsToUser(claims);
+
+            resolve({
+              success: true,
+              provider: 'google',
+              accessToken: this.oauthService.getAccessToken(),
+              idToken: this.oauthService.getIdToken(),
+              user: user
+            });
+          }
+        }, 500);
+
+        // Timeout después de 5 minutos
+        setTimeout(() => {
+          clearInterval(checkLogin);
           resolve({
             success: false,
             provider: 'google',
             accessToken: '',
             user: {} as SocialUser,
-            error: 'Login cancelled by user'
+            error: 'Login timeout'
           });
-        }
+        }, 300000);
       });
-    });
-  }
-
-  private handleCredentialResponse(
-    response: GoogleCredentialResponse,
-    resolve: (value: SocialAuthResponse) => void
-  ): void {
-    if (!this.googleAdapter.validate(response)) {
-      resolve({
+    } catch (error) {
+      return {
         success: false,
         provider: 'google',
         accessToken: '',
         user: {} as SocialUser,
-        error: 'Invalid credentials received'
-      });
-      return;
+        error: error instanceof Error ? error.message : 'Google login failed'
+      };
     }
-
-    const socialUser = this.googleAdapter.adapt(response);
-
-    resolve({
-      success: true,
-      provider: 'google',
-      accessToken: response.credential,
-      idToken: response.credential,
-      user: socialUser
-    });
   }
 
   async logout(): Promise<void> {
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.disableAutoSelect();
-    }
+    this.oauthService.logOut();
   }
 
   isAuthenticated(): boolean {
-    return false;
+    return this.oauthService.hasValidAccessToken();
   }
 
-  private loadGoogleScript(): Promise<void> {
-    if (this.scriptLoaded()) {
-      return Promise.resolve();
-    }
+  /**
+   * Maneja el callback después de la redirección de OAuth
+   */
+  async handleAuthCallback(): Promise<SocialAuthResponse> {
+    try {
+      this.oauthService.configure(this.configService.getGoogleConfig());
+      await this.oauthService.loadDiscoveryDocument();
 
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        this.scriptLoaded.set(true);
-        resolve();
+      const result = await this.oauthService.tryLogin();
+
+      if (result) {
+        const claims = this.oauthService.getIdentityClaims();
+        const user = this.mapClaimsToUser(claims);
+
+        return {
+          success: true,
+          provider: 'google',
+          accessToken: this.oauthService.getAccessToken(),
+          idToken: this.oauthService.getIdToken(),
+          user: user
+        };
+      }
+
+      return {
+        success: false,
+        provider: 'google',
+        accessToken: '',
+        user: {} as SocialUser,
+        error: 'Authentication failed'
       };
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
+    } catch (error) {
+      return {
+        success: false,
+        provider: 'google',
+        accessToken: '',
+        user: {} as SocialUser,
+        error: error instanceof Error ? error.message : 'Callback failed'
+      };
+    }
+  }
+
+  private mapClaimsToUser(claims: Record<string, any>): SocialUser {
+    return {
+      id: claims['sub'],
+      email: claims['email'],
+      name: claims['name'],
+      firstName: claims['given_name'],
+      lastName: claims['family_name'],
+      avatar: claims['picture'],
+      provider: 'google',
+      providerId: claims['sub'],
+      rawData: claims
+    };
   }
 }

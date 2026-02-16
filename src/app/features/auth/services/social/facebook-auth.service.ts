@@ -1,20 +1,17 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { environments } from '../../../../../environments/environments';
-import { FacebookAdapter } from '../../adapters/social/facebook.adapter';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthConfigService } from './oauth-config.service';
 import {
   SocialProvider,
   SocialAuthResponse,
   SocialUser
 } from '../../interfaces/social/social-auth.interface';
-import {
-  FacebookAuthResponse,
-  FacebookUserInfo,
-  FacebookLoginStatus
-} from '../../interfaces/social/facebook.interface';
+import { firstValueFrom } from 'rxjs';
 
 /**
- * Servicio específico para Facebook OAuth 2.0
- * Maneja la integración con Facebook SDK
+ * Servicio de autenticación con Facebook usando angular-oauth2-oidc
+ * Implementa OAuth2 puro (Facebook no soporta OIDC completamente)
  */
 @Injectable({ providedIn: 'root' })
 export class FacebookAuthService implements SocialProvider {
@@ -22,119 +19,141 @@ export class FacebookAuthService implements SocialProvider {
   readonly icon = 'facebook';
   readonly color = '#1877F2';
 
-  private facebookAdapter = inject(FacebookAdapter);
-  private scriptLoaded = signal(false);
+  private oauthService = inject(OAuthService);
+  private configService = inject(OAuthConfigService);
+  private http = inject(HttpClient);
+  private isInitialized = false;
 
   async login(): Promise<SocialAuthResponse> {
-    await this.loadFacebookScript();
+    try {
+      // Configurar OAuth para Facebook
+      this.oauthService.configure(this.configService.getFacebookConfig());
 
-    return new Promise((resolve, reject) => {
-      if (!window.FB) {
-        reject(new Error('Facebook SDK not loaded'));
-        return;
+      if (!this.isInitialized) {
+        this.isInitialized = true;
       }
 
-      window.FB.login((loginResponse: FacebookLoginStatus) => {
-        if (loginResponse.status !== 'connected') {
+      // Iniciar flujo de login
+      this.oauthService.initLoginFlow();
+
+      // Esperar a que el usuario complete el login
+      return new Promise((resolve) => {
+        const checkLogin = setInterval(() => {
+          if (this.oauthService.hasValidAccessToken()) {
+            clearInterval(checkLogin);
+            this.fetchUserInfo().then(user => {
+              resolve({
+                success: true,
+                provider: 'facebook',
+                accessToken: this.oauthService.getAccessToken(),
+                user: user
+              });
+            }).catch(error => {
+              resolve({
+                success: false,
+                provider: 'facebook',
+                accessToken: '',
+                user: {} as SocialUser,
+                error: error.message
+              });
+            });
+          }
+        }, 500);
+
+        // Timeout después de 5 minutos
+        setTimeout(() => {
+          clearInterval(checkLogin);
           resolve({
             success: false,
             provider: 'facebook',
             accessToken: '',
             user: {} as SocialUser,
-            error: 'Facebook login failed or was cancelled'
+            error: 'Login timeout'
           });
-          return;
-        }
-
-        this.fetchUserInfo(loginResponse.authResponse!, resolve);
-      }, {
-        scope: environments.oauth.facebook.scopes.join(',')
+        }, 300000);
       });
-    });
-  }
-
-  private fetchUserInfo(
-    authResponse: FacebookAuthResponse,
-    resolve: (value: SocialAuthResponse) => void
-  ): void {
-    const fields = environments.oauth.facebook.fields.join(',');
-
-    window.FB!.api(`/me?fields=${fields}`, 'GET', (userInfo: FacebookUserInfo | { error: any }) => {
-      if (!userInfo || 'error' in userInfo) {
-        resolve({
-          success: false,
-          provider: 'facebook',
-          accessToken: '',
-          user: {} as SocialUser,
-          error: 'Failed to fetch user info from Facebook'
-        });
-        return;
-      }
-
-      this.facebookAdapter.setUserInfo(userInfo);
-
-      if (!this.facebookAdapter.validate(authResponse)) {
-        resolve({
-          success: false,
-          provider: 'facebook',
-          accessToken: '',
-          user: {} as SocialUser,
-          error: 'Invalid Facebook auth response'
-        });
-        return;
-      }
-
-      const socialUser = this.facebookAdapter.adapt(authResponse);
-
-      resolve({
-        success: true,
+    } catch (error) {
+      return {
+        success: false,
         provider: 'facebook',
-        accessToken: authResponse.accessToken,
-        expiresIn: authResponse.expiresIn,
-        user: socialUser
-      });
-    });
+        accessToken: '',
+        user: {} as SocialUser,
+        error: error instanceof Error ? error.message : 'Facebook login failed'
+      };
+    }
   }
 
   async logout(): Promise<void> {
-    return new Promise((resolve) => {
-      if (window.FB) {
-        window.FB.logout(() => resolve());
-      } else {
-        resolve();
-      }
-    });
+    this.oauthService.logOut();
   }
 
   isAuthenticated(): boolean {
-    return false;
+    return this.oauthService.hasValidAccessToken();
   }
 
-  private loadFacebookScript(): Promise<void> {
-    if (this.scriptLoaded()) {
-      return Promise.resolve();
-    }
+  /**
+   * Maneja el callback después de la redirección de OAuth
+   */
+  async handleAuthCallback(): Promise<SocialAuthResponse> {
+    try {
+      this.oauthService.configure(this.configService.getFacebookConfig());
 
-    return new Promise((resolve, reject) => {
-      // Inicializar Facebook SDK
-      (window as any).fbAsyncInit = () => {
-        window.FB!.init({
-          appId: environments.oauth.facebook.appId,
-          cookie: true,
-          xfbml: true,
-          version: environments.oauth.facebook.version
-        });
-        this.scriptLoaded.set(true);
-        resolve();
+      const result = await this.oauthService.tryLogin();
+
+      if (result) {
+        const user = await this.fetchUserInfo();
+
+        return {
+          success: true,
+          provider: 'facebook',
+          accessToken: this.oauthService.getAccessToken(),
+          user: user
+        };
+      }
+
+      return {
+        success: false,
+        provider: 'facebook',
+        accessToken: '',
+        user: {} as SocialUser,
+        error: 'Authentication failed'
       };
+    } catch (error) {
+      return {
+        success: false,
+        provider: 'facebook',
+        accessToken: '',
+        user: {} as SocialUser,
+        error: error instanceof Error ? error.message : 'Callback failed'
+      };
+    }
+  }
 
-      const script = document.createElement('script');
-      script.async = true;
-      script.defer = true;
-      script.crossOrigin = 'anonymous';
-      script.src = 'https://connect.facebook.net/en_US/sdk.js';
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
+  /**
+   * Obtiene información del usuario desde la API de Facebook
+   */
+  private async fetchUserInfo(): Promise<SocialUser> {
+    const accessToken = this.oauthService.getAccessToken();
+    const fields = 'id,email,name,first_name,last_name,picture';
+
+    try {
+      const response = await firstValueFrom(
+        this.http.get<any>(`https://graph.facebook.com/me?fields=${fields}&access_token=${accessToken}`)
+      );
+
+      return {
+        id: response.id,
+        email: response.email,
+        name: response.name,
+        firstName: response.first_name,
+        lastName: response.last_name,
+        avatar: response.picture?.data?.url,
+        provider: 'facebook',
+        providerId: response.id,
+        rawData: response
+      };
+    } catch (error) {
+      throw new Error('Failed to fetch Facebook user info');
+    }
   }
 }

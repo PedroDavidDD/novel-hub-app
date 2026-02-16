@@ -1,20 +1,28 @@
-
-
 export const environments = {
   baseUrl: 'http://localhost:3000',
 
   oauth: {
     google: {
-      clientId: '',
-      redirectUri: 'http://localhost:4200/#/auth/callback',
-      scopes: ['openid', 'email', 'profile'],
-      uxMode: 'popup' as const
+      issuer: 'https://accounts.google.com',
+      clientId: '1052425716139-nrq8cm3et4tbthuo87c9ak3pif0dumeo.apps.googleusercontent.com',
+      redirectUri: window.location.origin + '',
+      scope: 'openid profile email',
+      responseType: 'id_token token',
+      showDebugInformation: true,
+      strictDiscoveryDocumentValidation: false,
+      customQueryParams: {
+        prompt: 'consent',     // 'select_account' | 'consent' | 'none'
+      }
     },
     facebook: {
-      appId: '',
-      version: 'v18.0',
-      scopes: ['email', 'public_profile'],
-      fields: ['id', 'email', 'name', 'picture']
+      issuer: 'https://www.facebook.com',
+      clientId: '',
+      redirectUri: window.location.origin + '/#/home',
+      scope: 'email public_profile',
+      responseType: 'token',
+      showDebugInformation: true,
+      strictDiscoveryDocumentValidation: false,
+      oidc: false,
     }
   }
-}
+};
