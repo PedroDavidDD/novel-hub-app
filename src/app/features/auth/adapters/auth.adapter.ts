@@ -24,7 +24,8 @@ export class AuthAdapter {
       username: user.username,
       isActive: user.isActive,
       roles: roles,
-      role: primaryRole
+      role: primaryRole,
+      permissions: user.permissions
     };
   }
 

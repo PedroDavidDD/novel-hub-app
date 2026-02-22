@@ -16,6 +16,7 @@ export interface User {
   roles: UserRole[];
   role: UserRole;
   avatar?: string;
+  permissions?: string[]; // Permisos del backend (ej: ['novels.read', 'home.read'])
 }
 
 export type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
