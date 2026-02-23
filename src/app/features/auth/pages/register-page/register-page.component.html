@@ -1,5 +1,5 @@
-<div class="container w-[300px] md:w-96 father__container flex items-center justify-center p-4">
-  <div class="w-full bg-[var(--color-bg-card)] rounded-[1.25rem] shadow-[var(--shadow-medium)] p-8">
+<div class="container w-[300px] md:w-[700px] h-[900px] father__container flex items-center justify-center p-4 bg-[var(--color-bg-card)] relative overflow-hidden">
+  <div class="w-full rounded-[1.25rem] shadow-[var(--shadow-medium)] p-8">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold text-[var(--color-black)] mb-2">Create Account</h2>
       <p class="text-[var(--color-description)]">Join our community today</p>
@@ -103,6 +103,50 @@
           <a routerLink="/auth/login" class="text-[var(--color-primary-dark)] font-semibold hover:underline">Sign in</a>
         </p>
       </div>
+      
+      <!-- <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-[var(--color-border)]"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 text-[var(--color-description)]">Or continue with email</span>
+        </div>
+      </div>
+        
+      <div class="space-y-3 mb-6 flex flex-col gap-2">
+        <app-google-login-button
+          [isLoading]="isSocialLoading()"
+          (clicked)="onSocialLogin('google')"
+        />
+        <app-facebook-login-button
+          [isLoading]="isSocialLoading()"
+          (clicked)="onSocialLogin('facebook')"
+        />
+      </div> -->
     </form>
+    
   </div>
+  
+   <div class="w-full md:block hidden rounded-[1.25rem] shadow-[var(--shadow-medium)] p-8 z-10">
+    <!-- Divider -->
+     <div class="relative my-6">
+      <div class="relative flex justify-center text-sm">
+        <span class="px-2 text-[var(--color-bg-card)]">Or continue with email</span>
+      </div>
+    </div>
+      
+    <!-- Social Login Buttons -->
+    <div class="space-y-3 mb-6 flex flex-col gap-2">
+      <app-google-login-button
+        [isLoading]="isSocialLoading()"
+        (clicked)="onSocialLogin('google')"
+      />
+      <app-facebook-login-button
+        [isLoading]="isSocialLoading()"
+        (clicked)="onSocialLogin('facebook')"
+      />
+    </div>
+  </div>
+
+  <div class="bg-register md:block hidden"></div>
 </div>

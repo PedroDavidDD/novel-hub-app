@@ -1,0 +1,17 @@
+.bg-register {
+  content: "";
+  position: absolute;
+  width: 50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  /* Fondo con Overlay oscuro */
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+              url('https://plus.unsplash.com/premium_photo-1661410866488-f9c16c7c46aa?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center;
+  background-size: cover;
+  /* El secreto del parallax puro CSS */
+  background-attachment: fixed;
+  /* Optimización para animaciones suaves */
+  will-change: transform;
+}

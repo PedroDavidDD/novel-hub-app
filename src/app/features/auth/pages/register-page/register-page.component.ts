@@ -6,6 +6,9 @@ import { AuthService } from '../../services/auth.service';
 import { ValidatorsService } from '../../services/validators.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { ActionHandler } from '../../../../shared/utils/action-handler';
+import { GoogleLoginButtonComponent } from '../../components/social/google-login-button.component';
+import { FacebookLoginButtonComponent } from '../../components/social/facebook-login-button.component';
+import { SocialProviderType } from '../../interfaces/social/social-auth.interface';
 
 @Component({
   selector: 'auth-register-page',
@@ -13,10 +16,12 @@ import { ActionHandler } from '../../../../shared/utils/action-handler';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    GoogleLoginButtonComponent,
+    FacebookLoginButtonComponent
   ],
   templateUrl: './register-page.component.html',
-  styles: []
+  styleUrl: './register-page.component.css'
 })
 export class RegisterPageComponent {
   private fb = inject(FormBuilder);
@@ -39,6 +44,9 @@ export class RegisterPageComponent {
   });
 
   public isLoading = false;
+
+  // Estados de login social
+  isSocialLoading = this.authService.isSocialLoading;
 
   isValidField(field: string): boolean | null {
     return this.validatorsService.isValidField(this.registerForm, field);
@@ -85,6 +93,26 @@ export class RegisterPageComponent {
         this.isLoading = false;
       },
       successMessage: 'Account created successfully! Welcome.'
+    });
+  }
+
+  /**
+   * Maneja el login con proveedores sociales (Google, Facebook)
+   */
+  onSocialLogin(provider: SocialProviderType): void {
+    this.actionHandler.execute({
+      action: this.authService.loginWithSocial(provider),
+      onSuccess: (result) => {
+        if (result.success) {
+          this.router.navigateByUrl('/home');
+        }
+      },
+      onError: () => {
+        // El error ya se maneja en el servicio
+      },
+      successMessage: `Welcome! You've joined with ${provider}.`,
+      successTitle: 'Registration Successful',
+      errorMessage: `Failed to continue with ${provider}. Please try again.`
     });
   }
 }
