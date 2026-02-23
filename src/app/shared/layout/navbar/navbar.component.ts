@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavbarSearchComponent, NavbarUserMenuComponent } from './components';
 import { NavbarService } from './services/navbar.service';
+import { HasPermissionDirective } from '../../directives/has-permission.directive';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,7 @@ import { NavbarService } from './services/navbar.service';
     CommonModule,
     NavbarUserMenuComponent,
     NavbarSearchComponent,
+    HasPermissionDirective,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',

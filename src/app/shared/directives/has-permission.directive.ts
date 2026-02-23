@@ -23,8 +23,8 @@ export class HasPermissionDirective {
     this.updateView(permission);
   }
 
-  private updateView(permission: string): void {
-    const hasPermission = this.permissionService.hasPermission(permission);
+  private async updateView(permission: string): Promise<void> {
+    const hasPermission = await this.permissionService.hasPermission(permission);
 
     if (hasPermission && !this.hasView) {
       this.viewContainer.createEmbeddedView(this.templateRef);

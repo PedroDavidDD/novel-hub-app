@@ -2,8 +2,8 @@
   <div class="navbar__container">
     <span class="navbar__brand">DukeTranslation</span>
     <div class="navbar__links hidden md:flex">
-      <a routerLink="/" class="navbar__link">Home</a>
-      <a routerLink="/novels" class="navbar__link">Novels</a>
+      <a routerLink="/" class="navbar__link" *hasPermission="'home.read'">Home</a>
+      <a routerLink="/novels" class="navbar__link" *hasPermission="'novels.read'">Novels</a>
     </div>
   </div>
 
