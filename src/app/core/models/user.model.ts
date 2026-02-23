@@ -2,8 +2,6 @@ export enum UserRole {
   GOD = 'ROLE_GOD',
   BOSS = 'ROLE_BOSS',
   ADMIN = 'ROLE_ADMIN',
-  USER_HOME = 'ROLE_HOME',
-  USER_NOVELS = 'ROLE_NOVELS',
   USER_COMMON = 'ROLE_COMMON'
 }
 
@@ -13,10 +11,9 @@ export interface User {
   name: string;
   username: string;
   isActive: boolean;
-  roles: UserRole[];
   role: UserRole;
   avatar?: string;
-  permissions?: string[]; // Permisos del backend (ej: ['novels.read', 'home.read'])
+  permissions?: string[];
 }
 
 export type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';

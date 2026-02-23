@@ -77,7 +77,6 @@ export class RegisterPageComponent {
       action: this.authService.register({ name, username, email, password }),
       onSuccess: (result) => {
         this.isLoading = false;
-        // Verificar que el resultado sea exitoso antes de navegar
         if (result.success) {
           this.router.navigateByUrl('/home');
         }

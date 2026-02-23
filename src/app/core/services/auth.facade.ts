@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { AuthState, User } from '../models/user.model';
 import { Result } from '../models/result.model';
@@ -48,7 +49,7 @@ export class AuthFacade {
    * Logout
    */
   logout(): void {
-    this.authService.logout().subscribe();
+    this.authService.logout().pipe(take(1)).subscribe();
   }
 
   /**

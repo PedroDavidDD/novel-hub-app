@@ -1,13 +1,13 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, switchMap, of, throwError, catchError, map, tap, BehaviorSubject } from 'rxjs';
+import { Observable, switchMap, of, throwError, catchError, map, tap, BehaviorSubject, take } from 'rxjs';
 import { environments } from '../../../../environments/environments';
 import { AuthAdapter } from '../adapters/auth.adapter';
-import { 
-  ApiResponse, 
-  AuthData, 
-  LoginCredentials, 
-  RegisterData 
+import {
+  ApiResponse,
+  AuthData,
+  LoginCredentials,
+  RegisterData
 } from '../interfaces/auth.interface';
 import { AuthState, User } from '../../../core/models/user.model';
 import { Result } from '../../../core/models/result.model';
@@ -103,6 +103,7 @@ export class AuthService {
    * Logout - Invalida token en backend y limpia sesión
    */
   logout(): Observable<Result<void>> {
+    
     const token = this._state().token;
     
     if (!token) {
@@ -112,10 +113,7 @@ export class AuthService {
 
     return this.http.post<ApiResponse<null>>(
       `${this.baseUrl}/auth/logout`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
+      {}
     ).pipe(
       tap(() => this.clearSession()),
       map(() => Result.ok<void>(undefined)),
@@ -247,10 +245,7 @@ export class AuthService {
     }
 
     return this.http.get<ApiResponse<AuthData>>(
-      `${this.baseUrl}/auth/check-token`,
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
+      `${this.baseUrl}/auth/check-token`
     ).pipe(
       map(response => {
         if (response.statusCode === 1) {
@@ -352,13 +347,13 @@ export class AuthService {
     setInterval(() => {
       if (this.isAuthenticated() && this.isTokenExpired()) {
         // Token expirado, intentar refresh
-        this.refreshToken().subscribe();
+        this.refreshToken().pipe(take(1)).subscribe();
       } else if (this.isAuthenticated()) {
         // Token válido, verificar si falta menos de 5 minutos para expirar
         const timeRemaining = this.getTokenTimeRemaining();
         if (timeRemaining > 0 && timeRemaining < 5 * 60 * 1000) {
           // Refrescar preventivamente
-          this.refreshToken().subscribe();
+          this.refreshToken().pipe(take(1)).subscribe();
         }
       }
     }, 60000); // Cada 60 segundos

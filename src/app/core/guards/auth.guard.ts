@@ -1,70 +1,54 @@
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
 import { AuthService } from '../../features/auth/services/auth.service';
-import { UserRole } from '../models/user.model';
-import { SUPER_ROLES } from '../constants/auth.constants';
+import { PermissionService } from '../services/permission.service';
+import { ToastService } from '../../shared/services/toast.service';
 
-/**
- * Guard de autenticación y autorización
- * 
- * Roles:
- * - ROLE_GOD: Acceso total
- * - ROLE_BOSS: Acceso total
- * - ROLE_ADMIN: Acceso total
- * - ROLE_HOME: Acceso a /home
- * - ROLE_NOVELS: Acceso a /novels
- * - ROLE_COMMON: Acceso básico (solo /home)
- */
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
+  const permissionService = inject(PermissionService);
+  const toastService = inject(ToastService);
   const router = inject(Router);
 
-  // Verificar directamente en sessionStorage como fallback
   const token = sessionStorage.getItem('access_token');
   const userData = sessionStorage.getItem('user_data');
 
-  // Intentar obtener del estado del servicio primero
   let isAuth = authService.isAuthenticated();
   let user = authService._user();
 
-  // Si el servicio no tiene el estado pero sessionStorage sí, usar sessionStorage
   if (!isAuth && token && userData) {
     try {
       user = JSON.parse(userData);
       isAuth = true;
-    } catch {
-      // Error parseando, continuar como no autenticado
-    }
+    } catch {}
   }
 
-  // 1. Verificación básica de autenticación
   if (!isAuth) {
     return router.createUrlTree(['/auth/login'], { queryParams: { returnUrl: state.url } });
   }
 
-  // 2. Verificación de Roles (Autorización)
-  const requiredRoles = route.data?.['roles'] as UserRole[];
-  if (!requiredRoles || requiredRoles.length === 0) return true;
+  const requiredPermissions = route.data?.['permissions'] as string[] | undefined;
 
-  // Roles con acceso total (God, Boss, Admin)
-  if (user && SUPER_ROLES.includes(user.role)) {
+  if (!requiredPermissions || requiredPermissions.length === 0) {
     return true;
   }
 
-  // ROLE_COMMON: Solo acceso a /home
-  if (user?.role === UserRole.USER_COMMON) {
-    const canAccess = requiredRoles.some(role => role === UserRole.USER_HOME);
-    if (canAccess) return true;
+  const hasAnyPermission = await permissionService.hasAnyPermission(requiredPermissions);
 
-    // Si intenta acceder a /novels u otras rutas protegidas
-    return router.createUrlTree(['/404']);
-  }
+  if (!hasAnyPermission) {
+    const routePath = state.url.split('/')[1] || state.url;
+    toastService.showError(
+      `No tienes los permisos necesarios para acceder a ${routePath}. Contacta al administrador.`,
+      5000,
+      'Acceso Denegado'
+    );
 
-  // Verificar si tiene alguno de los roles requeridos específicos
-  const hasRole = user && requiredRoles.includes(user.role);
-
-  if (!hasRole) {
-    return router.createUrlTree(['/404']);
+    return router.createUrlTree(['/auth/login'], {
+      queryParams: {
+        returnUrl: state.url,
+        reason: 'insufficient_permissions'
+      }
+    });
   }
 
   return true;

@@ -1,28 +1,27 @@
 import { Routes } from '@angular/router';
 import { Error404PageComponent } from './shared/pages';
-import { 
+import {
   HomePageComponent,
- } from './features/novels/pages';
+  } from './features/novels/pages';
 import { NovelsLayoutComponent } from './features/novels/layout/novels-layout/novels-layout.component';
+import { AuthLayoutComponent } from './features/auth/layout/auth-layout/auth-layout.component';
 import { authGuard } from './core/guards/auth.guard';
 import { NotAuthenticatedGuard } from './core/guards/notAuthenticated.guard';
-import { UserRole } from './core/models/user.model';
-import { LoginPageComponent } from './features/auth/pages/login-page/login-page.component';
-import { RegisterPageComponent } from './features/auth/pages/register-page/register-page.component';
 
 export const routes: Routes = [
   {
     path: 'auth',
+    component: AuthLayoutComponent,
     canMatch: [NotAuthenticatedGuard],
-    canActivateChild: [NotAuthenticatedGuard], 
+    canActivateChild: [NotAuthenticatedGuard],
     children: [
       {
         path: 'login',
-        component: LoginPageComponent
+        loadComponent: () => import('./features/auth/pages/login-page/login-page.component').then(m => m.LoginPageComponent)
       },
       {
         path: 'register',
-        component: RegisterPageComponent
+        loadComponent: () => import('./features/auth/pages/register-page/register-page.component').then(m => m.RegisterPageComponent)
       },
       {
         path: '',
@@ -40,17 +39,17 @@ export const routes: Routes = [
     component: NovelsLayoutComponent,
     canActivate: [authGuard],
     canActivateChild: [authGuard],
-    children: 
+    children:
     [
       {
         path: 'home',
         component: HomePageComponent,
-        data: { roles: [UserRole.USER_HOME] }
+        data: { permissions: ['home.read'] }
       },
       {
         path: 'novels',
         loadChildren: () => import('./features/novels/novels.routes').then(m => m.NOVELS_ROUTES),
-        data: { roles: [UserRole.USER_NOVELS] }
+        data: { permissions: ['novels.read'] }
       },
     ]
   },

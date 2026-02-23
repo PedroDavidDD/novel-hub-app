@@ -1,5 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { AuthService } from '../../../../../../app/features/auth/services/auth.service';
 import { ModalAlertService } from '../../../../services/modal-alert.service';
 
@@ -89,9 +90,9 @@ export class NavbarUserMenuComponent {
       //   duration: 2000
       // });
 
-      // Actual Logic
-      this.authService.logout();
-      this.router.navigate(['/auth/login']);
+      this.authService.logout().pipe(take(1)).subscribe(() => {
+        this.router.navigate(['/auth/login']);
+      });
     }
   }
 }

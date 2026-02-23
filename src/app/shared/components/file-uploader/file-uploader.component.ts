@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 
 export interface FileItem {
   file: File;
@@ -50,14 +50,16 @@ export interface FileItem {
     .progress-bar div { height: 100%; background: green; transition: width 0.3s; }
   `]
 })
-export class FileUploaderComponent {
+export class FileUploaderComponent implements OnDestroy {
   @Input() multiple = false;
   @Input() validTypes: string[] = ['image/png', 'application/pdf'];
   @Input() maxSizeMB = 5;
-  
+
   // Función opcional inyectada: Si se pasa, sube automáticamente
-  @Input() uploadFn?: (file: File) => Observable<number>; 
+  @Input() uploadFn?: (file: File) => Observable<number>;
   @Input() deleteFn?: (file: File) => Observable<boolean>;
+
+  private subscriptions: Subscription[] = [];
 
   @Output() filesChanged = new EventEmitter<FileItem[]>();
   @Output() onView = new EventEmitter<FileItem>();
@@ -103,15 +105,16 @@ export class FileUploaderComponent {
       // 3. Subida Automática (si existe uploadFn)
       if (this.uploadFn) {
         newItem.uploading = true;
-        this.uploadFn(file).subscribe({
+        const sub = this.uploadFn(file).pipe(take(1)).subscribe({
           next: (progress) => newItem.progress = progress,
-          complete: () => { 
-            newItem.uploading = false; 
-            newItem.uploaded = true; 
+          complete: () => {
+            newItem.uploading = false;
+            newItem.uploaded = true;
             this.emitChange();
           },
           error: () => newItem.error = true
         });
+        this.subscriptions.push(sub);
       } else {
         // Si es solo local
         newItem.uploaded = true; 
@@ -123,14 +126,19 @@ export class FileUploaderComponent {
   removeFile(index: number) {
     const item = this.files[index];
     if (this.deleteFn && item.uploaded) {
-      this.deleteFn(item.file).subscribe(() => {
-        this.files.splice(index, 1);
+      const sub = this.deleteFn(item.file).pipe(take(1)).subscribe(() => {
+        this.files.splice(index,1);
         this.emitChange();
       });
+      this.subscriptions.push(sub);
     } else {
-      this.files.splice(index, 1);
+      this.files.splice(index,1);
       this.emitChange();
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   viewFile(item: FileItem) {

@@ -12,10 +12,7 @@ export class AuthAdapter {
   static toDomain(data: AuthData): User {
     const { user } = data;
 
-    // El backend retorna role como string (ej: "ROLE_COMMON")
-    // O como array en roles (opcional)
     const primaryRole = (user.role as UserRole) || UserRole.USER_COMMON;
-    const roles = user.roles?.map(role => role as UserRole) || [primaryRole];
 
     return {
       id: user.id,
@@ -23,7 +20,6 @@ export class AuthAdapter {
       name: user.name,
       username: user.username,
       isActive: user.isActive,
-      roles: roles,
       role: primaryRole,
       permissions: user.permissions
     };

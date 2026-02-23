@@ -13,9 +13,8 @@ export class GoogleUserMapper extends SocialUserMapper {
   override mapToDomain(socialUser: SocialUser): User {
     const baseUser = super.mapToDomain(socialUser);
 
-    // Lógica específica de Google (ej: verificar dominios de empresa)
     if (socialUser.email.endsWith('@company.com')) {
-      return { ...baseUser, role: UserRole.USER_NOVELS };
+      return { ...baseUser, role: UserRole.USER_COMMON };
     }
 
     return baseUser;

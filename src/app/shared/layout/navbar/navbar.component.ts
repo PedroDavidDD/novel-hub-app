@@ -1,7 +1,8 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, inject, DestroyRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ThemeSwitcherComponent } from '../../../core/components';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavbarSearchComponent, NavbarUserMenuComponent } from './components';
 import { NavbarService } from './services/navbar.service';
 
@@ -25,9 +26,12 @@ export class NavbarComponent {
   public isMenuOpen: boolean = false;
 
   public isNavbarSearch: boolean = false;
+  private destroyRef = inject(DestroyRef);
 
   constructor(private navbarService: NavbarService) {
-    navbarService.isNavbarSearch$.subscribe((state) => {
+    navbarService.isNavbarSearch$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((state) => {
       this.isNavbarSearch = state;
     });
   }

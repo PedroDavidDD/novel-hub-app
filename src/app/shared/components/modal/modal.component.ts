@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavbarService } from '../../layout/navbar/services/navbar.service';
 
 @Component({
@@ -12,11 +13,14 @@ import { NavbarService } from '../../layout/navbar/services/navbar.service';
 export class ModalComponent {
   @Input() title: string = 'Título del Modal';
   @Input() show: boolean = false;
-  
+
   public isNavbarSearch: boolean = false;
+  private destroyRef = inject(DestroyRef);
 
   constructor(private navbarService: NavbarService) {
-    navbarService.isNavbarSearch$.subscribe((state) => {
+    navbarService.isNavbarSearch$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((state) => {
       this.isNavbarSearch = state;
     });
   }
