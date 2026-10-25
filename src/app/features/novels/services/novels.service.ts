@@ -15,6 +15,7 @@ export interface INovel {
   chapters: number;
   releaseDate: string;
   rating: number;
+  tags?: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -119,11 +120,24 @@ export class NovelsService {
   private readonly novelsSignal = signal<INovel[]>(this.initialNovels);
   readonly novels = this.novelsSignal.asReadonly();
 
-  getNovelById(id: string): Observable<INovel | undefined> {
-    return this.http.get<INovel>(`${this.baseUrl}/novels/${id}`)
+  getNovelById(idOrTitle: string): Observable<INovel | undefined> {
+    const localNovels = this.novelsSignal();
+    const localNovel = localNovels.find(n => n.id === idOrTitle || n.title === idOrTitle);
+
+    if (localNovel) {
+      return of(localNovel);
+    }
+
+    return this.http.get<INovel>(`${this.baseUrl}/novels/${idOrTitle}`)
       .pipe(
         catchError(() => of(undefined))
       );
+  }
+
+  getRandomNovel(): Observable<INovel | undefined> {
+    const novels = this.novelsSignal();
+    const randomIndex = Math.floor(Math.random() * novels.length);
+    return of(novels[randomIndex]);
   }
 
   addNovel(novel: INovel): Observable<INovel> {

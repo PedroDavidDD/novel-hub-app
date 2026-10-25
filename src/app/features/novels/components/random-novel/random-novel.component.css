@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+.random-novel-container {
+  padding: var(--space-md);
+}
+
+.random-novel-button {
+  width: 100%;
+  padding: var(--button-padding);
+  background-color: var(--button-primary-bg);
+  color: var(--button-tc);
+  border-radius: var(--button-border-radius);
+  font-weight: 600;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+  border: none;
+}
+
+.random-novel-button:hover {
+  background-color: var(--button-primary-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+.random-novel-button:active {
+  background-color: var(--button-primary-bg-hover);
+  transform: translateY(0);
+}
+
+.random-novel-text {
+  font-size: 1rem;
+}
