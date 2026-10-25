@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, switchMap, of, throwError, catchError, map, tap, BehaviorSubject, take } from 'rxjs';
+import { Observable, switchMap, of, throwError, catchError, map, tap, BehaviorSubject, take, NEVER } from 'rxjs';
 import { environments } from '../../../../environments/environments';
 import { AuthAdapter } from '../adapters/auth.adapter';
 import {
@@ -12,7 +12,7 @@ import {
 import { AuthState, User } from '../../../core/models/user.model';
 import { Result } from '../../../core/models/result.model';
 import { SocialAuthService } from './social/social-auth.service';
-import { SocialProviderType, SocialAuthResponse } from '../interfaces/social/social-auth.interface';
+import { SocialProviderType, SocialAuthResponse, SocialUser } from '../interfaces/social/social-auth.interface';
 import { SocialUserMapper } from '../mappers/social/social-user.mapper';
 import { Router } from '@angular/router';
 
@@ -140,30 +140,57 @@ export class AuthService {
           return of(Result.fail<User>(socialResult.error || 'Social login failed'));
         }
 
-        const payload = this.socialUserMapper.mapToBackendPayload(
-          socialResult.data!.user
-        );
+        // Si el usuario aún no tiene datos (el navegador está en pleno redirect hacia Google)
+        if (!socialResult.data?.user || !socialResult.data.user.email) {
+          return NEVER;
+        }
 
-        return this.http.post<ApiResponse<AuthData>>(
-          `${this.baseUrl}/auth/social/login`,
-          payload
-        ).pipe(
-          map((response: ApiResponse<AuthData>): Result<User> => {
-            if (response.statusCode === 1) {
-              this.saveSession(response.data);
-              return Result.ok(AuthAdapter.toDomain(response.data));
-            }
-            return Result.fail<User>(response.msg || 'Social login failed');
-          }),
-          catchError((error): Observable<Result<User>> => {
-            const errorMsg = error.error?.msg || 'Failed to complete social login';
-            this.socialError.set(errorMsg);
-            return of(Result.fail<User>(errorMsg));
-          })
+        return this.authenticateSocialUser(
+          socialResult.data.user,
+          socialResult.data.idToken
         );
       }),
       tap(() => this.isSocialLoading.set(false))
     );
+  }
+
+  /**
+   * Autentica un usuario social ya obtenido (desde callback OAuth) enviando el payload al backend
+   */
+  authenticateSocialUser(socialUser: SocialUser, idToken?: string): Observable<Result<User>> {
+    this.isSocialLoading.set(true);
+    this.socialError.set(null);
+
+    const payload = this.socialUserMapper.mapToBackendPayload(socialUser);
+    if (idToken) {
+      (payload as any).idToken = idToken;
+    }
+
+    return this.http.post<ApiResponse<AuthData>>(
+      `${this.baseUrl}/auth/social/login`,
+      payload
+    ).pipe(
+      map((response: ApiResponse<AuthData>): Result<User> => {
+        return this.processAuthSuccess(response);
+      }),
+      catchError((error): Observable<Result<User>> => {
+        const errorMsg = error.error?.msg || error.message || 'Failed to complete social login';
+        this.socialError.set(errorMsg);
+        return of(Result.fail<User>(errorMsg));
+      }),
+      tap(() => this.isSocialLoading.set(false))
+    );
+  }
+
+  /**
+   * Procesa la respuesta exitosa de autenticación y persiste la sesión
+   */
+  private processAuthSuccess(response: ApiResponse<AuthData>): Result<User> {
+    if (response.statusCode === 1 && response.data) {
+      this.saveSession(response.data);
+      return Result.ok(AuthAdapter.toDomain(response.data));
+    }
+    return Result.fail<User>(response.msg || 'Authentication failed');
   }
 
   /**

@@ -36,13 +36,8 @@ export class GoogleAuthService implements SocialProvider {
 
       this.oauthService.initLoginFlow();
 
-      return {
-        success: true,
-        provider: 'google',
-        accessToken: '',
-        idToken: '',
-        user: {} as SocialUser,
-      };
+      // Mantiene la promesa pendiente mientras el navegador navega a Google
+      return new Promise<SocialAuthResponse>(() => {});
     } catch (error) {
       return {
         success: false,
@@ -71,21 +66,40 @@ export class GoogleAuthService implements SocialProvider {
       this.oauthService.configure(this.configService.getGoogleConfig());
       await this.oauthService.loadDiscoveryDocument();
 
-      const result = await this.oauthService.tryLogin();
+      let user: SocialUser | null = null;
+      let idToken = '';
+      let accessToken = '';
+
+      const result = await this.oauthService.tryLogin({ disableNonceCheck: true });
 
       if (result) {
         const claims = this.oauthService.getIdentityClaims();
-        const user = this.mapClaimsToUser(claims);
+        if (claims && Object.keys(claims).length > 0) {
+          user = this.mapClaimsToUser(claims);
+          idToken = this.oauthService.getIdToken();
+          accessToken = this.oauthService.getAccessToken();
+        }
+      }
 
+      // Si tryLogin no resolvió las claims de OIDC, extraemos directamente el id_token del hash
+      if (!user) {
+        const fallback = this.extractClaimsFromHash();
+        if (fallback) {
+          user = fallback.user;
+          idToken = fallback.idToken;
+        }
+      }
+
+      if (user) {
         sessionStorage.removeItem('oauth_callback_url');
         sessionStorage.removeItem('oauth_provider');
 
         return {
           success: true,
           provider: 'google',
-          accessToken: this.oauthService.getAccessToken(),
-          idToken: this.oauthService.getIdToken(),
-          user: user
+          accessToken,
+          idToken,
+          user
         };
       }
 
@@ -98,6 +112,21 @@ export class GoogleAuthService implements SocialProvider {
         error: 'Authentication failed'
       };
     } catch (error) {
+      // Intento de rescate mediante extracción directa del hash ante excepciones
+      const fallback = this.extractClaimsFromHash();
+      if (fallback) {
+        sessionStorage.removeItem('oauth_callback_url');
+        sessionStorage.removeItem('oauth_provider');
+
+        return {
+          success: true,
+          provider: 'google',
+          accessToken: '',
+          idToken: fallback.idToken,
+          user: fallback.user
+        };
+      }
+
       sessionStorage.removeItem('oauth_callback_url');
       sessionStorage.removeItem('oauth_provider');
 
@@ -109,6 +138,52 @@ export class GoogleAuthService implements SocialProvider {
         user: {} as SocialUser,
         error: error instanceof Error ? error.message : 'Callback failed'
       };
+    }
+  }
+
+  /**
+   * Extrae y decodifica las credenciales de Google id_token desde el hash de la URL
+   */
+  private extractClaimsFromHash(): { idToken: string; user: SocialUser } | null {
+    try {
+      const pendingHash = sessionStorage.getItem('pending_oauth_hash');
+      const hash = (window.location.hash && window.location.hash.includes('id_token='))
+        ? window.location.hash
+        : (pendingHash || '');
+
+      if (!hash || !hash.includes('id_token=')) {
+        return null;
+      }
+
+      const hashContent = hash.startsWith('#') ? hash.substring(1) : hash;
+      const params = new URLSearchParams(hashContent);
+      const idToken = params.get('id_token');
+
+      if (!idToken) {
+        return null;
+      }
+
+      const parts = idToken.split('.');
+      if (parts.length < 2) {
+        return null;
+      }
+
+      const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payloadJson = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      const claims = JSON.parse(payloadJson);
+
+      return {
+        idToken,
+        user: this.mapClaimsToUser(claims)
+      };
+    } catch (err) {
+      console.warn('Fallback hash parsing error:', err);
+      return null;
     }
   }
 

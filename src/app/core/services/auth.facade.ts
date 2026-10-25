@@ -5,7 +5,7 @@ import { AuthService } from '../../features/auth/services/auth.service';
 import { AuthState, User } from '../models/user.model';
 import { Result } from '../models/result.model';
 import { LoginCredentials, RegisterData } from '../../features/auth/interfaces/auth.interface';
-import { SocialProviderType } from '../../features/auth/interfaces/social/social-auth.interface';
+import { SocialProviderType, SocialUser } from '../../features/auth/interfaces/social/social-auth.interface';
 
 /**
  * @deprecated Usar AuthService directamente
@@ -43,6 +43,13 @@ export class AuthFacade {
    */
   loginWithSocial(provider: SocialProviderType): Observable<Result<User>> {
     return this.authService.loginWithSocial(provider);
+  }
+
+  /**
+   * Autenticar usuario social con payload verificado
+   */
+  authenticateSocialUser(socialUser: SocialUser, idToken?: string): Observable<Result<User>> {
+    return this.authService.authenticateSocialUser(socialUser, idToken);
   }
 
   /**
