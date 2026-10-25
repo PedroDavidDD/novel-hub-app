@@ -5,19 +5,20 @@ export const environments = {
     google: {
       issuer: 'https://accounts.google.com',
       clientId: '1052425716139-nrq8cm3et4tbthuo87c9ak3pif0dumeo.apps.googleusercontent.com',
-      redirectUri: window.location.origin + '',
+      redirectUri: window.location.origin,
       scope: 'openid profile email',
-      responseType: 'id_token token',
+      responseType: 'id_token',
       showDebugInformation: true,
       strictDiscoveryDocumentValidation: false,
+      skipIssuerCheck: true,
       customQueryParams: {
-        prompt: 'consent',     // 'select_account' | 'consent' | 'none'
+        prompt: 'consent',
       }
     },
     facebook: {
       issuer: 'https://www.facebook.com',
       clientId: '',
-      redirectUri: window.location.origin + '/#/home',
+      redirectUri: window.location.origin,
       scope: 'email public_profile',
       responseType: 'token',
       showDebugInformation: true,

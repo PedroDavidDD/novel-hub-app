@@ -23,57 +23,32 @@ export class GoogleAuthService implements SocialProvider {
 
   async login(): Promise<SocialAuthResponse> {
     try {
+      sessionStorage.setItem('oauth_callback_url', window.location.href);
+      sessionStorage.setItem('oauth_provider', 'google');
 
-      // Configurar OAuth para Google
       this.oauthService.configure(this.configService.getGoogleConfig());
-
       this.oauthService.setupAutomaticSilentRefresh();
 
-      // Cargar documento de descubrimiento
       if (!this.isInitialized) {
         await this.oauthService.loadDiscoveryDocument();
-        // await this.oauthService.loadDiscoveryDocumentAndTryLogin();
         this.isInitialized = true;
       }
-    
-      // Iniciar flujo de login implicit
+
       this.oauthService.initLoginFlow();
 
-      // Esperar a que el usuario complete el login
-      return new Promise((resolve) => {
-        const checkLogin = setInterval(() => {
-          if (this.oauthService.hasValidAccessToken()) {
-            clearInterval(checkLogin);
-            const claims = this.oauthService.getIdentityClaims();
-            const user = this.mapClaimsToUser(claims);
-
-            resolve({
-              success: true,
-              provider: 'google',
-              accessToken: this.oauthService.getAccessToken(),
-              idToken: this.oauthService.getIdToken(),
-              user: user
-            });
-          }
-        }, 500);
-
-        // Timeout después de 5 minutos
-        setTimeout(() => {
-          clearInterval(checkLogin);
-          resolve({
-            success: false,
-            provider: 'google',
-            accessToken: '',
-            user: {} as SocialUser,
-            error: 'Login timeout'
-          });
-        }, 300000);
-      });
+      return {
+        success: true,
+        provider: 'google',
+        accessToken: '',
+        idToken: '',
+        user: {} as SocialUser,
+      };
     } catch (error) {
       return {
         success: false,
         provider: 'google',
         accessToken: '',
+        idToken: '',
         user: {} as SocialUser,
         error: error instanceof Error ? error.message : 'Google login failed'
       };
@@ -102,6 +77,9 @@ export class GoogleAuthService implements SocialProvider {
         const claims = this.oauthService.getIdentityClaims();
         const user = this.mapClaimsToUser(claims);
 
+        sessionStorage.removeItem('oauth_callback_url');
+        sessionStorage.removeItem('oauth_provider');
+
         return {
           success: true,
           provider: 'google',
@@ -115,14 +93,19 @@ export class GoogleAuthService implements SocialProvider {
         success: false,
         provider: 'google',
         accessToken: '',
+        idToken: '',
         user: {} as SocialUser,
         error: 'Authentication failed'
       };
     } catch (error) {
+      sessionStorage.removeItem('oauth_callback_url');
+      sessionStorage.removeItem('oauth_provider');
+
       return {
         success: false,
         provider: 'google',
         accessToken: '',
+        idToken: '',
         user: {} as SocialUser,
         error: error instanceof Error ? error.message : 'Callback failed'
       };

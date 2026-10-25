@@ -12,7 +12,6 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    canMatch: [NotAuthenticatedGuard],
     canActivateChild: [NotAuthenticatedGuard],
     children: [
       {
