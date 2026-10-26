@@ -96,3 +96,4 @@ getFieldError(field: string): string | null {
 
 1. **Siempre marcar campos antes de abortar**: Si el formulario es inválido al presionar Submit, ejecutar `this.form.markAllAsTouched()`.
 2. **Siempre usar `ActionHandler` para la ejecución**: Automatiza los toasts de éxito/error y desacopla la vista del resultado RxJS.
+3. **Regla de Oro N° 11 — Contador de Caracteres y Límites Estándar**: Todo input y textarea reutilizable (`app-input`) renderiza su contador `actual / maximo` (ej: `0 / 250`) con badge color primary translúcido (`bg-[var(--color-primary)]/20` con `backdrop-blur-[2px]`), centrado a la derecha en inputs y al pie derecho en textareas, asegurando que el contenido nunca se solape. Los límites se consultan obligatoriamente en [`INPUT_LIMITS`](file:///E:/Cursos%20Por%20Aprender%20Udemy/Angular/novel-hub/novel-hub-app/src/app/core/constants/input-limits.constant.ts).
