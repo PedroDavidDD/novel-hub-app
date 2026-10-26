@@ -13,7 +13,7 @@
 - No usar etiquetas `<a>` o `<span>` con gradientes inline para géneros o tags: usar `CustomBadgeComponent` (`app-badge`).
 - Usar `ActionHandler` para ejecutar operaciones de envío y asociar toasts automáticos.
 - Límite de 200 líneas por componente. Dividir vistas complejas en secciones modulares Dumb.
-- Componentes Dumb 100% aislados: cero inyecciones de `Router`, `Store`, `HttpClient` o estado global; solo reciben datos vía `input()` con prefijos estándar (`vcLabel`) y emiten eventos vía `output()`.
+- Componentes Dumb 100% aislados: cero inyecciones de `Router`, `Store`, `HttpClient` o estado global; solo reciben datos vía `input()` con prefijos estándar (`vcLabel`, `arrLinks`) y emiten eventos vía `output()`.
 - Extraer cálculos o lógica pesada a funciones puras testeables fuera de los componentes.
 
 ## 3. Estilos, Tokens y Medidas
@@ -29,3 +29,17 @@
 - Usar Signals para estado sincrónico (`signal`, `computed`).
 - Usar RxJS para streams asíncronos y HTTP.
 - Toda suscripción manual debe usar `takeUntilDestroyed(destroyRef)` para prevenir fugas de memoria.
+
+## 5. Prevención de Prop Drilling y Uso de Servicios / Fachadas
+- **¿Cuándo usar Servicios / Fachadas (`Facade`)?**:
+  - Cuando un dato o estado debe ser compartido transversalmente por varios componentes en ramas jerárquicas distintas (ej. sesión de usuario, permisos, tema visual, árbol de navegación global).
+  - En contenedores Smart de alto nivel (como Layouts o Páginas) para orquestar la obtención de datos y exponer Signals (`navTree`, `isLoading`) listos para el consumo.
+  - Para evitar transportar propiedades a través de 3 o más niveles de componentes intermedios pasivos que no usan esos datos ("prop drilling").
+- **¿Cuándo NO usar Servicios / Fachadas?**:
+  - Dentro de **Componentes Dumb / Presentacionales**: Prohibido inyectar servicios en componentes de presentación (como `NavbarComponent`, `CustomButtonComponent`, cards de listas). Estos deben mantenerse 100% agnósticos y desacoplados, recibiendo información por `input()` y emitiendo eventos por `output()`.
+  - Cuando la comunicación es estrictamente directa entre un padre inmediato y su hijo (1 solo salto): usar directamente `input()` y `output()`.
+  - Para estado local efímero de UI (ej. acordeón abierto, tooltip visible, menú desplegable abierto): usar `signal()` local interno en el componente dumb.
+
+## 6. Utilidad Dash para Valores Nulos o No Definidos (`dashText`, `dashNumber`)
+- Todo texto que provenga de backend o cálculo susceptible de ser `null`, `undefined` o cadena vacía debe ser transformado a `'-'` usando `dashText(val)` o el pipe `| dash`.
+- Todo número susceptible de ser `null`, `undefined` o `NaN` debe ser transformado a `'-'` usando `dashNumber(val)` o el pipe `| dash:'number'`.
