@@ -1,19 +1,15 @@
 import { inject } from '@angular/core';
-import { Router, type CanMatchFn, type Route, type UrlSegment } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Router, type CanActivateFn, type CanMatchFn, type Route, type UrlSegment } from '@angular/router';
 import { AuthService } from '../../features/auth/services/auth.service';
 
 /**
  * Guard que previene que usuarios autenticados accedan a rutas públicas
- * como login o register usando CanMatchFn con async/await.
+ * como login o register.
  * 
  * Si el usuario está autenticado, redirige a /home
  * Si no está autenticado, permite el acceso
  */
-export const NotAuthenticatedGuard: CanMatchFn = async (
-  route: Route,
-  segments: UrlSegment[]
-) => {
+export const notAuthenticatedGuard: CanActivateFn = async (): Promise<boolean> => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -22,7 +18,6 @@ export const NotAuthenticatedGuard: CanMatchFn = async (
 
   // Si está en modo checking, esperar un momento
   if (authStatus === 'checking') {
-    // Esperar a que se resuelva el estado
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 
@@ -36,6 +31,13 @@ export const NotAuthenticatedGuard: CanMatchFn = async (
     return false;
   }
 
-  // No está autenticado, permitir acceso
+  // No está autenticado, permitir acceso a login/register
   return true;
+};
+
+export const NotAuthenticatedGuard: CanMatchFn = (
+  route: Route,
+  segments: UrlSegment[]
+): Promise<boolean> => {
+  return notAuthenticatedGuard(undefined as any, undefined as any) as Promise<boolean>;
 };

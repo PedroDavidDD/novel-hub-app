@@ -1,4 +1,12 @@
 <div class="container max-w-7xl father__container p-8">
+  <div class="mb-4 max-w-2xl mx-auto">
+    <a routerLink="/home" class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] hover:underline">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-4">
+        <path fill-rule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z" clip-rule="evenodd" />
+      </svg>
+      Volver al Inicio
+    </a>
+  </div>
   <div class="bg-[var(--color-bg-card)] rounded-[1.25rem] shadow-[var(--shadow-medium)] p-8 max-w-2xl mx-auto">
     <div class="flex items-center gap-6 mb-8">
       <div class="w-24 h-24 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-4xl font-bold text-[var(--color-white)]">
@@ -18,11 +26,11 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <p class="text-sm text-[var(--color-description)] mb-1">User ID</p>
-          <p class="text-[var(--color-black)] font-medium">{{ user()?.id || 'N/A' }}</p>
+          <p class="text-[var(--color-black)] font-medium">{{ user()?.id || '-' }}</p>
         </div>
         <div>
           <p class="text-sm text-[var(--color-description)] mb-1">Email</p>
-          <p class="text-[var(--color-black)] font-medium">{{ user()?.email || 'N/A' }}</p>
+          <p class="text-[var(--color-black)] font-medium">{{ user()?.email || '-' }}</p>
         </div>
       </div>
     </div>
