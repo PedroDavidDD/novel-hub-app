@@ -47,3 +47,29 @@ El proyecto centraliza sus variables de diseño en `:root` y la clase `.dark`:
 - Sombras: `--shadow-light`, `--shadow-medium`, `--shadow-dark`.
 - Transiciones: `--transition-fast` (`all 0.3s ease`).
 - Botones: Bordes redondeados píldora `border-radius: 25px`, padding estándar `--space-sm --space-md`.
+
+---
+
+## 4. Tokens de Diseño para Componentes Reutilizables
+
+### Botones (`CustomButtonComponent` / `app-button`)
+- **Tokens de Color y Variantes**:
+  - `primary`: Sólido `bg-[var(--button-primary-bg)] text-[var(--button-tc)] hover:bg-[var(--button-primary-bg-hover)] shadow-sm`.
+  - `secondary`: Sólido `bg-[var(--button-secondary-bg)] text-[var(--button-tc)] hover:bg-[var(--button-secondary-bg-hover)] shadow-sm`.
+  - `outline-primary`: Fondo translúcido tonal `bg-[color-mix(in_srgb,var(--button-primary-bg)_20%,transparent)]`, borde perimetral invisible en reposo `border-2 border-transparent` (para no generar anillo oscuro de doble opacidad), texto `text-[var(--color-primary-dark)] dark:text-[var(--color-primary)]`. En hover ilumina con `hover:border-[var(--color-primary)] hover:bg-[var(--button-primary-bg)] hover:text-[var(--button-tc)]`.
+  - `outline-secondary`: Homólogo para paleta secundaria.
+  - `white`: Fondo blanco puro `bg-white`, texto `text-black`, borde `border-2 border-white`. **Sin hover cromático**.
+  - `outline-white`: Fondo negro puro `bg-black`, texto `text-white`, borde `border-2 border-black`. **Sin hover cromático**.
+  - `danger`: Fondo `bg-[var(--color-error)] text-white`.
+- **Formas (`rounded`)**: `full` (`rounded-[25px]`), `xl` (`rounded-xl`), `lg` (`rounded-lg`), `md` (`rounded-md`), `none`.
+- **Micro-interacciones**: `active:scale-95 transition-all select-none`.
+
+### Badges y Chips de Género (`CustomBadgeComponent` / `app-badge`)
+- **Propósito**: Componente Dumb presentacional para tags, categorías y géneros.
+- **Variante `primary` (Tonal Brand)**:
+  - Fondo: `bg-[color-mix(in_srgb,var(--button-primary-bg)_20%,transparent)]`.
+  - Borde en reposo: `border-2 border-transparent` (evita superposición alfa con el fondo).
+  - Borde en hover: `hover:border-[var(--color-primary)]` (se ilumina el contorno amarillo al pasar el cursor).
+  - Texto: `text-[var(--color-primary-dark)] dark:text-[var(--color-primary)]`.
+  - Escala y Forma: `rounded-full px-3 py-1 text-sm font-medium hover:translate-y-[-1px] hover:shadow-md`.
+- **Variante `neutral`**: `bg-[var(--color-bg-card)] border-2 border-transparent text-[var(--color-black)] hover:border-[var(--color-border)]`.
