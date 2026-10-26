@@ -25,6 +25,33 @@ Este catálogo lista los componentes UI reales encontrados en `src/app/shared/co
   ```
 - **Cuándo usarlo**: En cualquier formulario reactivo. **NUNCA crear elementos `<input>` directos** si se puede usar `app-input`.
 
+### `CustomButtonComponent` (`app-button`)
+- **Ruta**: `src/app/shared/components/custom-button/custom-button.component.ts`
+- **Propósito**: Botón tipado reutilizable con Angular 19 Signals, accesible, con variantes temáticas y soporte de estados loading/disabled.
+- **Inputs**:
+  - `text`: `input<string>('')`
+  - `variant`: `input<'primary' | 'secondary' | 'outline' | 'danger'>('primary')`
+  - `size`: `input<'sm' | 'md' | 'lg'>('md')`
+  - `type`: `input<'button' | 'submit' | 'reset'>('button')`
+  - `fullWidth`: `input<boolean>(false)`
+  - `loading`: `input<boolean>(false)`
+  - `disabled`: `input<boolean>(false)`
+  - `customClass`: `input<string>('')`
+  - `ariaLabel`: `input<string>('')`
+  - `title`: `input<string>('')`
+- **Outputs**:
+  - `onClick`: `output<MouseEvent>()`
+- **Ejemplo real de uso**:
+  ```html
+  <app-button
+    text="Random Novel"
+    variant="primary"
+    [fullWidth]="true"
+    (onClick)="obtenerNovela()"
+  />
+  ```
+- **Cuándo usarlo**: En cualquier acción de usuario o menú lateral. **NUNCA crear elementos `<button>` directos** con estilos duplicados si se puede usar `app-button`.
+
 ---
 
 ## 2. Componentes de Feedback y Carga
