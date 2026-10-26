@@ -7,6 +7,8 @@ export type ButtonVariant =
   | 'outline'
   | 'outline-primary'
   | 'outline-secondary'
+  | 'white'
+  | 'outline-white'
   | 'danger';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -67,12 +69,14 @@ export class CustomButtonComponent {
       'outline': 'bg-[color-mix(in_srgb,var(--button-primary-bg)_20%,transparent)] border-2 border-transparent text-[var(--color-primary-dark)] dark:text-[var(--color-primary)] hover:border-[var(--color-primary)] hover:bg-[var(--button-primary-bg)] hover:text-[var(--button-tc)] active:scale-95 shadow-sm',
       'outline-primary': 'bg-[color-mix(in_srgb,var(--button-primary-bg)_20%,transparent)] border-2 border-transparent text-[var(--color-primary-dark)] dark:text-[var(--color-primary)] hover:border-[var(--color-primary)] hover:bg-[var(--button-primary-bg)] hover:text-[var(--button-tc)] active:scale-95 shadow-sm',
       'outline-secondary': 'bg-[color-mix(in_srgb,var(--button-secondary-bg)_20%,transparent)] border-2 border-transparent text-[var(--color-secondary-dark)] dark:text-[var(--color-secondary)] hover:border-[var(--color-secondary)] hover:bg-[var(--button-secondary-bg)] hover:text-[var(--button-tc)] active:scale-95 shadow-sm',
+      'white': 'bg-white text-black border-2 border-white active:scale-95 shadow-sm',
+      'outline-white': 'bg-black text-white border-2 border-black active:scale-95 shadow-sm',
       'danger': 'bg-[var(--color-error)] text-white hover:opacity-90 active:scale-95 shadow-sm border border-transparent'
     };
 
     const sizes: Record<ButtonSize, string> = {
       sm: 'px-3 py-1.5 text-xs',
-      md: 'px-5 py-2.5 text-sm',
+      md: 'px-4 py-2 text-sm',
       lg: 'px-6 py-3.5 text-base'
     };
 
