@@ -14,9 +14,9 @@
     </div>
 
     <div class="py-4 flex flex-col sm:flex-row sm:items-center">
-      <span class="w-48 font-semibold text-[var(--color-description)]">Rank</span>
+      <span class="w-48 font-semibold text-[var(--color-description)]">Role</span>
       <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0">
-        {{ formatDash(user()?.role) }}
+        {{ formatDash(user()?.roleDisplayName || user()?.role) }}
       </span>
     </div>
 
@@ -37,7 +37,7 @@
     <div class="py-4 flex flex-col sm:flex-row sm:items-center">
       <span class="w-48 font-semibold text-[var(--color-description)]">Registered</span>
       <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0">
-        {{ user()?.['createdAt'] ? (user()?.['createdAt'] | date:'dd MMMM yyyy, HH:mm:ss') : '-' }}
+        {{ formatDate(user()?.createdAt) }}
       </span>
     </div>
   </div>

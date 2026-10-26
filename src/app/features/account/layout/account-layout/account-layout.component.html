@@ -28,7 +28,7 @@
           <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-2">
             <!-- Badge de Rol -->
             <app-badge
-              [vcLabel]="formatDash(user()?.role)"
+              [vcLabel]="formatDash(user()?.roleDisplayName || user()?.role)"
               vcVariant="primary"
             />
 

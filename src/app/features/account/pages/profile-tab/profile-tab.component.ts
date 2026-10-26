@@ -4,12 +4,13 @@ import {
   inject,
   signal
 } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CustomButtonComponent } from '../../../../shared/components/custom-button/custom-button.component';
 import { ProfileSettingsModalComponent } from './components/profile-settings-modal/profile-settings-modal.component';
 import { ModalAlertService } from '../../../../shared/services/modal-alert.service';
 import { dashText } from '../../../../shared/utils/dash.util';
+import { formatDateTime } from '../../../../shared/utils/date.util';
 import { User } from '../../../../core/models/user.model';
 
 @Component({
@@ -17,7 +18,6 @@ import { User } from '../../../../core/models/user.model';
   standalone: true,
   imports: [
     CommonModule,
-    DatePipe,
     CustomButtonComponent,
     ProfileSettingsModalComponent,
   ],
@@ -35,6 +35,10 @@ export class ProfileTabComponent {
 
   formatDash(value?: string | null): string {
     return dashText(value);
+  }
+
+  formatDate(value?: string | number | Date | null): string {
+    return formatDateTime(value);
   }
 
   openSettingsModal(): void {

@@ -9,7 +9,7 @@ import {
   LoginCredentials,
   RegisterData
 } from '../interfaces/auth.interface';
-import { AuthState, User } from '../../../core/models/user.model';
+import { AuthState, User, UserRole, UserStorageData } from '../../../core/models/user.model';
 import { Result } from '../../../core/models/result.model';
 import { SocialAuthService } from './social/social-auth.service';
 import { SocialProviderType, SocialAuthResponse, SocialUser } from '../interfaces/social/social-auth.interface';
@@ -276,7 +276,9 @@ export class AuthService {
     ).pipe(
       map(response => {
         if (response.statusCode === 1) {
-          return Result.ok(AuthAdapter.toDomain(response.data));
+          const user = AuthAdapter.toDomain(response.data);
+          this.updateUserData(user);
+          return Result.ok(user);
         }
         return Result.fail<User>(response.msg || 'Invalid token');
       }),
@@ -307,7 +309,8 @@ export class AuthService {
     // Guardar en sessionStorage
     sessionStorage.setItem('access_token', data.token);
     sessionStorage.setItem('refresh_token', data.refreshToken);
-    sessionStorage.setItem('user_data', JSON.stringify(user));
+    const storageUser = this.extractUserStorageData(user);
+    sessionStorage.setItem('user_data', JSON.stringify(storageUser));
     sessionStorage.setItem('token_expires_at', expiresAt.toString());
   }
 
@@ -333,13 +336,26 @@ export class AuthService {
   /**
    * Actualizar datos del usuario actual
    */
+    /**
+   * Extrae estrictamente solo los 4 datos permitidos para persistir en sessionStorage
+   */
+  private extractUserStorageData(user: Partial<User>): UserStorageData {
+    return {
+      email: user.email || '',
+      name: user.name || '',
+      roleDisplayName: user.roleDisplayName,
+      username: user.username || '',
+    };
+  }
+
   updateUserData(updatedUser: User): void {
     const currentState = this._state();
     this._state.set({
       ...currentState,
       user: updatedUser,
     });
-    sessionStorage.setItem('user_data', JSON.stringify(updatedUser));
+    const storageUser = this.extractUserStorageData(updatedUser);
+    sessionStorage.setItem('user_data', JSON.stringify(storageUser));
   }
 
   /**
@@ -353,7 +369,14 @@ export class AuthService {
 
     if (token && userData) {
       try {
-        const user = JSON.parse(userData) as User;
+        const stored = JSON.parse(userData) as UserStorageData;
+        const user: User = {
+          email: stored.email,
+          name: stored.name,
+          username: stored.username,
+          role: UserRole.USER_COMMON,
+          roleDisplayName: stored.roleDisplayName,
+        };
         return {
           user,
           isAuthenticated: true,

@@ -19,6 +19,9 @@ export interface AuthData {
     username: string;
     isActive: boolean;
     role: string;        // Rol principal (ej: "ROLE_COMMON")
+    idRole?: string;
+    roleDisplayName?: string;
+    createdAt?: string | Date;
     roles?: string[];    // Array de roles (opcional, para compatibilidad)
     permissions?: string[];
   };

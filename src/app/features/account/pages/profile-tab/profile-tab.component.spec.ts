@@ -72,4 +72,15 @@ describe('ProfileTabComponent', () => {
     expect(component.formatDash('   ')).toBe('-');
     expect(component.formatDash('Valido')).toBe('Valido');
   });
+
+  it('debe formatear fecha con helper formatDate en formato "dd/mm/aaaa hh:mm:ss"', () => {
+    expect(component.formatDate(null)).toBe('-');
+    expect(component.formatDate(new Date(2026, 9, 25, 14, 30, 0))).toBe('25/10/2026 14:30:00');
+  });
+
+  it('debe renderizar la etiqueta "Role" y el rol o displayName del usuario', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('Role');
+    expect(compiled.textContent).not.toContain('Rank');
+  });
 });

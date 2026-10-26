@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -26,7 +26,7 @@ import { dashText } from '../../../../shared/utils/dash.util';
   styleUrls: ['./account-layout.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountLayoutComponent {
+export class AccountLayoutComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly navigationFacade = inject(NavigationFacade);
   private readonly navbarService = inject(NavbarService);
@@ -34,6 +34,10 @@ export class AccountLayoutComponent {
   readonly user = this.authService.user;
   readonly navLinks = this.navigationFacade.navTree;
   readonly isNavbarSearch = toSignal(this.navbarService.isNavbarSearch$, { initialValue: false });
+
+  ngOnInit(): void {
+    this.authService.checkToken().subscribe();
+  }
 
   formatDash(value?: string | null): string {
     return dashText(value);
