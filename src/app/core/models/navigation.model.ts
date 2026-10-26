@@ -1,6 +1,7 @@
 export interface NavigationChild {
   id?: string;
   label: string;
+  title?: string;
   path: string;
   order?: number;
   isActive?: boolean;
@@ -10,6 +11,7 @@ export interface NavigationChild {
 export interface NavigationItem {
   id?: string;
   label: string;
+  title?: string;
   path?: string;
   icon?: string;
   order?: number;

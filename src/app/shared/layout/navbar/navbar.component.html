@@ -11,9 +11,9 @@
             <div class="relative group py-2">
               <div class="flex items-center gap-1 cursor-pointer">
                 @if (item.path) {
-                  <a [routerLink]="item.path" class="navbar__link" [title]="item.label">{{ item.label }}</a>
+                  <a [routerLink]="item.path" class="navbar__link" [title]="item.title || item.label">{{ item.label }}</a>
                 } @else {
-                  <span class="navbar__link select-none" [title]="item.label">{{ item.label }}</span>
+                  <span class="navbar__link select-none" [title]="item.title || item.label">{{ item.label }}</span>
                 }
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@
                           *hasPermission="child.permission"
                           [routerLink]="child.path"
                           class="block px-4 py-2 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
-                          [title]="child.label"
+                          [title]="child.title || child.label"
                         >
                           {{ child.label }}
                         </a>
@@ -43,7 +43,7 @@
                         <a
                           [routerLink]="child.path"
                           class="block px-4 py-2 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
-                          [title]="child.label"
+                          [title]="child.title || child.label"
                         >
                           {{ child.label }}
                         </a>
@@ -60,7 +60,7 @@
                 *hasPermission="item.permission"
                 [routerLink]="item.path"
                 class="navbar__link"
-                [title]="item.label"
+                [title]="item.title || item.label"
               >
                 {{ item.label }}
               </a>
@@ -68,7 +68,7 @@
               <a
                 [routerLink]="item.path"
                 class="navbar__link"
-                [title]="item.label"
+                [title]="item.title || item.label"
               >
                 {{ item.label }}
               </a>
@@ -143,11 +143,11 @@
             <li class="w-full">
               <div class="w-full flex items-center justify-between px-4 py-2.5">
                 @if (item.path) {
-                  <a [routerLink]="item.path" class="navbar__link flex-1 text-left" (click)="closeMenu()" [title]="item.label">
+                  <a [routerLink]="item.path" class="navbar__link flex-1 text-left" (click)="closeMenu()" [title]="item.title || item.label">
                     {{ item.label }}
                   </a>
                 } @else {
-                  <span class="navbar__link flex-1 text-left select-none" [title]="item.label">{{ item.label }}</span>
+                  <span class="navbar__link flex-1 text-left select-none" [title]="item.title || item.label">{{ item.label }}</span>
                 }
                 <button
                   type="button"
@@ -178,7 +178,7 @@
                             [routerLink]="child.path"
                             class="block py-2 px-4 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
                             (click)="closeMenu()"
-                            [title]="child.label"
+                            [title]="child.title || child.label"
                           >
                             {{ child.label }}
                           </a>
@@ -189,7 +189,7 @@
                             [routerLink]="child.path"
                             class="block py-2 px-4 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
                             (click)="closeMenu()"
-                            [title]="child.label"
+                            [title]="child.title || child.label"
                           >
                             {{ child.label }}
                           </a>
@@ -209,7 +209,7 @@
                   [routerLink]="item.path"
                   class="navbar__link block py-2.5 px-4"
                   (click)="closeMenu()"
-                  [title]="item.label"
+                  [title]="item.title || item.label"
                 >
                   {{ item.label }}
                 </a>
@@ -218,7 +218,7 @@
                   [routerLink]="item.path"
                   class="navbar__link block py-2.5 px-4"
                   (click)="closeMenu()"
-                  [title]="item.label"
+                  [title]="item.title || item.label"
                 >
                   {{ item.label }}
                 </a>

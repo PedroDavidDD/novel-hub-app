@@ -6,6 +6,7 @@ export class NavigationAdapter {
     return {
       id: raw.id || raw._id || '',
       label: dashText(raw.label),
+      title: dashText(raw.title || raw.label),
       path: raw.path ?? '',
       icon: raw.icon,
       order: raw.order ?? 0,
@@ -15,6 +16,7 @@ export class NavigationAdapter {
         ? raw.children.map((child: any): NavigationChild => ({
             id: child.id || child._id || '',
             label: dashText(child.label),
+            title: dashText(child.title || child.label),
             path: child.path ?? '',
             order: child.order ?? 0,
             isActive: child.isActive ?? true,
@@ -28,6 +30,6 @@ export class NavigationAdapter {
     if (!Array.isArray(rawList)) {
       return [];
     }
-    return rawList.map(item => NavigationAdapter.toDomain(item));
+    return rawList.map((item) => NavigationAdapter.toDomain(item));
   }
 }
