@@ -331,6 +331,18 @@ export class AuthService {
   }
 
   /**
+   * Actualizar datos del usuario actual
+   */
+  updateUserData(updatedUser: User): void {
+    const currentState = this._state();
+    this._state.set({
+      ...currentState,
+      user: updatedUser,
+    });
+    sessionStorage.setItem('user_data', JSON.stringify(updatedUser));
+  }
+
+  /**
    * Cargar estado desde sessionStorage
    */
   private loadStateFromStorage(): AuthState {

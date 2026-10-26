@@ -13,6 +13,8 @@ export interface User {
   isActive: boolean;
   role: UserRole;
   avatar?: string;
+  about?: string;
+  createdAt?: string;
   permissions?: string[];
 }
 
