@@ -69,6 +69,10 @@ export class NovelPageComponent implements OnInit {
     this.router.navigate(['/novels'], { queryParams: { genre } });
   }
 
+  onAddToLibrary(): void {
+    // Manejador para agregar novela a la biblioteca del usuario
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

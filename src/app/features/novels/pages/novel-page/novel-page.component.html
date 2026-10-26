@@ -60,12 +60,17 @@
 
         <!-- Quick Actions -->
         <div class="quick-actions flex gap-3 mt-2">
-          <button class="action-btn bookmark-btn flex items-center gap-2 px-4 py-2 border-2 border-[var(--color-border)] bg-transparent text-[var(--color-black)] rounded-lg font-medium cursor-pointer transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]">
+          <app-button
+            variant="white"
+            size="md"
+            rounded="lg"
+            (onClick)="onAddToLibrary()"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
             </svg>
-            Add to Library
-          </button>
+            <span>Add to Library</span>
+          </app-button>
         </div>
       </div>
     </div>
