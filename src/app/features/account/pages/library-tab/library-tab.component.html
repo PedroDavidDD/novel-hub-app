@@ -1,0 +1,56 @@
+<div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-medium)]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[var(--color-border)] gap-2">
+    <div>
+      <h2 class="text-xl font-bold text-[var(--color-black)]">My Library</h2>
+      <p class="text-xs text-[var(--color-description)]">Tus novelas guardadas y en curso de lectura</p>
+    </div>
+    <span class="text-sm font-semibold text-[var(--color-primary)]">
+      {{ novels.length }} novelas guardadas
+    </span>
+  </div>
+
+  <!-- Grid de Novelas de la Biblioteca -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
+    @for (novel of novels; track novel.id) {
+      <div class="bg-[var(--color-section)] border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col hover:border-[var(--color-primary)] transition-all group">
+        <!-- Portada -->
+        <div class="aspect-[3/4] w-full overflow-hidden relative">
+          <img
+            [src]="novel.cover"
+            [alt]="novel.title"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute top-2 right-2">
+            <app-badge
+              [vcLabel]="novel.status"
+              [vcVariant]="novel.status === 'Leyendo' ? 'primary' : novel.status === 'Completado' ? 'secondary' : 'neutral'"
+            />
+          </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="p-4 flex-1 flex flex-col justify-between">
+          <div>
+            <h3 class="font-bold text-[var(--color-black)] text-base truncate" [title]="novel.title">
+              {{ novel.title }}
+            </h3>
+            <p class="text-xs text-[var(--color-description)] mb-2">{{ novel.author }}</p>
+            <p class="text-xs text-[var(--color-primary)] font-medium mb-1">{{ novel.progress }}</p>
+            <p class="text-xs text-[var(--color-description)] truncate" [title]="novel.lastChapter">
+              {{ novel.lastChapter }}
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-[var(--color-border)]/40">
+            <app-button
+              text="Continuar"
+              variant="outline-primary"
+              size="sm"
+              class="w-full flex justify-center"
+            />
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

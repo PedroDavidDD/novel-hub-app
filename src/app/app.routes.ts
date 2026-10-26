@@ -10,6 +10,12 @@ export const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
   {
+    path: 'account',
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
+    loadChildren: () => import('./features/account/account.routes').then(m => m.ACCOUNT_ROUTES)
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'

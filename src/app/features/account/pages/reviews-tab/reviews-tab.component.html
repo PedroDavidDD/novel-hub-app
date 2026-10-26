@@ -1,0 +1,31 @@
+<div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-medium)]">
+  <div class="pb-4 border-b border-[var(--color-border)]">
+    <h2 class="text-xl font-bold text-[var(--color-black)]">My Reviews</h2>
+    <p class="text-xs text-[var(--color-description)]">Reseñas y calificaciones públicas otorgadas a novelas</p>
+  </div>
+
+  <div class="divide-y divide-[var(--color-border)]/50 mt-4">
+    @for (rev of reviews; track rev.id) {
+      <div class="py-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-base text-[var(--color-black)]" [title]="rev.novelTitle">{{ rev.novelTitle }}</span>
+          <span class="text-xs text-[var(--color-description)]">{{ rev.date }}</span>
+        </div>
+
+        <!-- Estrellas -->
+        <div class="flex items-center gap-1 text-amber-400 mb-2">
+          @for (star of [1,2,3,4,5]; track star) {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-4">
+              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+            </svg>
+          }
+        </div>
+
+        <h4 class="font-semibold text-sm text-[var(--color-black)] mb-1">{{ rev.title }}</h4>
+        <p class="text-sm text-[var(--color-description)] leading-relaxed">
+          {{ rev.body }}
+        </p>
+      </div>
+    }
+  </div>
+</div>

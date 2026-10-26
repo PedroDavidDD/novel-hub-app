@@ -1,0 +1,8 @@
+.tab-link {
+  position: relative;
+  border-bottom: 2px border-transparent;
+}
+
+.active-tab {
+  border-bottom: 2px solid var(--color-primary) !important;
+}

@@ -22,8 +22,8 @@ export class NavbarUserMenuComponent {
   public isUserMenu: boolean = false;
 
   userMenuItems = [
-    { label: 'Perfil', link: '/auth/profile', action: null },
-    { label: 'Configuración', link: '/auth/settings', action: null },
+    { label: 'Perfil', link: '/account/profile', action: null },
+    { label: 'Configuración', link: '/account/profile', action: null },
     { label: 'Cerrar sesión', link: null, action: () => this.logout() },
   ];
 
@@ -59,36 +59,6 @@ export class NavbarUserMenuComponent {
         hideButtons: true,
         duration: 3000
       });
-
-      // // 3. Warning Variant
-      // await this.modalAlert.alert({
-      //   type: 'warning',
-      //   title: 'Advertencia',
-      //   message: 'Esto es una prueba de advertencia (Demo Warning)',
-      // });
-
-      // // 4. Error Variant
-      // await this.modalAlert.alert({
-      //   type: 'error',
-      //   title: 'Error',
-      //   message: 'Esto es una prueba de error (Demo Error)',
-      // });
-
-      // // 5. Info/Alert Variant (Self-closing, no buttons)
-      // await this.modalAlert.alert({
-      //   type: 'info',
-      //   title: 'Información',
-      //   message: 'Redirigiendo al login... (Demo Info - AutoClose)',
-      // });
-
-      // // 6. Info/Alert Variant (Self-closing, no buttons)
-      // await this.modalAlert.alert({
-      //   type: 'alert',
-      //   title: 'Información',
-      //   message: 'Redirigiendo al login... (Demo Info - AutoClose)',
-      //   hideButtons: true,
-      //   duration: 2000
-      // });
 
       this.authService.logout().pipe(take(1)).subscribe(() => {
         this.router.navigate(['/auth/login']);

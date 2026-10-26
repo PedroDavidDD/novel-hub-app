@@ -1,0 +1,4 @@
+/* Estilos específicos de Profile Settings Modal */
+:host {
+  display: block;
+}

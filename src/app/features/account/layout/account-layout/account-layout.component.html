@@ -1,0 +1,102 @@
+<div class="layout min-h-screen flex flex-col bg-[var(--color-background)]">
+  <!-- Navbar reutilizable -->
+  <app-navbar
+    [arrLinks]="navLinks()"
+    [boNavbarSearch]="isNavbarSearch()"
+    (onSearchClick)="onSearchClick()"
+  />
+
+  <main class="flex-1 container max-w-5xl mx-auto px-4 mt-20 mb-12">
+    <!-- Header del Usuario (Adaptado a diseño NovelHub) -->
+    <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6 shadow-[var(--shadow-medium)]">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+        <!-- Avatar -->
+        <div class="w-20 h-20 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center text-3xl font-bold text-white shadow-md overflow-hidden flex-shrink-0">
+          @if (user()?.avatar) {
+            <img [src]="user()?.avatar" [alt]="user()?.name" class="w-full h-full object-cover" />
+          } @else {
+            <span>{{ user()?.name?.charAt(0) || 'U' }}</span>
+          }
+        </div>
+
+        <!-- Info Usuario -->
+        <div class="flex-1 text-center sm:text-left">
+          <h1 class="text-2xl font-bold text-[var(--color-black)]" [title]="user()?.name || 'Usuario'">
+            {{ formatDash(user()?.name) }}
+          </h1>
+
+          <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-2">
+            <!-- Badge de Rol -->
+            <app-badge
+              [vcLabel]="formatDash(user()?.role)"
+              vcVariant="primary"
+            />
+
+            <!-- Email con icono -->
+            <div class="flex items-center gap-1.5 text-sm text-[var(--color-description)]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-4">
+                <path d="M3 4a2 2 0 0 0-2 2v1.161l8.441 4.221a1.25 1.25 0 0 0 1.118 0L19 7.162V6a2 2 0 0 0-2-2H3Z" />
+                <path d="m19 8.839-7.77 3.885a2.75 2.75 0 0 1-2.46 0L1 8.839V14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.839Z" />
+              </svg>
+              <span>{{ formatDash(user()?.email) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Navegación de Tabs -->
+      <nav class="flex items-center gap-2 sm:gap-6 border-b border-[var(--color-border)] mt-8 overflow-x-auto pb-px">
+        <a
+          routerLink="/account/profile"
+          routerLinkActive="active-tab text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] font-semibold"
+          class="tab-link px-3 py-2 text-sm sm:text-base font-medium text-[var(--color-description)] hover:text-[var(--color-black)] transition-colors whitespace-nowrap"
+        >
+          Info
+        </a>
+        <a
+          routerLink="/account/library"
+          routerLinkActive="active-tab text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] font-semibold"
+          class="tab-link px-3 py-2 text-sm sm:text-base font-medium text-[var(--color-description)] hover:text-[var(--color-black)] transition-colors whitespace-nowrap"
+        >
+          Library
+        </a>
+        <a
+          routerLink="/account/history"
+          routerLinkActive="active-tab text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] font-semibold"
+          class="tab-link px-3 py-2 text-sm sm:text-base font-medium text-[var(--color-description)] hover:text-[var(--color-black)] transition-colors whitespace-nowrap"
+        >
+          History
+        </a>
+        <a
+          routerLink="/account/comments"
+          routerLinkActive="active-tab text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] font-semibold"
+          class="tab-link px-3 py-2 text-sm sm:text-base font-medium text-[var(--color-description)] hover:text-[var(--color-black)] transition-colors whitespace-nowrap"
+        >
+          Comments
+        </a>
+        <a
+          routerLink="/account/reviews"
+          routerLinkActive="active-tab text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] font-semibold"
+          class="tab-link px-3 py-2 text-sm sm:text-base font-medium text-[var(--color-description)] hover:text-[var(--color-black)] transition-colors whitespace-nowrap"
+        >
+          Reviews
+        </a>
+        <a
+          routerLink="/account/inbox"
+          routerLinkActive="active-tab text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] font-semibold"
+          class="tab-link px-3 py-2 text-sm sm:text-base font-medium text-[var(--color-description)] hover:text-[var(--color-black)] transition-colors whitespace-nowrap"
+        >
+          Inbox
+        </a>
+      </nav>
+    </div>
+
+    <!-- Contenido dinámico del tab activo -->
+    <div class="mt-6">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <!-- Footer reutilizable -->
+  <app-footer />
+</div>

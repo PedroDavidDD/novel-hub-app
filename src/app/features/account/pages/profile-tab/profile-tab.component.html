@@ -1,0 +1,70 @@
+<div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 shadow-[var(--shadow-medium)]">
+  <!-- Título de Sección -->
+  <h2 class="text-xl font-bold text-[var(--color-black)] pb-4 border-b border-[var(--color-border)]">
+    Profile
+  </h2>
+
+  <!-- Lista de Información de Usuario (Estructura de Filas) -->
+  <div class="divide-y divide-[var(--color-border)]/50 text-sm">
+    <div class="py-4 flex flex-col sm:flex-row sm:items-center">
+      <span class="w-48 font-semibold text-[var(--color-description)]">User Name</span>
+      <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0" [title]="user()?.name || '-'">
+        {{ formatDash(user()?.name) }}
+      </span>
+    </div>
+
+    <div class="py-4 flex flex-col sm:flex-row sm:items-center">
+      <span class="w-48 font-semibold text-[var(--color-description)]">Rank</span>
+      <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0">
+        {{ formatDash(user()?.role) }}
+      </span>
+    </div>
+
+    <div class="py-4 flex flex-col sm:flex-row sm:items-center">
+      <span class="w-48 font-semibold text-[var(--color-description)]">E-mail</span>
+      <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0" [title]="user()?.email || '-'">
+        {{ formatDash(user()?.email) }}
+      </span>
+    </div>
+
+    <div class="py-4 flex flex-col sm:flex-row sm:items-center">
+      <span class="w-48 font-semibold text-[var(--color-description)]">About</span>
+      <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0">
+        {{ formatDash(user()?.['about']) }}
+      </span>
+    </div>
+
+    <div class="py-4 flex flex-col sm:flex-row sm:items-center">
+      <span class="w-48 font-semibold text-[var(--color-description)]">Registered</span>
+      <span class="font-medium text-[var(--color-black)] mt-1 sm:mt-0">
+        {{ user()?.['createdAt'] ? (user()?.['createdAt'] | date:'dd MMMM yyyy, HH:mm:ss') : '-' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Botones de Acción (Reutilizando app-button) -->
+  <div class="flex flex-wrap items-center justify-center gap-4 mt-8 pt-4 border-t border-[var(--color-border)]/50">
+    <app-button
+      text="SIGN OUT"
+      variant="outline-primary"
+      size="md"
+      (onClick)="onSignOut()"
+    />
+
+    <app-button
+      text="UPDATE PROFILE"
+      variant="primary"
+      size="md"
+      (onClick)="openSettingsModal()"
+    />
+  </div>
+</div>
+
+<!-- Modal Reutilizable de Ajustes de Perfil -->
+<app-profile-settings-modal
+  [show]="isModalOpen()"
+  [user]="user()"
+  [isLoading]="isSaving()"
+  (onClose)="closeSettingsModal()"
+  (onSave)="handleSaveProfile($event)"
+/>
