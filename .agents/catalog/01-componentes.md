@@ -53,6 +53,25 @@ Este catálogo lista los componentes UI reales encontrados en `src/app/shared/co
   ```
 - **Cuándo usarlo**: En cualquier acción de usuario o menú lateral. **NUNCA crear elementos `<button>` directos** con estilos duplicados si se puede usar `app-button`.
 
+### `CustomBadgeComponent` (`app-badge`)
+- **Ruta**: `src/app/shared/components/custom-badge/custom-badge.component.ts`
+- **Propósito**: Badge Dumb presentacional con Angular 19 Signals y OnPush para géneros y categorías, con variante tonal `primary` (fondo y borde translúcido al 20%, iluminando su borde al color primario en hover).
+- **Inputs**:
+  - `vcLabel`: `input.required<string>()`
+  - `vcVariant`: `input<'primary' | 'secondary' | 'neutral'>('primary')`
+  - `customClass`: `input<string>('')`
+- **Outputs**:
+  - `onClick`: `output<string>()`
+- **Ejemplo real de uso**:
+  ```html
+  <app-badge
+    [vcLabel]="genre"
+    vcVariant="primary"
+    (onClick)="onGenreClick($event)"
+  />
+  ```
+- **Cuándo usarlo**: Para listar géneros, categorías o chips en vistas de detalle y filtros.
+
 ---
 
 ## 2. Componentes de Feedback y Carga
