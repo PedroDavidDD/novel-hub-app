@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NovelsService, INovel } from '../../services/novels.service';
+import { CustomButtonComponent } from '../../../../shared/components';
 
 @Component({
   selector: 'app-novel-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CustomButtonComponent],
   templateUrl: './novel-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -61,5 +62,10 @@ export class NovelPageComponent implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

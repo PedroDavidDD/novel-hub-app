@@ -96,7 +96,13 @@
 
     <!-- Chapter List Button -->
     <div class="novel-section">
-      <button class="chapters-button flex items-center justify-center gap-3 w-full p-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-[var(--color-black)] border-none rounded-xl text-base font-semibold cursor-pointer hover:translate-y-[-2px] hover:shadow-lg transition-all">
+      <app-button
+        variant="outline-primary"
+        size="lg"
+        rounded="xl"
+        [fullWidth]="true"
+        customClass="p-4 !text-base"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="8" y1="6" x2="21" y2="6"></line>
           <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -105,8 +111,8 @@
           <line x1="3" y1="12" x2="3.01" y2="12"></line>
           <line x1="3" y1="18" x2="3.01" y2="18"></line>
         </svg>
-        View All Chapters
-      </button>
+        <span>View All Chapters</span>
+      </app-button>
     </div>
   } @else {
     <div class="error-state flex flex-col items-center justify-center min-h-[400px] text-center gap-3">
