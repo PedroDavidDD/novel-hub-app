@@ -41,5 +41,6 @@
   - Para estado local efímero de UI (ej. acordeón abierto, tooltip visible, menú desplegable abierto): usar `signal()` local interno en el componente dumb.
 
 ## 6. Utilidad Dash para Valores Nulos o No Definidos (`dashText`, `dashNumber`)
-- Todo texto que provenga de backend o cálculo susceptible de ser `null`, `undefined` o cadena vacía debe ser transformado a `'-'` usando `dashText(val)` o el pipe `| dash`.
-- Todo número susceptible de ser `null`, `undefined` o `NaN` debe ser transformado a `'-'` usando `dashNumber(val)` o el pipe `| dash:'number'`.
+- **Ámbito Exclusivo Frontend / Presentación**: `dashText`, `dashNumber` y el pipe `dash` se utilizan única y exclusivamente en la capa visual (UI) para evitar pintar en pantalla `null`, `undefined` o cadenas vacías, mostrando un elegante `'-'`.
+- **Prohibido en Payloads / Mutaciones**: Jamás se debe enviar un guión `'-'` al backend en payloads de creación o actualización (`POST`, `PUT`, `PATCH`). Hacia la API, los campos opcionales o vacíos deben viajar como `null`, `undefined` o ser omitidos según el DTO correspondiente.
+- **Backend Libre de Dash**: En el backend (NestJS/MongoDB), las entidades y bases de datos deben preservar sus tipos primitivos puros (`null`, valores por defecto o ausencia de clave) sin adulterar los datos persistidos con caracteres de presentación visual.
