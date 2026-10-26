@@ -1,9 +1,81 @@
 <nav class="navbar">
   <div class="navbar__container">
-    <span class="navbar__brand">DukeTranslation</span>
-    <div class="navbar__links hidden md:flex">
-      <a routerLink="/" class="navbar__link" *hasPermission="'home.read'">Home</a>
-      <a routerLink="/novels" class="navbar__link" *hasPermission="'novels.read'">Novels</a>
+    <a routerLink="/" class="navbar__brand" title="DukeTranslation">DukeTranslation</a>
+
+    <!-- Enlaces Desktop (Nivel 1 y Dropdown Nivel 2) -->
+    <div class="navbar__links hidden md:flex items-center">
+      @for (item of arrLinks(); track item.id || item.label) {
+        @if (item.isActive !== false) {
+          @if (item.children && item.children.length > 0) {
+            <!-- Ítem con submenú dropdown -->
+            <div class="relative group py-2">
+              <div class="flex items-center gap-1 cursor-pointer">
+                @if (item.path) {
+                  <a [routerLink]="item.path" class="navbar__link" [title]="item.label">{{ item.label }}</a>
+                } @else {
+                  <span class="navbar__link select-none" [title]="item.label">{{ item.label }}</span>
+                }
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  class="size-4 text-[var(--color-black)] transition-transform duration-200 group-hover:rotate-180"
+                >
+                  <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                </svg>
+              </div>
+
+              <!-- Submenú desplegable flotante (Nivel 2) -->
+              <div class="absolute left-0 top-full pt-1 hidden group-hover:block z-50">
+                <div class="min-w-[190px] py-2 bg-[var(--color-burger)] border border-[var(--color-border)] rounded-lg shadow-xl backdrop-blur-md">
+                  @for (child of item.children; track child.id || child.label) {
+                    @if (child.isActive !== false) {
+                      @if (child.permission) {
+                        <a
+                          *hasPermission="child.permission"
+                          [routerLink]="child.path"
+                          class="block px-4 py-2 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
+                          [title]="child.label"
+                        >
+                          {{ child.label }}
+                        </a>
+                      } @else {
+                        <a
+                          [routerLink]="child.path"
+                          class="block px-4 py-2 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
+                          [title]="child.label"
+                        >
+                          {{ child.label }}
+                        </a>
+                      }
+                    }
+                  }
+                </div>
+              </div>
+            </div>
+          } @else {
+            <!-- Ítem simple de 1 nivel -->
+            @if (item.permission) {
+              <a
+                *hasPermission="item.permission"
+                [routerLink]="item.path"
+                class="navbar__link"
+                [title]="item.label"
+              >
+                {{ item.label }}
+              </a>
+            } @else {
+              <a
+                [routerLink]="item.path"
+                class="navbar__link"
+                [title]="item.label"
+              >
+                {{ item.label }}
+              </a>
+            }
+          }
+        }
+      }
     </div>
   </div>
 
@@ -12,12 +84,13 @@
 
     <navbar-user-menu
       class="navbar__button navbar__button--login"
-      [isLoggedIn]="true"
+      [isLoggedIn]="boIsLoggedIn()"
     />
 
     <button
       class="navbar__button navbar__button--search"
       (click)="openModal()"
+      aria-label="Buscar"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -36,6 +109,7 @@
     <button
       class="navbar__button navbar__button--burger"
       (click)="toggleMenuOpen()"
+      aria-label="Abrir menú"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -54,29 +128,113 @@
     </button>
   </div>
 
-  <!-- Menú desplegable -->
+  <!-- Menú móvil desplegable tipo Drawer (2 niveles) -->
   <div
     [ngClass]="{
       'navbar__burger--menu': true,
-      'open': isMenuOpen
+      'open': boMenuOpen()
     }"
   >
-    <ul>
-      <li>
-        <a routerLink="/" class="navbar__link">Home</a>
-      </li>
-      <li>
-        <a routerLink="/novels" class="navbar__link">Novels</a>
-      </li>
+    <ul class="w-full divide-y divide-[var(--color-border)]/20">
+      @for (item of arrLinks(); track item.id || item.label) {
+        @if (item.isActive !== false) {
+          @if (item.children && item.children.length > 0) {
+            <!-- Acordeón móvil con submenú -->
+            <li class="w-full">
+              <div class="w-full flex items-center justify-between px-4 py-2.5">
+                @if (item.path) {
+                  <a [routerLink]="item.path" class="navbar__link flex-1 text-left" (click)="closeMenu()" [title]="item.label">
+                    {{ item.label }}
+                  </a>
+                } @else {
+                  <span class="navbar__link flex-1 text-left select-none" [title]="item.label">{{ item.label }}</span>
+                }
+                <button
+                  type="button"
+                  class="p-1 text-[var(--color-black)] hover:text-[var(--color-primary)] transition-colors"
+                  (click)="toggleSubmenu(item.id || item.label)"
+                  aria-label="Alternar submenú"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    class="size-5 transition-transform duration-200"
+                    [class.rotate-180]="isSubmenuOpen(item.id || item.label)"
+                  >
+                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Hijos Nivel 2 en móvil -->
+              @if (isSubmenuOpen(item.id || item.label)) {
+                <ul class="w-full bg-[var(--color-border)]/10 py-1 pl-4 divide-y divide-[var(--color-border)]/10">
+                  @for (child of item.children; track child.id || child.label) {
+                    @if (child.isActive !== false) {
+                      @if (child.permission) {
+                        <li *hasPermission="child.permission">
+                          <a
+                            [routerLink]="child.path"
+                            class="block py-2 px-4 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
+                            (click)="closeMenu()"
+                            [title]="child.label"
+                          >
+                            {{ child.label }}
+                          </a>
+                        </li>
+                      } @else {
+                        <li>
+                          <a
+                            [routerLink]="child.path"
+                            class="block py-2 px-4 text-sm text-[var(--color-black)] hover:bg-[var(--color-primary-dark)] hover:text-white transition-colors"
+                            (click)="closeMenu()"
+                            [title]="child.label"
+                          >
+                            {{ child.label }}
+                          </a>
+                        </li>
+                      }
+                    }
+                  }
+                </ul>
+              }
+            </li>
+          } @else {
+            <!-- Ítem simple de 1 nivel en móvil -->
+            <li class="w-full">
+              @if (item.permission) {
+                <a
+                  *hasPermission="item.permission"
+                  [routerLink]="item.path"
+                  class="navbar__link block py-2.5 px-4"
+                  (click)="closeMenu()"
+                  [title]="item.label"
+                >
+                  {{ item.label }}
+                </a>
+              } @else {
+                <a
+                  [routerLink]="item.path"
+                  class="navbar__link block py-2.5 px-4"
+                  (click)="closeMenu()"
+                  [title]="item.label"
+                >
+                  {{ item.label }}
+                </a>
+              }
+            </li>
+          }
+        }
+      }
     </ul>
   </div>
 
   <navbar-search
     [ngClass]="{
       'navbar-search': true,
-      'navbar-search--open': isNavbarSearch
+      'navbar-search--open': boNavbarSearch()
     }"
-    [isNavbarSearch]="isNavbarSearch"
+    [isNavbarSearch]="boNavbarSearch()"
   />
-
 </nav>

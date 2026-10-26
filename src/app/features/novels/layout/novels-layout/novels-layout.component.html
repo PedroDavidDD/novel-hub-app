@@ -1,6 +1,10 @@
 <div class="layout">
-  <!-- Navbar -->
-  <app-navbar />
+  <!-- Navbar (Dumb Component) -->
+  <app-navbar
+    [arrLinks]="navLinks()"
+    [boNavbarSearch]="isNavbarSearch()"
+    (onSearchClick)="onSearchClick()"
+  />
   
   <!-- Contenido Principal -->
   <main class="layout__main container max-w-7xl mx-auto max-md:flex-col mt-16">
