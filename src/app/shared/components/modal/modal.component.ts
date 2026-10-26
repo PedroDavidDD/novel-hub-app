@@ -1,7 +1,12 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  input,
+  output,
+  ViewEncapsulation
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, inject, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavbarService } from '../../layout/navbar/services/navbar.service';
 
 @Component({
   selector: 'app-modal',
@@ -9,23 +14,41 @@ import { NavbarService } from '../../layout/navbar/services/navbar.service';
   imports: [CommonModule],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalComponent {
-  @Input() title: string = 'Título del Modal';
-  @Input() show: boolean = false;
+  // Inputs con Signals (Angular 19)
+  readonly title = input<string>('Modal');
+  readonly show = input<boolean>(false);
+  readonly isStatic = input<boolean>(false);
+  readonly showCloseButton = input<boolean>(true);
+  readonly maxWidth = input<string>('max-w-lg');
 
-  public isNavbarSearch: boolean = false;
-  private destroyRef = inject(DestroyRef);
+  // Outputs para notificación desacoplada
+  readonly close = output<void>();
+  readonly onClose = output<void>();
 
-  constructor(private navbarService: NavbarService) {
-    navbarService.isNavbarSearch$.pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe((state) => {
-      this.isNavbarSearch = state;
-    });
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscapeKey(event: Event): void {
+    if (this.show() && !this.isStatic()) {
+      event.preventDefault();
+      this.closeModal();
+    }
   }
 
-  closeModal() {
-    this.navbarService.closeModal();
+  onBackdropClick(): void {
+    if (!this.isStatic()) {
+      this.closeModal();
+    }
+  }
+
+  onContentClick(event: MouseEvent): void {
+    event.stopPropagation();
+  }
+
+  closeModal(): void {
+    this.close.emit();
+    this.onClose.emit();
   }
 }

@@ -1,9 +1,39 @@
-@if (show) {
-<div class="modal-backdrop" (click)="closeModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <h2>{{ title }}</h2>
-    <ng-content></ng-content>
-    <button class="close-btn" (click)="closeModal()">Cerrar</button>
+@if (show()) {
+  <div
+    class="app-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="app-modal-dialog bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-2xl overflow-hidden w-full flex flex-col max-h-[90vh] transition-all"
+      [ngClass]="maxWidth()"
+      (click)="onContentClick($event)"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="title()"
+    >
+      <!-- Header del Modal -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)]">
+        <h2 class="text-xl font-bold text-[var(--color-black)]" [title]="title()">
+          {{ title() }}
+        </h2>
+        @if (showCloseButton()) {
+          <button
+            type="button"
+            class="p-1.5 rounded-lg text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20 transition-colors"
+            (click)="closeModal()"
+            aria-label="Cerrar modal"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+              <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.94l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.94 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+            </svg>
+          </button>
+        }
+      </div>
+
+      <!-- Contenido Proyectado -->
+      <div class="p-6 overflow-y-auto">
+        <ng-content></ng-content>
+      </div>
+    </div>
   </div>
-</div>
 }
