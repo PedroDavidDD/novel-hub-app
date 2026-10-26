@@ -30,8 +30,9 @@ Este catálogo lista los componentes UI reales encontrados en `src/app/shared/co
 - **Propósito**: Botón tipado reutilizable con Angular 19 Signals, accesible, con variantes temáticas y soporte de estados loading/disabled.
 - **Inputs**:
   - `text`: `input<string>('')`
-  - `variant`: `input<'primary' | 'secondary' | 'outline' | 'danger'>('primary')`
+  - `variant`: `input<'primary' | 'secondary' | 'outline' | 'outline-primary' | 'outline-secondary' | 'danger'>('primary')`
   - `size`: `input<'sm' | 'md' | 'lg'>('md')`
+  - `rounded`: `input<'full' | 'xl' | 'lg' | 'md' | 'none'>('full')`
   - `type`: `input<'button' | 'submit' | 'reset'>('button')`
   - `fullWidth`: `input<boolean>(false)`
   - `loading`: `input<boolean>(false)`
