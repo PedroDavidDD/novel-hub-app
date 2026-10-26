@@ -1,19 +1,20 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { NovelsService, INovel } from '../../services/novels.service';
-import { CustomButtonComponent } from '../../../../shared/components';
+import { CustomButtonComponent, CustomBadgeComponent } from '../../../../shared/components';
 
 @Component({
   selector: 'app-novel-page',
   standalone: true,
-  imports: [CommonModule, CustomButtonComponent],
+  imports: [CommonModule, CustomButtonComponent, CustomBadgeComponent],
   templateUrl: './novel-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NovelPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly novelsService = inject(NovelsService);
   private readonly destroy$ = new Subject<void>();
 
@@ -62,6 +63,10 @@ export class NovelPageComponent implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  onGenreClick(genre: string): void {
+    this.router.navigate(['/novels'], { queryParams: { genre } });
   }
 
   ngOnDestroy() {
