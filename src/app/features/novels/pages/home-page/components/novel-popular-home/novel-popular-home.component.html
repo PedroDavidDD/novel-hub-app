@@ -1,12 +1,12 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     @for (novel of novels(); track novel.id) {
-      <div class="novelItem">
+      <div class="novelItem cursor-pointer" appCardShine (click)="navigateToNovel(novel)">
         <div class="novelItem__image">
-          <img [src]="novel.image" [alt]="novel.title" />
+          <img [src]="novel.image" [alt]="novel.title" (error)="onImgError($event)" />
         </div>
         <div class="novelItem__content">
           <div class="novelItem__tp">
-            <h2 class="novelItem__title">
+            <h2 class="novelItem__title" [title]="novel.title">
               {{ novel.title }}
             </h2>
             <p class="novelItem__popularity">
@@ -14,7 +14,7 @@
             </p>
           </div>
           <div class="novelItem__description">
-            <span class="novelItem__description--text">
+            <span class="novelItem__description--text" [title]="novel.description">
               {{ novel.description }}
             </span>
           </div>
@@ -29,4 +29,4 @@
         </div>
       </div>
     }
-  </div>
+</div>

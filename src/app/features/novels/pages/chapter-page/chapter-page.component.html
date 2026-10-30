@@ -1,1 +1,163 @@
-<p>chapter-page works!</p>
+<div class="chapter-reader-container max-w-4xl mx-auto px-4 py-8 sm:px-6">
+  @if (isLoading()) {
+    <div class="flex flex-col items-center justify-center min-h-[450px] gap-4">
+      <div class="w-12 h-12 border-4 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin"></div>
+      <p class="text-[var(--color-description)] text-base font-medium">Cargando capítulo...</p>
+    </div>
+  } @else if (novel() && currentChapter()) {
+    
+    <!-- ============================================== -->
+    <!-- CABECERA DEL CAPÍTULO (Fiel a la Imagen 1)     -->
+    <!-- ============================================== -->
+    <header class="chapter-header flex flex-col gap-2 pb-5 border-b border-[var(--color-border)]/50">
+      <!-- Enlace a la Novela (Color Púrpura / Acento) -->
+      <a
+        [routerLink]="['/novel', novel()?.slug || novel()?.id]"
+        class="text-base sm:text-lg font-semibold text-indigo-400 hover:text-indigo-300 dark:text-indigo-400 hover:underline transition-colors w-fit"
+      >
+        {{ novel()?.title }}
+      </a>
+
+      <!-- Título Completo del Capítulo -->
+      <h1 class="text-xl sm:text-2xl font-bold text-[var(--color-black)] leading-snug tracking-tight">
+        {{ currentChapter()?.title }}
+      </h1>
+
+      <!-- Conteo de Palabras y Vistas -->
+      <div class="flex items-center gap-3 text-xs sm:text-sm text-[var(--color-description)] font-mono">
+        <span>[ {{ estimatedWords() | number }} words ]</span>
+        <span>•</span>
+        <span>{{ (currentChapter()?.views || 0) | number }} views</span>
+      </div>
+    </header>
+
+    <!-- ============================================== -->
+    <!-- BARRA DE NAVEGACIÓN SUPERIOR (Centrada)        -->
+    <!-- ============================================== -->
+    <nav class="chapter-nav-bar flex items-center justify-center gap-2 sm:gap-3 py-5" aria-label="Navegación de capítulo superior">
+      <!-- Botón Anterior -->
+      <app-button
+        text="<"
+        variant="primary"
+        size="md"
+        rounded="lg"
+        [disabled]="!hasPreviousChapter()"
+        (onClick)="goToPreviousChapter()"
+        title="Capítulo Anterior"
+        aria-label="Capítulo Anterior"
+      />
+
+      <!-- Selector Desplegable de Capítulos -->
+      <div class="relative max-w-[280px] sm:max-w-md w-full">
+        <select
+          [value]="currentChapter()?.chapterNumber"
+          (change)="onChapterSelect($event)"
+          class="w-full bg-[color-mix(in_srgb,var(--color-surface)_90%,transparent)] text-[var(--color-black)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold truncate cursor-pointer shadow-sm focus:outline-none focus:border-[var(--color-primary)] transition-all"
+        >
+          @for (ch of allChapters(); track ch.id) {
+            <option [value]="ch.chapterNumber" [selected]="ch.chapterNumber === currentChapter()?.chapterNumber">
+              {{ ch.title }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <!-- Botón Siguiente -->
+      <app-button
+        text=">"
+        variant="primary"
+        size="md"
+        rounded="lg"
+        [disabled]="!hasNextChapter()"
+        (onClick)="goToNextChapter()"
+        title="Capítulo Siguiente"
+        aria-label="Capítulo Siguiente"
+      />
+    </nav>
+
+    <!-- ============================================== -->
+    <!-- PUBLICIDAD SUPERIOR (Componente Reutilizable)  -->
+    <!-- ============================================== -->
+    <app-ad-banner slotId="chapter-top-ad" maxHeight="280px" />
+
+    <!-- ============================================== -->
+    <!-- CONTENIDO DEL CAPÍTULO                         -->
+    <!-- ============================================== -->
+    <article class="chapter-content py-6 text-[16px] sm:text-[18px] leading-[1.85] text-[var(--color-black)] font-serif whitespace-pre-line tracking-wide">
+      {{ currentChapter()?.content }}
+    </article>
+
+    <!-- ============================================== -->
+    <!-- PUBLICIDAD INFERIOR (Componente Reutilizable)  -->
+    <!-- ============================================== -->
+    <app-ad-banner slotId="chapter-bottom-ad" maxHeight="240px" />
+
+    <!-- ============================================== -->
+    <!-- BARRA DE NAVEGACIÓN INFERIOR (Centrada)        -->
+    <!-- ============================================== -->
+    <nav class="chapter-nav-bar-bottom flex flex-col items-center gap-4 py-8 border-t border-[var(--color-border)]/60" aria-label="Navegación de capítulo inferior">
+      <div class="flex items-center justify-center gap-2 sm:gap-3 w-full">
+        <!-- Botón Anterior -->
+        <app-button
+          text="<"
+          variant="primary"
+          size="md"
+          rounded="lg"
+          [disabled]="!hasPreviousChapter()"
+          (onClick)="goToPreviousChapter()"
+          title="Capítulo Anterior"
+          aria-label="Capítulo Anterior"
+        />
+
+        <!-- Selector Desplegable de Capítulos -->
+        <div class="relative max-w-[280px] sm:max-w-md w-full">
+          <select
+            [value]="currentChapter()?.chapterNumber"
+            (change)="onChapterSelect($event)"
+            class="w-full bg-[color-mix(in_srgb,var(--color-surface)_90%,transparent)] text-[var(--color-black)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold truncate cursor-pointer shadow-sm focus:outline-none focus:border-[var(--color-primary)] transition-all"
+          >
+            @for (ch of allChapters(); track ch.id) {
+              <option [value]="ch.chapterNumber" [selected]="ch.chapterNumber === currentChapter()?.chapterNumber">
+                {{ ch.title }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- Botón Siguiente -->
+        <app-button
+          text=">"
+          variant="primary"
+          size="md"
+          rounded="lg"
+          [disabled]="!hasNextChapter()"
+          (onClick)="goToNextChapter()"
+          title="Capítulo Siguiente"
+          aria-label="Capítulo Siguiente"
+        />
+      </div>
+
+      <!-- Botón Volver a la Novela -->
+      <app-button
+        text="Volver a los detalles de la novela"
+        variant="outline-primary"
+        size="md"
+        rounded="xl"
+        (onClick)="goToNovel()"
+      />
+    </nav>
+
+  } @else {
+    <!-- Estado: Capítulo no encontrado -->
+    <div class="flex flex-col items-center justify-center min-h-[400px] text-center gap-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-16 text-[var(--color-error)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <p class="text-xl font-bold text-[var(--color-black)]">Capítulo no encontrado</p>
+      <span class="text-sm text-[var(--color-description)]">El capítulo solicitado no existe o no ha sido publicado aún.</span>
+      <app-button text="Ir a Series" variant="primary" size="md" rounded="xl" routerLink="/series" />
+    </div>
+  }
+</div>

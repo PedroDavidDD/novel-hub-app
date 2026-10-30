@@ -53,26 +53,45 @@ export class ProfileTabComponent {
     this.isSaving.set(true);
 
     try {
-      const currentUser = this.user();
-      if (currentUser) {
-        const updated: User = {
-          ...currentUser,
-          name: payload.name,
-          about: payload.about,
-        };
-        this.authService.updateUserData(updated);
+      const updatePayload: { name: string; password?: string } = {
+        name: payload.name,
+      };
+      if (payload.password) {
+        updatePayload.password = payload.password;
       }
 
-      await this.modalAlert.alert({
-        type: 'success',
-        title: 'Perfil Actualizado',
-        message: 'Tus datos han sido guardados correctamente.',
-        hideButtons: true,
-        duration: 2000,
-      });
+      this.authService.updateProfile(updatePayload).subscribe(async (result) => {
+        if (result.success) {
+          const currentUser = this.user();
+          if (currentUser) {
+            const updated: User = {
+              ...currentUser,
+              name: payload.name,
+              about: payload.about,
+            };
+            this.authService.updateUserData(updated);
+          }
 
-      this.closeSettingsModal();
-    } finally {
+          await this.modalAlert.alert({
+            type: 'success',
+            title: 'Perfil Actualizado',
+            message: 'Tus datos y credenciales han sido guardados correctamente.',
+            hideButtons: true,
+            duration: 2000,
+          });
+
+          this.closeSettingsModal();
+        } else {
+          await this.modalAlert.alert({
+            type: 'error',
+            title: 'Error',
+            message: result.error || 'No se pudo actualizar el perfil',
+            duration: 3000,
+          });
+        }
+        this.isSaving.set(false);
+      });
+    } catch {
       this.isSaving.set(false);
     }
   }

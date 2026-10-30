@@ -1,0 +1,45 @@
+<section
+  class="ad-banner-wrapper w-full my-6 flex flex-col items-center justify-center select-none"
+  [attr.data-slot]="slotId"
+  aria-label="Publicidad"
+>
+  <span class="text-[10px] tracking-widest font-mono text-[var(--color-description)] uppercase mb-1.5 opacity-70">
+    {{ label }}
+  </span>
+
+  <div
+    class="ad-banner-box relative w-full max-w-lg min-h-[160px] max-h-[300px] rounded-xl overflow-hidden bg-[color-mix(in_srgb,var(--color-surface)_80%,transparent)] border border-[var(--color-border)]/40 flex items-center justify-center p-2 shadow-sm"
+    [style.maxHeight]="maxHeight"
+  >
+    @if (imageUrl) {
+      <a
+        [href]="linkUrl || '#'"
+        [target]="linkUrl ? '_blank' : '_self'"
+        rel="noopener noreferrer"
+        class="w-full h-full flex items-center justify-center overflow-hidden"
+      >
+        <img
+          [src]="imageUrl"
+          [alt]="label"
+          class="w-full h-full object-contain rounded-lg transition-transform hover:scale-[1.02] duration-300"
+          loading="lazy"
+        />
+      </a>
+    } @else {
+      <!-- Placeholder predeterminado estilizado para anuncio de fantasía / novelas -->
+      <div class="flex flex-col items-center justify-center text-center p-6 gap-2 w-full">
+        <div class="relative w-full max-w-[260px] h-[140px] rounded-lg overflow-hidden bg-gradient-to-br from-amber-950/40 via-stone-900/60 to-purple-950/40 border border-amber-500/20 flex flex-col items-center justify-center p-3">
+          <!-- Insignia Ad -->
+          <span class="absolute top-2 right-2 text-[10px] font-bold text-white/80 bg-black/60 px-1.5 py-0.5 rounded-full border border-white/20">
+            Ad
+          </span>
+          <svg class="w-8 h-8 text-amber-400/80 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+          </svg>
+          <span class="text-xs font-semibold text-amber-200/90 tracking-wide">Novel Hub Sponsor</span>
+          <span class="text-[11px] text-[var(--color-description)] line-clamp-1">{{ placeholderText }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</section>

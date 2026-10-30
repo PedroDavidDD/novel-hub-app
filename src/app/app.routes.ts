@@ -32,9 +32,19 @@ export const routes: Routes = [
         data: { permissions: ['home.read'] }
       },
       {
-        path: 'novels',
+        path: 'series',
         loadChildren: () => import('./features/novels/novels.routes').then(m => m.NOVELS_ROUTES),
         data: { permissions: ['novels.read'] }
+      },
+      {
+        path: 'novel',
+        loadChildren: () => import('./features/novels/single-novel.routes').then(m => m.SINGLE_NOVEL_ROUTES),
+        data: { permissions: ['novels.read'] }
+      },
+      {
+        path: 'novels',
+        redirectTo: 'series',
+        pathMatch: 'full'
       },
     ]
   },

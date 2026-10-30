@@ -112,9 +112,9 @@
 
 .user-menu__info {
     padding: .5rem 1rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(6.25rem, 100%), 1fr));
-    grid-template-rows: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
 }
 
 .user-menu__info__items,

@@ -1,42 +1,16 @@
-/* 
- * Novel Detail Page Styles
- * Using Tailwind CSS classes in template
- * Additional custom styles below if needed
- */
-
-/* Custom animations */
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
 }
 
-.animate-spin {
-  animation: spin 1s linear infinite;
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* Cover overlay transition */
-.cover-overlay {
-  transition: opacity 0.3s ease;
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
 }
 
-/* Hover effects */
-.read-button:hover {
-  transform: translateY(-2px);
-}
-
-.genre-tag:hover {
-  transform: translateY(-1px);
-}
-
-.action-btn:hover {
+.custom-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.tag-item:hover {
-  background: var(--color-primary);
-  color: var(--color-black);
-}
-
-.chapters-button:hover {
-  transform: translateY(-2px);
 }

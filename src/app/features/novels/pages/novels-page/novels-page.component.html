@@ -54,7 +54,7 @@
     <!-- Filtro por Géneros -->
     <div class="filters__group col-span-12 lg:col-span-4">
       <h3 class="filters__title">Genres</h3>
-      <div class="filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
         @for (genre of genres; track genre) {
           <label
             [class.filters__checkboxLabel]="true"
@@ -74,9 +74,13 @@
   </div>
 
   <!-- Lista de novelas -->
-  <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  <div class="novelList grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
     @for (novel of filteredNovels(); track novel.id) {
-      <div class="novelList__item aspect-[2/3]">
+      <div
+        class="novelList__item aspect-[2/3] cursor-pointer group"
+        appCardShine
+        (click)="navigateToNovel(novel)"
+      >
         <div class="novelList__imageContainer">
           <img
             [src]="novel.image"
@@ -84,10 +88,10 @@
             class="novelList__image"
           />
           <div class="novelList__details">
-            <h2 class="novelList__detailsTitle">{{ novel.title }}</h2>
+            <h2 class="novelList__detailsTitle" [title]="novel.title">{{ novel.title }}</h2>
           </div>
         </div>
-        <p class="novelList__detailsTitle novel__list__title">
+        <p class="novelList__detailsTitle novel__list__title" [title]="novel.description">
           {{ novel.description | truncate: 50 }}
         </p>
       </div>

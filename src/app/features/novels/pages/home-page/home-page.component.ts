@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { INovel, NovelsService } from '../../services/novels.service';
 import { NovelLatestHomeComponent } from './components/novel-latest-home/novel-latest-home.component';
 import { NovelPopularHomeComponent } from './components/novel-popular-home/novel-popular-home.component';
@@ -17,7 +17,7 @@ const POPULAR_NOVELS_LIMIT = 6;
   styleUrl: './home-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
   private readonly novelsService = inject(NovelsService);
 
   readonly latestNovels = computed(() => {
@@ -30,12 +30,16 @@ export class HomePageComponent {
     return this.applyPopularFilter(novels).slice(0, POPULAR_NOVELS_LIMIT);
   });
 
+  ngOnInit(): void {
+    this.novelsService.getAllNovels().subscribe();
+  }
+
   private applyLatestFilter(novels: INovel[]): INovel[] {
     return novels
       .filter(novel => novel.releaseDate)
       .sort((a, b) => {
-        const dateA = new Date(a.releaseDate);
-        const dateB = new Date(b.releaseDate);
+        const dateA = new Date(a.releaseDate!);
+        const dateB = new Date(b.releaseDate!);
         return dateB.getTime() - dateA.getTime();
       });
   }

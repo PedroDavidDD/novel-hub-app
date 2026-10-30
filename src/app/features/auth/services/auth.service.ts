@@ -348,6 +348,32 @@ export class AuthService {
     };
   }
 
+  /**
+   * Actualizar perfil del usuario actual en backend (incluyendo password para cuentas de terceros o cambio normal)
+   */
+  updateProfile(data: { name?: string; username?: string; password?: string }): Observable<Result<void>> {
+    return this.http.patch<ApiResponse<null>>(this.baseUrl + '/auth/update-profile', data).pipe(
+      map(response => {
+        if (response.statusCode === 1) {
+          const currentUser = this.user();
+          if (currentUser) {
+            this.updateUserData({
+              ...currentUser,
+              name: data.name ?? currentUser.name,
+              username: data.username ?? currentUser.username,
+            });
+          }
+          return Result.ok(undefined as unknown as void);
+        }
+        return Result.fail<void>(response.msg || 'Error al actualizar el perfil');
+      }),
+      catchError(error => {
+        const msg = error.error?.msg || 'Error al actualizar perfil';
+        return of(Result.fail<void>(msg));
+      })
+    );
+  }
+
   updateUserData(updatedUser: User): void {
     const currentState = this._state();
     this._state.set({

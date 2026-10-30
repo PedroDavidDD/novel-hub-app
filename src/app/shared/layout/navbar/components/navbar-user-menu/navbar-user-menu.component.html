@@ -27,8 +27,9 @@
     <div class="user-menu__profile">
       <div class="user-menu__image">
         <img
-          src="https://pbs.twimg.com/media/GkQJXGkXcAELxia?format=jpg&name=900x900"
+          [src]="user()?.avatar || 'assets/images/novel1.jpg'"
           alt="image"
+          (error)="onAvatarError($event)"
         />
       </div>
       <span class="user-menu__name">
@@ -37,9 +38,9 @@
     </div>
 
     <div class="user-menu__info">
-      <div class="user-menu__info__items"><span>Range: </span>Platino</div>
-      <div class="user-menu__info__items"><span>Points: </span>10000</div>
-      <div class="user-menu__info__items"><span>Level: </span>10000</div>
+      <div class="user-menu__info__items"><span>Range: </span>{{ userRange }}</div>
+      <div class="user-menu__info__items"><span>Points: </span>{{ userPoints }}</div>
+      <div class="user-menu__info__items"><span>Level: </span>{{ userLevel }}</div>
     </div>
 
     <ul class="user-menu__list">

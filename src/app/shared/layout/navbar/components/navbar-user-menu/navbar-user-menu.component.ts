@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService } from '../../../../../../app/features/auth/services/auth.service';
@@ -12,14 +12,36 @@ import { ModalAlertService } from '../../../../services/modal-alert.service';
   styleUrl: './navbar-user-menu.component.css'
 })
 export class NavbarUserMenuComponent {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private modalAlert = inject(ModalAlertService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly modalAlert = inject(ModalAlertService);
 
-  @Input() isLoggedIn: boolean = false;
+  readonly isLoggedIn = input<boolean>(false);
 
-  public userName = 'Duke';
+  readonly user = this.authService.user;
+  readonly isAuthenticated = this.authService.isAuthenticated;
+
   public isUserMenu: boolean = false;
+
+  get userName(): string {
+    const u = this.user();
+    return u?.name || u?.username || 'Duke';
+  }
+
+  get userRange(): string {
+    const u = this.user();
+    return (u as any)?.range || u?.roleDisplayName || u?.role || 'Platino';
+  }
+
+  get userPoints(): number | string {
+    const u = this.user();
+    return (u as any)?.points ?? 10000;
+  }
+
+  get userLevel(): number | string {
+    const u = this.user();
+    return (u as any)?.level ?? 10000;
+  }
 
   userMenuItems = [
     { label: 'Perfil', link: '/account/profile', action: null },
@@ -27,11 +49,22 @@ export class NavbarUserMenuComponent {
     { label: 'Cerrar sesión', link: null, action: () => this.logout() },
   ];
 
-  toggleUserMenu() {
+  toggleUserMenu(): void {
+    if (!this.isAuthenticated()) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
     this.isUserMenu = !this.isUserMenu;
   }
 
-  onMenuItemClick(item: any) {
+  onAvatarError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.src = 'assets/images/novel1.jpg';
+    }
+  }
+
+  onMenuItemClick(item: any): void {
     this.isUserMenu = false;
     if (item.action) {
       item.action();
@@ -40,8 +73,7 @@ export class NavbarUserMenuComponent {
     }
   }
 
-  async logout() {
-    // 1. Confirm with Async Loading (Tests 'confirm' + 'loading' state)
+  async logout(): Promise<void> {
     const confirmed = await this.modalAlert.alert({
       type: 'confirm',
       title: 'Cerrar sesión',
@@ -51,7 +83,6 @@ export class NavbarUserMenuComponent {
     });
 
     if (confirmed) {
-      // 2. Success Variant
       await this.modalAlert.alert({
         type: 'success',
         title: 'Éxito',

@@ -23,8 +23,8 @@ export class RandomNovelComponent {
   onClick(): void {
     this.novelsService.getRandomNovel().subscribe({
       next: (novel) => {
-        if (novel && novel.title) {
-          this.router.navigate(['/novels', novel.title]);
+        if (novel) {
+          this.router.navigate(['/novel', novel.slug || novel.title]);
         }
       }
     });
