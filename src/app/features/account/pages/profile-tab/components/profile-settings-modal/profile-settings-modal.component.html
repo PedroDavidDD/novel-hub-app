@@ -97,15 +97,22 @@
       }
     </div>
 
-    <!-- Botón Guardar -->
-    <div class="pt-3">
+    <!-- Botonera de acciones centrada: Guardar a la izquierda, Cancelar a la derecha -->
+    <div class="flex items-center justify-center gap-4 pt-4 border-t border-[var(--color-border)]/50">
       <app-button
         text="SAVE CHANGES"
         variant="primary"
         size="md"
         type="submit"
         [loading]="isLoading()"
-        class="w-full flex justify-center"
+      />
+      <app-button
+        text="CANCEL"
+        variant="outline-primary"
+        size="md"
+        type="button"
+        [disabled]="isLoading()"
+        (onClick)="handleClose()"
       />
     </div>
   </form>

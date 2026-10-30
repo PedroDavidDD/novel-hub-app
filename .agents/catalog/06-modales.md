@@ -45,10 +45,21 @@ if (confirmed) {
 ## 2. `ModalComponent` (`app-modal`)
 
 - **Ruta**: `src/app/shared/components/modal/modal.component.ts`
-- **Propósito**: Modal contenedor estructural para incrustar contenido arbitrario (por ejemplo, el buscador de la barra de navegación).
+- **Propósito**: Modal contenedor estructural para incrustar contenido arbitrario (formularios, ajustes, buscador).
 - **Inputs**:
-  - `title`: string
-  - `show`: boolean
+  - `title`: string (título del modal)
+  - `show`: boolean (estado visible)
+  - `isStatic`: boolean (por defecto `true`: el backdrop o overlay oscuro no cierra el modal para evitar pérdidas accidentales de datos)
+  - `showCloseButton`: boolean (por defecto `true`: botón 'X' en la cabecera)
+  - `maxWidth`: string (por defecto `'max-w-lg'`)
+- **Outputs**:
+  - `close`: EventEmitter<void>
+  - `onClose`: EventEmitter<void>
+
+### 📐 Reglas Estándar de Maquetación de Botones en Modales
+1. **Backdrop Estático**: Todo modal tiene backdrop estático por defecto (`isStatic: true`), prohibiendo su cierre al hacer clic sobre el overlay negro. Solo se cierra mediante la 'X' superior o el botón "Cancelar".
+2. **Posición del Botón Cancelar**: El botón "Cancelar" (`CANCEL` / `Cancelar`) siempre se coloca a la **derecha** del resto de botones de acción primaria (`[GUARDAR] [CANCELAR]`).
+3. **Centrado Horizontal por Defecto**: La botonera de acciones del modal debe estar alineada al **centro** (`flex items-center justify-center gap-4`) por defecto, a menos que un diseño específico justifique otra alineación.
 
 ---
 

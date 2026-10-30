@@ -96,4 +96,10 @@ describe('ModalComponent (Dumb Component)', () => {
 
     expect(host.closed).toBe(false);
   });
+
+  it('debe tener isStatic en true por defecto', () => {
+    const compFixture = TestBed.createComponent(ModalComponent);
+    const comp = compFixture.componentInstance;
+    expect(comp.isStatic()).toBe(true);
+  });
 });

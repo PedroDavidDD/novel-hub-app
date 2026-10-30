@@ -21,7 +21,7 @@ export class ModalComponent {
   // Inputs con Signals (Angular 19)
   readonly title = input<string>('Modal');
   readonly show = input<boolean>(false);
-  readonly isStatic = input<boolean>(false);
+  readonly isStatic = input<boolean>(true);
   readonly showCloseButton = input<boolean>(true);
   readonly maxWidth = input<string>('max-w-lg');
 
