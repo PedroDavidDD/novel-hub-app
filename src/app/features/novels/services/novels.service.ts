@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environments } from '../../../../environments/environments';
 
 export interface IReleaseSchedule {
@@ -15,7 +16,13 @@ export interface IChapterItem {
   content?: string;
   views: number;
   isPremium: boolean;
+  imageUrl?: string | null;
   publishedAt?: string;
+}
+
+export interface INovelCategory {
+  name: string;
+  status: 0 | 1 | 2; // 0 = Inactiva | 1 = Principal | 2 = Secundaria
 }
 
 export interface INovel {
@@ -27,6 +34,7 @@ export interface INovel {
   image: string;
   genres: string[];
   tags: string[];
+  categories?: INovelCategory[];
   language: string;
   status: string;
   popularity: number;
@@ -63,51 +71,57 @@ export class NovelsService {
       opinionsCount: 1200,
       freeChaptersCount: 154,
       premiumChaptersCount: 0,
-      chapters: 154,
-      releaseSchedule: { days: ['Sun', 'Mon', 'Wed', 'Fri', 'Sat'], time: '11:45 a. m.' },
-      releaseDate: '2024-01-10'
+      releaseSchedule: {
+        days: ['Sun', 'Mon', 'Wed', 'Fri', 'Sat'],
+        time: '11:45 a. m.'
+      },
+      chapters: 154
     },
     {
       id: '2',
       title: "I Don't Need A Guillotine For My Revolution!",
       slug: 'guillotine-revolution',
       author: 'Robespierre Fan',
-      description: 'I died on the wrong side of history, a nobleman executed by revolutionaries.\n\nSent back in time, I now know the truth: the only way to survive the coming rebellion is to make sure it succeeds.\n\nTo save my own head, I must join the very cause I once condemned.',
+      description: 'A revolutionary tale set in an alternate magical Victorian-era realm where liberty is demanded through reason, not execution.',
       image: '/assets/images/novel-guillotine.jpg',
-      genres: ['Action', 'Fantasy', 'Romance'],
-      tags: ['#Conspiracies', '#Romance', '#Male Protagonist', '#Regression', '#Knights'],
-      language: 'English',
+      genres: ['Fantasy', 'Historical', 'Adventure'],
+      tags: ['#Revolution', '#Magic', '#Victorian', '#Politics', '#Genius Protagonist'],
+      language: 'Korean',
       status: 'Ongoing',
-      popularity: 1900,
-      rating: 4.9,
+      popularity: 980,
+      rating: 4.6,
       views: 190680,
       opinionsCount: 850,
       freeChaptersCount: 258,
       premiumChaptersCount: 0,
-      chapters: 258,
-      releaseSchedule: { days: ['Sun x3', 'Mon x3', 'Tue x3', 'Wed x3', 'Thu x3', 'Fri x3', 'Sat x3'], time: '3:15 p. m.' },
-      releaseDate: '2023-08-15'
+      releaseSchedule: {
+        days: ['Sun x3', 'Mon x3', 'Tue x3', 'Wed x3', 'Thu x3', 'Fri x3', 'Sat x3'],
+        time: '3:15 p. m.'
+      },
+      chapters: 258
     },
     {
       id: '3',
       title: "Es 'Sugerencia', no 'Hipnosis'",
       slug: 'es-sugerencia-no-hipnosis',
-      author: '연습용더미',
-      description: 'Me transmigraron como villano basura con solo una habilidad de sugerencia.\n\nNo es tan bueno como la hipnosis, pero esto debería ser bastante decente.',
+      author: '연습용더mi',
+      description: 'An unconventional psych-thriller where psychological suggestion borders on the supernatural, blurring perception and reality.',
       image: '/assets/images/novel-suggestion.jpg',
-      genres: ['Vida moderna', 'Vida escolar'],
-      tags: ['#Hipnosis', '#Academia', '#Protagonista masculino'],
+      genres: ['Psychological', 'Mystery', 'Supernatural'],
+      tags: ['#Psychology', '#Hypnosis', '#Mind Games', '#Modern Fantasy'],
       language: 'Korean',
       status: 'Ongoing',
-      popularity: 3740,
+      popularity: 2100,
       rating: 4.9,
       views: 1336729,
       opinionsCount: 1336729,
       freeChaptersCount: 354,
       premiumChaptersCount: 20,
-      chapters: 374,
-      releaseSchedule: { days: ['Sun', 'Mon', 'Mar', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'], time: '10:00 a. m.' },
-      releaseDate: '2023-05-20'
+      releaseSchedule: {
+        days: ['Sun', 'Mon', 'Mar', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        time: '10:00 a. m.'
+      },
+      chapters: 374
     }
   ];
 
@@ -115,15 +129,17 @@ export class NovelsService {
   readonly novels = this.novelsSignal.asReadonly();
 
   getAllNovels(): Observable<INovel[]> {
+    return this.getNovels();
+  }
+
+  getNovels(): Observable<INovel[]> {
     return this.http.get<any>(`${this.baseUrl}/novels`).pipe(
       map(res => {
         const rawList = res?.data || res;
         if (Array.isArray(rawList) && rawList.length > 0) {
-          const mapped = rawList.map(item => this.mapToDomain(item));
-          this.novelsSignal.set(mapped);
-          return mapped;
+          return rawList.map((item: any) => this.mapToDomain(item));
         }
-        return this.initialNovels;
+        return this.novelsSignal();
       }),
       catchError(() => of(this.novelsSignal()))
     );
@@ -156,6 +172,7 @@ export class NovelsService {
             content: ch.content ?? ch.props?.content ?? '',
             views: ch.views ?? ch.props?.views ?? 0,
             isPremium: ch.isPremium ?? ch.props?.isPremium ?? false,
+            imageUrl: ch.imageUrl ?? ch.props?.imageUrl ?? null,
             publishedAt: ch.publishedAt ?? ch.props?.publishedAt,
           }));
         }
@@ -196,6 +213,12 @@ export class NovelsService {
       image: props.image || '/assets/images/novel-ibaewtidh.jpg',
       genres: Array.isArray(props.genre) ? props.genre : (Array.isArray(props.genres) ? props.genres : []),
       tags: Array.isArray(props.tags) ? props.tags : [],
+      categories: Array.isArray(props.categories) && props.categories.length > 0
+        ? props.categories.map((c: any) => ({ name: c.name, status: c.status as 0 | 1 | 2 }))
+        : [
+            ...(Array.isArray(props.genre) ? props.genre.map((g: string) => ({ name: g, status: 1 as const })) : []),
+            ...(Array.isArray(props.tags) ? props.tags.map((t: string) => ({ name: t.replace(/^#/, ''), status: 2 as const })) : []),
+          ],
       language: props.sourceLanguage || props.language || 'English',
       status: props.status || 'Ongoing',
       popularity: props.popularity || 0,
