@@ -4,3 +4,5 @@ export * from './custom-input/custom-input.component';
 export * from './custom-button/custom-button.component';
 export * from './custom-badge/custom-badge.component';
 export * from './ad-banner/ad-banner.component';
+export * from './chapter-meta/chapter-meta.component';
+export * from './release-day-badge/release-day-badge.component';
