@@ -1,11 +1,11 @@
-<div class="novel-view-wrapper max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+<div class="novel-view-wrapper w-full max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
   @if (isNovelLoading()) {
     <!-- ================================================= -->
     <!-- SKELETON LOADER PROGRESIVO POR SECCIÓN (DESKTOP)  -->
     <!-- ================================================= -->
-    <div class="hidden lg:grid grid-cols-[280px_1fr_340px] xl:grid-cols-[300px_1fr_360px] gap-8 items-start animate-pulse">
-      <!-- Columna Izquierda Skeleton -->
-      <div class="flex flex-col gap-5">
+    <div class="hidden lg:flex gap-4 items-start w-full min-w-0 animate-pulse">
+      <!-- 1. Columna Izquierda Skeleton (Portada + Métricas + Botones) -->
+      <div class="novel-col-left w-[280px] xl:w-[300px] shrink-0 flex flex-col gap-4">
         <div class="w-full aspect-[3/4.2] rounded-2xl bg-[var(--color-border)]/40 border border-[var(--color-border)]/50"></div>
         <div class="grid grid-cols-2 gap-3">
           <div class="h-20 rounded-xl bg-[var(--color-border)]/30 border border-[var(--color-border)]/40"></div>
@@ -13,34 +13,50 @@
           <div class="h-20 rounded-xl bg-[var(--color-border)]/30 border border-[var(--color-border)]/40"></div>
           <div class="h-20 rounded-xl bg-[var(--color-border)]/30 border border-[var(--color-border)]/40"></div>
         </div>
-      </div>
-
-      <!-- Columna Central Skeleton -->
-      <div class="flex flex-col gap-4">
-        <div class="h-10 w-3/4 rounded-lg bg-[var(--color-border)]/40"></div>
-        <div class="h-5 w-1/3 rounded-lg bg-[var(--color-border)]/30"></div>
-        <div class="flex gap-2">
-          <div class="h-6 w-20 rounded-full bg-[var(--color-border)]/30"></div>
-          <div class="h-6 w-20 rounded-full bg-[var(--color-border)]/30"></div>
-          <div class="h-6 w-20 rounded-full bg-[var(--color-border)]/30"></div>
-        </div>
-        <div class="space-y-2.5 pt-4">
-          <div class="h-4 w-full rounded bg-[var(--color-border)]/30"></div>
-          <div class="h-4 w-5/6 rounded bg-[var(--color-border)]/30"></div>
-          <div class="h-4 w-4/6 rounded bg-[var(--color-border)]/30"></div>
-          <div class="h-4 w-full rounded bg-[var(--color-border)]/30"></div>
+        <div class="flex flex-col gap-2.5 w-full">
+          <div class="h-11 w-full rounded-xl bg-[var(--color-border)]/40"></div>
+          <div class="h-11 w-full rounded-xl bg-[var(--color-border)]/30"></div>
         </div>
       </div>
 
-      <!-- Columna Derecha Skeleton -->
-      <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 shadow-sm space-y-4">
-        <div class="h-6 w-1/2 rounded bg-[var(--color-border)]/40"></div>
-        <div class="h-8 w-full rounded bg-[var(--color-border)]/30"></div>
-        <div class="space-y-2 pt-2">
-          <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
-          <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
-          <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
-          <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
+      <!-- Padre Skeleton que agrupa Segunda y Tercera Sección (Consecutivas con gap 1rem) -->
+      <div class="flex-1 min-w-0 flex flex-col gap-4">
+        <!-- 2. Columna Central Skeleton (Descripción con altura de 300px) -->
+        <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="h-[300px] flex flex-col gap-4 overflow-hidden">
+            <div class="h-6 w-24 rounded-full bg-[var(--color-border)]/30"></div>
+            <div class="h-10 w-3/4 rounded-lg bg-[var(--color-border)]/40"></div>
+            <div class="h-5 w-1/3 rounded-lg bg-[var(--color-border)]/30"></div>
+            <div class="flex gap-2">
+              <div class="h-6 w-20 rounded-full bg-[var(--color-border)]/30"></div>
+              <div class="h-6 w-20 rounded-full bg-[var(--color-border)]/30"></div>
+              <div class="h-6 w-20 rounded-full bg-[var(--color-border)]/30"></div>
+            </div>
+            <div class="h-9 w-2/3 rounded-xl bg-[var(--color-border)]/30"></div>
+            <div class="space-y-2 pt-1">
+              <div class="h-4 w-full rounded bg-[var(--color-border)]/30"></div>
+              <div class="h-4 w-5/6 rounded bg-[var(--color-border)]/30"></div>
+            </div>
+          </div>
+
+          <!-- Skeleton del Divisor 'Leer más' -->
+          <div class="flex items-center gap-4 w-full py-1">
+            <div class="flex-1 h-[1px] bg-[var(--color-border)]/30"></div>
+            <div class="h-4 w-20 rounded bg-[var(--color-border)]/30"></div>
+            <div class="flex-1 h-[1px] bg-[var(--color-border)]/30"></div>
+          </div>
+        </div>
+
+        <!-- 3. Columna Derecha Skeleton (Capítulos) -->
+        <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="h-6 w-1/2 rounded bg-[var(--color-border)]/40"></div>
+          <div class="h-8 w-full rounded bg-[var(--color-border)]/30"></div>
+          <div class="space-y-2 pt-2">
+            <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
+            <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
+            <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
+            <div class="h-10 w-full rounded-lg bg-[var(--color-border)]/20"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -57,13 +73,13 @@
     </div>
   } @else if (novel()) {
     <!-- ========================================== -->
-    <!-- DESKTOP TRIPTIC LAYOUT (lg y superior)    -->
+    <!-- DESKTOP FLEX LAYOUT (lg y superior)        -->
     <!-- ========================================== -->
-    <div class="hidden lg:grid grid-cols-[280px_1fr_340px] xl:grid-cols-[300px_1fr_360px] gap-8 items-start">
+    <div class="hidden lg:flex gap-4 items-start w-full min-w-0">
       
-      <!-- COLUMNA IZQUIERDA: Portada + Métricas 2x2 -->
-      <div class="novel-col-left flex flex-col gap-5 sticky top-24">
-        <!-- Portada con zoom y brillo diagonal -->
+      <!-- 1. PRIMERA SECCIÓN: Portada + 4 Buckets Métricas + 2 Botones Adaptados al Padre (Estático) -->
+      <div class="novel-col-left w-[280px] xl:w-[300px] shrink-0 flex flex-col gap-4">
+        <!-- 1.1 Portada con zoom y brillo diagonal -->
         <div class="cover-card rounded-2xl overflow-hidden shadow-2xl border border-[var(--color-border)] aspect-[3/4.2] relative bg-[var(--color-bg-card)] group cursor-pointer" appCardShine>
           <img
             [src]="novel()?.image"
@@ -73,8 +89,9 @@
           />
         </div>
 
-        <!-- Grilla de Métricas 2x2 -->
+        <!-- 1.2 Grilla de 4 Buckets de Métricas (100% datos de MongoDB) -->
         <div class="grid grid-cols-2 gap-3">
+          <!-- Total Capítulos -->
           <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)]/70 rounded-xl p-3.5 text-center shadow-sm">
             <div class="text-2xl font-extrabold text-[var(--color-black)]">
               {{ novel()?.chapters || chapters().length }}
@@ -84,15 +101,17 @@
             </div>
           </div>
 
+          <!-- Vistas / Opiniones -->
           <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)]/70 rounded-xl p-3.5 text-center shadow-sm">
             <div class="text-2xl font-extrabold text-[var(--color-primary-dark)] dark:text-[var(--color-primary)]">
-              {{ (novel()?.opinionsCount || novel()?.views || 0) | number }}
+              {{ (novel()?.views || 0) | number }}
             </div>
             <div class="text-xs font-semibold text-[var(--color-description)] uppercase tracking-wider mt-1">
               {{ texts.stats.views }}
             </div>
           </div>
 
+          <!-- Capítulos Gratis -->
           <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)]/70 rounded-xl p-3.5 text-center shadow-sm">
             <div class="text-2xl font-extrabold text-emerald-500">
               {{ novel()?.freeChaptersCount || freeChaptersCount() }}
@@ -102,6 +121,7 @@
             </div>
           </div>
 
+          <!-- Capítulos Premium -->
           <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)]/70 rounded-xl p-3.5 text-center shadow-sm">
             <div class="text-2xl font-extrabold text-purple-400">
               {{ novel()?.premiumChaptersCount || premiumChaptersCount() }}
@@ -111,170 +131,169 @@
             </div>
           </div>
         </div>
+
+        <!-- 1.3 Los dos botones adaptados en su tamaño al ancho del padre -->
+        <div class="flex flex-col gap-2.5 w-full">
+          <app-button
+            [text]="texts.actions.firstChapter"
+            variant="primary"
+            size="lg"
+            rounded="xl"
+            [fullWidth]="true"
+            (onClick)="onFirstChapter()"
+          />
+          <app-button
+            [text]="texts.actions.lastRead"
+            variant="outline-primary"
+            size="lg"
+            rounded="xl"
+            [fullWidth]="true"
+            (onClick)="onLastReadChapter()"
+          />
+        </div>
       </div>
 
-      <!-- COLUMNA CENTRAL: Información, Sinopsis, Lanzamientos y Acciones -->
-      <div class="novel-col-center flex flex-col gap-6">
-        <div>
-          <h1 class="text-3xl xl:text-4xl font-extrabold text-[var(--color-black)] leading-tight tracking-tight">
-            {{ novel()?.title }}
-          </h1>
+      <!-- SECCIÓN PADRE QUE AGRUPA LA SEGUNDA Y TERCERA SECCIÓN (CONSECUTIVAS CON GAP 1rem) -->
+      <div class="novel-col-main flex-1 min-w-0 flex flex-col gap-4 w-full">
 
-          <div class="flex items-center gap-2 mt-3">
-            <span class="text-sm font-medium text-[var(--color-description)]">{{ texts.authorPrefix }}</span>
-            <span class="text-sm font-bold text-[var(--color-primary-dark)] dark:text-[var(--color-primary)] hover:underline cursor-pointer">
-              {{ novel()?.author || texts.authorUnknown }}
+        <!-- 2. SEGUNDA SECCIÓN: Componente Reutilizable (Información, Lanzamientos y Sinopsis de 300px con 'Leer más') -->
+        <app-novel-description-section
+          [novel]="novel()"
+          [novelStatusConfig]="novelStatusConfig()"
+          (genreClick)="onGenreClick($event)"
+        />
+
+        <!-- 3. TERCERA SECCIÓN: Panel de Capítulos / Imágenes con Loader Progresivo -->
+        <div class="novel-col-right w-full min-w-0 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 shadow-sm">
+          <!-- Header de Capítulos -->
+          <div class="flex items-center justify-between pb-4 border-b border-[var(--color-border)]/60">
+            <h2 class="text-lg font-bold text-[var(--color-black)]">
+              {{ activeTab() === 'images' ? texts.chaptersSection.tabImages : texts.chaptersSection.title }}
+            </h2>
+            <span class="text-xs font-semibold text-[var(--color-description)]">
+              @if (activeTab() === 'images') {
+                {{ imageChapters().length }} {{ texts.chaptersSection.shownSuffix }}
+              } @else {
+                {{ filteredChapters().length }} {{ texts.chaptersSection.shownSuffix }}
+              }
             </span>
           </div>
 
-          <!-- Badges de Géneros -->
-          <div class="flex flex-wrap gap-2 mt-4">
-            @for (genre of novel()?.genres; track $index) {
-              <app-badge
-                [vcLabel]="genre"
-                vcVariant="primary"
-                (onClick)="onGenreClick($event)"
-              />
-            }
+          <!-- Pestañas de Filtro (Gratis / Premium / Imágenes con Icono) -->
+          <div class="flex items-center gap-2 py-3 border-b border-[var(--color-border)]/60 text-xs">
+            <button
+              type="button"
+              class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer select-none"
+              [ngClass]="activeTab() === 'free' ? 'bg-emerald-500 text-white shadow-sm' : 'text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20'"
+              (click)="setTab('free')"
+            >
+              {{ texts.chaptersSection.tabFree }} ({{ freeChaptersCount() }})
+            </button>
+
+            <button
+              type="button"
+              class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer select-none"
+              [ngClass]="activeTab() === 'premium' ? 'bg-purple-500 text-white shadow-sm' : 'text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20'"
+              (click)="setTab('premium')"
+            >
+              {{ texts.chaptersSection.tabPremium }} ({{ premiumChaptersCount() }})
+            </button>
+
+            <button
+              type="button"
+              class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer select-none inline-flex items-center gap-1.5"
+              [ngClass]="activeTab() === 'images' ? 'bg-[var(--color-primary)] text-black shadow-sm' : 'text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20'"
+              (click)="setTab('images')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M1 5.25A2.25 2.25 0 0 1 3.25 3h13.5A2.25 2.25 0 0 1 19 5.25v9.5A2.25 2.25 0 0 1 16.75 17H3.25A2.25 2.25 0 0 1 1 14.75v-9.5Zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75v-2.69l-2.22-2.219a.75.75 0 0 0-1.06 0l-1.91 1.909-4.22-4.219a.75.75 0 0 0-1.06 0L2.5 11.06Zm10.25-3.81a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5Z" clip-rule="evenodd" />
+              </svg>
+              <span>{{ texts.chaptersSection.tabImages }} ({{ imageChapters().length }})</span>
+            </button>
           </div>
 
-          <!-- Tags -->
-          @if (novel()?.tags && novel()!.tags.length > 0) {
-            <div class="flex flex-wrap gap-2 mt-3 text-xs text-[var(--color-description)] font-medium">
-              @for (tag of novel()?.tags; track $index) {
-                <span class="hover:text-[var(--color-black)] cursor-pointer transition-colors">{{ tag }}</span>
+          <!-- Contenido de Capítulos con Spinner Progresivo dedicado -->
+          @if (isChaptersLoading()) {
+            <div class="flex flex-col items-center justify-center py-16 gap-3">
+              <div class="w-8 h-8 border-3 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin"></div>
+              <span class="text-xs text-[var(--color-description)] font-medium">Cargando capítulos...</span>
+            </div>
+          } @else if (activeTab() === 'images') {
+            <!-- Galería de Imágenes de Capítulos -->
+            <div class="image-gallery mt-3 max-h-[520px] overflow-y-auto pr-1 custom-scroll">
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                @for (ch of imageChapters(); track ch.id) {
+                  <div
+                    class="group relative rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col"
+                    (click)="onChapterClick(ch)"
+                  >
+                    <!-- Contenedor Imagen con Aspect Ratio y Brillo -->
+                    <div class="aspect-[4/3] w-full overflow-hidden bg-black/5 relative" appCardShine>
+                      <img
+                        [src]="ch.imageUrl"
+                        [alt]="ch.title"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold bg-black/70 text-white backdrop-blur-sm border border-white/10">
+                        Cap. {{ ch.chapterNumber }}
+                      </span>
+                    </div>
+
+                    <!-- Pie con Título de Capítulo -->
+                    <div class="p-2 flex flex-col">
+                      <span class="text-xs font-semibold text-[var(--color-black)] group-hover:text-[var(--color-primary-dark)] dark:group-hover:text-[var(--color-primary)] truncate" [title]="ch.title">
+                        {{ ch.title }}
+                      </span>
+                      <span class="text-[10px] text-[var(--color-description)] mt-0.5">
+                        {{ ch.views | number }} vistas
+                      </span>
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="col-span-full text-center py-12 text-xs text-[var(--color-description)]">
+                    {{ texts.chaptersSection.noImages }}
+                  </div>
+                }
+              </div>
+            </div>
+          } @else {
+            <!-- Lista Deslizable de Capítulos (Gratis / Premium) -->
+            <div class="chapter-list mt-3 max-h-[520px] overflow-y-auto space-y-1 pr-1 custom-scroll">
+              @for (ch of filteredChapters(); track ch.id) {
+                <div
+                  class="chapter-item flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--color-border)]/25 cursor-pointer transition-all group"
+                  (click)="onChapterClick(ch)"
+                >
+                  <div class="flex items-center gap-2 truncate pr-4 min-w-0">
+                    @if (ch.isPremium) {
+                      <span class="text-purple-400 text-xs flex-shrink-0" title="Premium">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 inline" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
+                        </svg>
+                      </span>
+                    }
+                    <span class="text-sm font-medium text-[var(--color-black)] group-hover:text-[var(--color-primary-dark)] dark:group-hover:text-[var(--color-primary)] truncate" [title]="ch.title">
+                      {{ ch.title }}
+                    </span>
+                  </div>
+
+                  <!-- Agrupador de Metadatos Reutilizable Dumb (Fecha dd/mm/aaaa + Vistas) -->
+                  <app-chapter-meta
+                    [vcViews]="ch.views"
+                    [vcDate]="ch.publishedAt"
+                  />
+                </div>
+              } @empty {
+                <div class="text-center py-8 text-xs text-[var(--color-description)]">
+                  {{ texts.chaptersSection.noChapters }}
+                </div>
               }
             </div>
           }
         </div>
 
-        <!-- Sinopsis -->
-        <div class="text-[16px] font-normal text-[var(--color-description)] leading-relaxed whitespace-pre-line pt-2">
-          {{ novel()?.description }}
-        </div>
-
-        <!-- Bloque Inferior: Lanzamientos y Botones de Lectura -->
-        <div class="mt-auto pt-6 border-t border-[var(--color-border)]/60 space-y-5">
-          <!-- Días de Lanzamiento -->
-          <div class="flex flex-wrap items-center gap-2 text-xs">
-            <span class="text-[var(--color-description)] font-bold uppercase tracking-wider">{{ texts.releases.title }}</span>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              @for (day of novel()?.releaseSchedule?.days; track $index) {
-                <span class="px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/20 text-[var(--color-primary-dark)] dark:text-[var(--color-primary)] font-semibold text-xs border border-[var(--color-primary)]/30">
-                  {{ day }}
-                </span>
-              }
-              @if (novel()?.releaseSchedule?.time) {
-                <span class="text-[var(--color-description)] text-xs ml-1 font-medium">&#64; {{ novel()?.releaseSchedule?.time }}</span>
-              }
-            </div>
-          </div>
-
-          <!-- Botonera de Acción -->
-          <div class="flex flex-wrap items-center gap-3">
-            <app-button
-              [text]="texts.actions.startReading"
-              variant="primary"
-              size="lg"
-              rounded="xl"
-              (onClick)="onStartReading()"
-              class="flex-1 max-w-xs"
-            />
-            <app-button
-              [text]="texts.actions.signInForPass"
-              variant="outline-primary"
-              size="lg"
-              rounded="xl"
-              (onClick)="onStartReading()"
-            />
-          </div>
-        </div>
       </div>
 
-      <!-- COLUMNA DERECHA: Panel de Capítulos con Loader Progresivo -->
-      <div class="novel-col-right bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 shadow-sm sticky top-24">
-        <!-- Header de Capítulos -->
-        <div class="flex items-center justify-between pb-4 border-b border-[var(--color-border)]/60">
-          <h2 class="text-lg font-bold text-[var(--color-black)]">{{ texts.chaptersSection.title }}</h2>
-          <span class="text-xs font-semibold text-[var(--color-description)]">
-            {{ filteredChapters().length }} {{ texts.chaptersSection.shownSuffix }}
-          </span>
-        </div>
-
-        <!-- Pestañas de Filtro (Gratis / Premium / Todos) -->
-        <div class="flex items-center gap-2 py-3 border-b border-[var(--color-border)]/60 text-xs">
-          <button
-            type="button"
-            class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer select-none"
-            [ngClass]="activeTab() === 'free' ? 'bg-emerald-500 text-white shadow-sm' : 'text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20'"
-            (click)="setTab('free')"
-          >
-            {{ texts.chaptersSection.tabFree }} ({{ freeChaptersCount() }})
-          </button>
-
-          <button
-            type="button"
-            class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer select-none"
-            [ngClass]="activeTab() === 'premium' ? 'bg-purple-500 text-white shadow-sm' : 'text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20'"
-            (click)="setTab('premium')"
-          >
-            {{ texts.chaptersSection.tabPremium }} ({{ premiumChaptersCount() }})
-          </button>
-
-          <button
-            type="button"
-            class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer select-none"
-            [ngClass]="activeTab() === 'all' ? 'bg-[var(--color-primary)] text-black shadow-sm' : 'text-[var(--color-description)] hover:text-[var(--color-black)] hover:bg-[var(--color-border)]/20'"
-            (click)="setTab('all')"
-          >
-            {{ texts.chaptersSection.tabAll }} ({{ chapters().length }})
-          </button>
-        </div>
-
-        <!-- Contenido de Capítulos con Spinner Progresivo dedicado -->
-        @if (isChaptersLoading()) {
-          <div class="flex flex-col items-center justify-center py-16 gap-3">
-            <div class="w-8 h-8 border-3 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin"></div>
-            <span class="text-xs text-[var(--color-description)] font-medium">Cargando capítulos...</span>
-          </div>
-        } @else {
-          <!-- Lista Deslizable de Capítulos -->
-          <div class="chapter-list mt-3 max-h-[520px] overflow-y-auto space-y-1 pr-1 custom-scroll">
-            @for (ch of filteredChapters(); track ch.id) {
-              <div
-                class="chapter-item flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--color-border)]/25 cursor-pointer transition-all group"
-                (click)="onChapterClick(ch)"
-              >
-                <div class="flex items-center gap-2 truncate pr-2">
-                  @if (ch.isPremium) {
-                    <span class="text-purple-400 text-xs flex-shrink-0" title="Premium">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="size-4 inline" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd" />
-                      </svg>
-                    </span>
-                  }
-                  <span class="text-sm font-medium text-[var(--color-black)] group-hover:text-[var(--color-primary-dark)] dark:group-hover:text-[var(--color-primary)] truncate" [title]="ch.title">
-                    {{ ch.title }}
-                  </span>
-                </div>
-
-                <!-- Vistas con Icono de Ojo -->
-                <div class="flex items-center gap-1.5 text-xs text-[var(--color-description)] flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 opacity-70" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                    <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                  </svg>
-                  <span>{{ ch.views | number }}</span>
-                </div>
-              </div>
-            } @empty {
-              <div class="text-center py-8 text-xs text-[var(--color-description)]">
-                {{ texts.chaptersSection.noChapters }}
-              </div>
-            }
-          </div>
-        }
-      </div>
     </div>
 
     <!-- ========================================== -->
@@ -285,7 +304,7 @@
       <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl">
         <div class="grid grid-cols-[70px_1fr_60px] gap-3 items-center">
           
-          <!-- Lado Izquierdo: 4 Estadísticas Verticales -->
+          <!-- Lado Izquierdo: 4 Estadísticas Verticales (100% MongoDB) -->
           <div class="flex flex-col justify-around h-full gap-2 text-center py-2">
             <div>
               <div class="text-base font-bold text-[var(--color-black)]">
@@ -296,7 +315,7 @@
 
             <div>
               <div class="text-base font-bold text-[var(--color-primary-dark)] dark:text-[var(--color-primary)]">
-                {{ ((novel()?.opinionsCount || novel()?.views || 0) / 1000 | number:'1.0-1') }}k
+                {{ ((novel()?.views || 0) / 1000 | number:'1.0-1') }}k
               </div>
               <div class="text-[10px] text-[var(--color-description)] font-semibold uppercase">Views</div>
             </div>
@@ -332,9 +351,20 @@
         </div>
       </div>
 
-      <!-- Sección Central Mobile: Título, Autor, Badges, Tags, Sinopsis -->
+      <!-- Sección Central Mobile: Estado, Título, Autor, Badges, Tags, Sinopsis -->
       <div class="flex flex-col text-center items-center gap-3">
-        <h1 class="text-2xl font-extrabold text-[var(--color-black)] leading-tight">
+        <!-- Estado de la Novela Mobile -->
+        <div class="flex items-center justify-center gap-2">
+          <span
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border shadow-sm"
+            [ngClass]="novelStatusConfig().badgeClass"
+          >
+            <span class="size-2 rounded-full" [ngClass]="novelStatusConfig().dotClass"></span>
+            {{ novelStatusConfig().label }}
+          </span>
+        </div>
+
+        <h1 class="text-2xl font-extrabold text-[var(--color-black)] leading-tight break-words [overflow-wrap:anywhere] [text-wrap:pretty]">
           {{ novel()?.title }}
         </h1>
 
@@ -357,7 +387,7 @@
           </div>
         }
 
-        <p class="text-sm text-[var(--color-description)] leading-relaxed text-justify mt-3 whitespace-pre-line px-1">
+        <p class="text-sm text-[var(--color-description)] leading-relaxed text-justify mt-3 whitespace-pre-line px-1 break-words [overflow-wrap:anywhere] [text-wrap:pretty]">
           {{ novel()?.description }}
         </p>
       </div>
@@ -365,37 +395,76 @@
       <!-- Botones de Acción Mobile -->
       <div class="flex flex-col gap-3 pt-2">
         <app-button
-          [text]="texts.actions.startReading"
+          [text]="texts.actions.firstChapter"
           variant="primary"
           size="lg"
           rounded="xl"
           [fullWidth]="true"
-          (onClick)="onStartReading()"
+          (onClick)="onFirstChapter()"
         />
 
         <div class="grid grid-cols-2 gap-3">
           <app-button
-            [text]="texts.actions.chaptersBtn"
+            [text]="texts.actions.lastRead"
             variant="outline-primary"
             size="md"
             rounded="xl"
-            (onClick)="setTab('all')"
+            (onClick)="onLastReadChapter()"
           />
           <app-button
-            [text]="'EPUB'"
+            [text]="texts.actions.chaptersBtn"
             variant="outline-secondary"
             size="md"
             rounded="xl"
-            (onClick)="onStartReading()"
+            (onClick)="setTab('free')"
           />
         </div>
       </div>
 
-      <!-- Lista de Capítulos Mobile con Loader Progresivo -->
+      <!-- Lista / Galería de Capítulos Mobile con Loader Progresivo -->
       <div class="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-sm mt-4">
         <div class="flex items-center justify-between pb-3 border-b border-[var(--color-border)]/60">
-          <h2 class="text-base font-bold text-[var(--color-black)]">{{ texts.chaptersSection.title }}</h2>
-          <span class="text-xs text-[var(--color-description)]">{{ filteredChapters().length }} {{ texts.chaptersSection.shownSuffix }}</span>
+          <h2 class="text-base font-bold text-[var(--color-black)]">
+            {{ activeTab() === 'images' ? texts.chaptersSection.tabImages : texts.chaptersSection.title }}
+          </h2>
+          <span class="text-xs text-[var(--color-description)]">
+            @if (activeTab() === 'images') {
+              {{ imageChapters().length }} {{ texts.chaptersSection.shownSuffix }}
+            } @else {
+              {{ filteredChapters().length }} {{ texts.chaptersSection.shownSuffix }}
+            }
+          </span>
+        </div>
+
+        <!-- Pestañas Mobile -->
+        <div class="flex items-center gap-1.5 py-2.5 border-b border-[var(--color-border)]/60 text-xs">
+          <button
+            type="button"
+            class="px-2.5 py-1 rounded-lg font-semibold transition-all cursor-pointer"
+            [ngClass]="activeTab() === 'free' ? 'bg-emerald-500 text-white shadow-sm' : 'text-[var(--color-description)]'"
+            (click)="setTab('free')"
+          >
+            Gratis ({{ freeChaptersCount() }})
+          </button>
+          <button
+            type="button"
+            class="px-2.5 py-1 rounded-lg font-semibold transition-all cursor-pointer"
+            [ngClass]="activeTab() === 'premium' ? 'bg-purple-500 text-white shadow-sm' : 'text-[var(--color-description)]'"
+            (click)="setTab('premium')"
+          >
+            Premium ({{ premiumChaptersCount() }})
+          </button>
+          <button
+            type="button"
+            class="px-2.5 py-1 rounded-lg font-semibold transition-all cursor-pointer inline-flex items-center gap-1"
+            [ngClass]="activeTab() === 'images' ? 'bg-[var(--color-primary)] text-black shadow-sm' : 'text-[var(--color-description)]'"
+            (click)="setTab('images')"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M1 5.25A2.25 2.25 0 0 1 3.25 3h13.5A2.25 2.25 0 0 1 19 5.25v9.5A2.25 2.25 0 0 1 16.75 17H3.25A2.25 2.25 0 0 1 1 14.75v-9.5Zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75v-2.69l-2.22-2.219a.75.75 0 0 0-1.06 0l-1.91 1.909-4.22-4.219a.75.75 0 0 0-1.06 0L2.5 11.06Zm10.25-3.81a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5Z" clip-rule="evenodd" />
+            </svg>
+            <span>Img ({{ imageChapters().length }})</span>
+          </button>
         </div>
 
         @if (isChaptersLoading()) {
@@ -403,15 +472,37 @@
             <div class="w-6 h-6 border-2 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin"></div>
             <span class="text-xs text-[var(--color-description)]">Cargando capítulos...</span>
           </div>
+        } @else if (activeTab() === 'images') {
+          <div class="grid grid-cols-2 gap-2 mt-3 max-h-72 overflow-y-auto">
+            @for (ch of imageChapters(); track ch.id) {
+              <div
+                class="rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-card)] cursor-pointer"
+                (click)="onChapterClick(ch)"
+              >
+                <div class="aspect-[4/3] w-full relative">
+                  <img [src]="ch.imageUrl" [alt]="ch.title" class="w-full h-full object-cover" />
+                  <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-black/70 text-white">
+                    Cap. {{ ch.chapterNumber }}
+                  </span>
+                </div>
+                <div class="p-1.5">
+                  <span class="text-xs font-medium text-[var(--color-black)] truncate block" [title]="ch.title">{{ ch.title }}</span>
+                </div>
+              </div>
+            }
+          </div>
         } @else {
           <div class="divide-y divide-[var(--color-border)]/40 mt-2 max-h-72 overflow-y-auto">
             @for (ch of filteredChapters(); track ch.id) {
               <div
-                class="py-2.5 flex items-center justify-between cursor-pointer hover:bg-[var(--color-border)]/20 px-1"
+                class="py-2.5 flex items-center justify-between cursor-pointer hover:bg-[var(--color-border)]/20 px-1 gap-2"
                 (click)="onChapterClick(ch)"
               >
-                <span class="text-sm font-medium text-[var(--color-black)] truncate pr-2" [title]="ch.title">{{ ch.title }}</span>
-                <span class="text-xs text-[var(--color-description)] flex-shrink-0">{{ ch.views | number }}</span>
+                <span class="text-sm font-medium text-[var(--color-black)] truncate pr-2 min-w-0" [title]="ch.title">{{ ch.title }}</span>
+                <app-chapter-meta
+                  [vcViews]="ch.views"
+                  [vcDate]="ch.publishedAt"
+                />
               </div>
             }
           </div>

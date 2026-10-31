@@ -12,11 +12,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { NovelsService, INovel, IChapterItem } from '../../services/novels.service';
-import { CustomButtonComponent, CustomBadgeComponent } from '../../../../shared/components';
+import { CustomButtonComponent, CustomBadgeComponent, ChapterMetaComponent } from '../../../../shared/components';
 import { CardShineDirective } from '../../../../shared/directives/card-shine.directive';
-import { NOVEL_PAGE_TEXTS } from './constants/novel-page.constants';
+import { NOVEL_PAGE_TEXTS, resolveNovelStatusUI } from './constants/novel-page.constants';
+import { NovelDescriptionSectionComponent } from './components/novel-description-section/novel-description-section.component';
 
-type ChapterFilterTab = 'free' | 'premium' | 'all';
+type ChapterFilterTab = 'free' | 'premium' | 'images';
 
 @Component({
   selector: 'app-novel-page',
@@ -27,6 +28,8 @@ type ChapterFilterTab = 'free' | 'premium' | 'all';
     CustomButtonComponent,
     CustomBadgeComponent,
     CardShineDirective,
+    NovelDescriptionSectionComponent,
+    ChapterMetaComponent,
   ],
   templateUrl: './novel-page.component.html',
   styleUrls: ['./novel-page.component.css'],
@@ -48,12 +51,18 @@ export class NovelPageComponent implements OnInit, OnDestroy {
   readonly isImageLoaded = signal<boolean>(false);
   readonly activeTab = signal<ChapterFilterTab>('free');
 
+  readonly novelStatusConfig = computed(() => resolveNovelStatusUI(this.novel()?.status));
+
   readonly freeChaptersCount = computed(() => {
     return this.chapters().filter(c => !c.isPremium).length;
   });
 
   readonly premiumChaptersCount = computed(() => {
     return this.chapters().filter(c => c.isPremium).length;
+  });
+
+  readonly imageChapters = computed(() => {
+    return this.chapters().filter(c => !!c.imageUrl);
   });
 
   readonly filteredChapters = computed(() => {
@@ -91,10 +100,8 @@ export class NovelPageComponent implements OnInit, OnDestroy {
         this.isNovelLoading.set(false);
 
         if (novel) {
-          // Update browser tab title
           this.titleService.setTitle(`${novel.title} - Novel Hub`);
 
-          // Load chapters independently with its own progressive loader
           this.novelsService.getChaptersByNovel(novel.slug || novel.id).subscribe({
             next: (chaptersList) => {
               this.chapters.set(chaptersList);
@@ -135,11 +142,28 @@ export class NovelPageComponent implements OnInit, OnDestroy {
     this.router.navigate(['/series'], { queryParams: { genre } });
   }
 
-  onStartReading(): void {
+  onFirstChapter(): void {
     const n = this.novel();
     const list = this.chapters();
     if (!n) return;
     const targetChapter = list.length > 0 ? list[0].chapterNumber : 0;
+    this.router.navigate(['/novel', n.slug || n.id, 'chapter', targetChapter]);
+  }
+
+  onLastReadChapter(): void {
+    const n = this.novel();
+    const list = this.chapters();
+    if (!n) return;
+    const key = `novel_hub_last_read_${n.slug || n.id}`;
+    const stored = localStorage.getItem(key);
+    if (stored !== null) {
+      const num = parseInt(stored, 10);
+      if (!isNaN(num)) {
+        this.router.navigate(['/novel', n.slug || n.id, 'chapter', num]);
+        return;
+      }
+    }
+    const targetChapter = list.length > 0 ? list[list.length - 1].chapterNumber : 0;
     this.router.navigate(['/novel', n.slug || n.id, 'chapter', targetChapter]);
   }
 
