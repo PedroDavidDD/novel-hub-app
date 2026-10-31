@@ -4,6 +4,8 @@
 @tailwind utilities;
 
 :root {
+  interpolate-size: allow-keywords;
+
   /* Colores de Estado */
   --color-error: #bb2929;
   --color-success: #1ed12d;
@@ -51,6 +53,8 @@
   --transition-fast: all 0.3s ease;
   --transition-medium: all 0.5s ease;
   --transition-slow: all 0.7s ease;
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth-slow: all 0.85s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Variables de Z-Index */
   --z-index-tooltip: 1000; /* Para tooltips */
@@ -133,4 +137,23 @@ body.dark-mode {
 }
 .section-ml {
   margin: 0 0 0 1rem;
+}
+
+/* ==========================================================================
+   Utilidades Reutilizables de Animación y Transición Suave (Smooth Classes)
+   ========================================================================== */
+.smooth {
+  transition: var(--transition-smooth);
+}
+
+.smooth-slow,
+.transition-smooth-slow {
+  transition: var(--transition-smooth-slow);
+  will-change: max-height, height, opacity;
+}
+
+.smooth-slow-height {
+  transition: max-height 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: max-height;
 }
