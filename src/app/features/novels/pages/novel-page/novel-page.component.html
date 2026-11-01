@@ -374,15 +374,15 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-2 mt-1">
-          @for (genre of novel()?.genres; track $index) {
-            <app-badge [vcLabel]="genre" vcVariant="primary" (onClick)="onGenreClick($event)" />
+          @for (tag of mainTags(); track tag.name) {
+            <app-badge [vcLabel]="tag.name" vcVariant="primary" (onClick)="onGenreClick($event)" />
           }
         </div>
 
-        @if (novel()?.tags && novel()!.tags.length > 0) {
-          <div class="flex flex-wrap justify-center gap-1.5 text-xs text-[var(--color-description)] mt-1">
-            @for (tag of novel()?.tags; track $index) {
-              <span>{{ tag }}</span>
+        @if (secondaryTags().length > 0) {
+          <div class="flex flex-wrap justify-center gap-2 text-xs text-[var(--color-description)] mt-1">
+            @for (tag of secondaryTags(); track tag.name) {
+              <app-tag-secondary [vcLabel]="tag.name" (onClick)="onGenreClick($event)" />
             }
           </div>
         }

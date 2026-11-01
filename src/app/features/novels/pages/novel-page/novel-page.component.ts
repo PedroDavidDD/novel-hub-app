@@ -12,7 +12,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { NovelsService, INovel, IChapterItem } from '../../services/novels.service';
-import { CustomButtonComponent, CustomBadgeComponent, ChapterMetaComponent } from '../../../../shared/components';
+import { CustomButtonComponent, CustomBadgeComponent, ChapterMetaComponent, TagSecondaryComponent } from '../../../../shared/components';
 import { CardShineDirective } from '../../../../shared/directives/card-shine.directive';
 import { NOVEL_PAGE_TEXTS, resolveNovelStatusUI } from './constants/novel-page.constants';
 import { NovelDescriptionSectionComponent } from './components/novel-description-section/novel-description-section.component';
@@ -30,6 +30,7 @@ type ChapterFilterTab = 'free' | 'premium' | 'images';
     CardShineDirective,
     NovelDescriptionSectionComponent,
     ChapterMetaComponent,
+    TagSecondaryComponent,
   ],
   templateUrl: './novel-page.component.html',
   styleUrls: ['./novel-page.component.css'],
@@ -52,6 +53,8 @@ export class NovelPageComponent implements OnInit, OnDestroy {
   readonly activeTab = signal<ChapterFilterTab>('free');
 
   readonly novelStatusConfig = computed(() => resolveNovelStatusUI(this.novel()?.status));
+  readonly mainTags = computed(() => (this.novel()?.tags || []).filter(t => t.status === 1));
+  readonly secondaryTags = computed(() => (this.novel()?.tags || []).filter(t => t.status === 2));
 
   readonly freeChaptersCount = computed(() => {
     return this.chapters().filter(c => !c.isPremium).length;

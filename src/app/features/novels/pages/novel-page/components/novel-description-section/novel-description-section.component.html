@@ -30,12 +30,12 @@
         </span>
       </div>
 
-      <!-- Badges de Categorías Principales (status: 1) -->
-      @if (mainCategories().length > 0) {
+      <!-- Badges de Tags Principales (status: 1) -->
+      @if (mainTags().length > 0) {
         <div class="flex flex-wrap gap-2 mt-3">
-          @for (cat of mainCategories(); track cat.name) {
+          @for (tag of mainTags(); track tag.name) {
             <app-badge
-              [vcLabel]="cat.name"
+              [vcLabel]="tag.name"
               vcVariant="primary"
               (onClick)="onGenreClick($event)"
             />
@@ -43,16 +43,14 @@
         </div>
       }
 
-      <!-- Categorías Secundarias (status: 2) -->
-      @if (secondaryCategories().length > 0) {
+      <!-- Tags Secundarios (status: 2) mostrados como #tag con componente dumb -->
+      @if (secondaryTags().length > 0) {
         <div class="flex flex-wrap gap-2 mt-2 text-xs text-[var(--color-description)] font-medium">
-          @for (cat of secondaryCategories(); track cat.name) {
-            <span
-              class="hover:text-[var(--color-black)] cursor-pointer transition-colors break-words"
-              (click)="onGenreClick(cat.name)"
-            >
-              {{ cat.name }}
-            </span>
+          @for (tag of secondaryTags(); track tag.name) {
+            <app-tag-secondary
+              [vcLabel]="tag.name"
+              (onClick)="onGenreClick($event)"
+            />
           }
         </div>
       }
@@ -61,8 +59,13 @@
       <div class="flex flex-wrap items-center gap-2 text-xs mt-3">
         <span class="text-[var(--color-description)] font-bold uppercase tracking-wider">{{ texts.releases.title }}:</span>
         <div class="flex flex-wrap gap-1.5 items-center">
-          @for (day of novel()?.releaseSchedule?.days; track $index) {
-            <app-release-day-badge [vcLabel]="day" />
+          @for (day of weeklySchedule(); track day.key) {
+            <app-release-day-badge
+              [vcLabel]="day.label"
+              [disabled]="!day.isActive"
+              [vcVariant]="day.isActive ? 'primary' : 'disabled'"
+              [title]="day.isActive ? (day.fullName + ': Publicación') : (day.fullName + ': Sin publicación')"
+            />
           }
           @if (novel()?.releaseSchedule?.time) {
             <span class="text-[var(--color-description)] text-xs ml-1 font-medium">&#64; {{ novel()?.releaseSchedule?.time }}</span>

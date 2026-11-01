@@ -87,7 +87,10 @@ export class NovelsPageComponent implements OnInit {
     const currentGenres = this.selectedGenres();
     const matchesGenres = 
       currentGenres.length === 0 || 
-      currentGenres.some(genre => novel.genres.includes(genre));
+      currentGenres.some(genre => 
+        novel.tags?.some(t => t.name.toLowerCase() === genre.toLowerCase()) || 
+        (novel.genres?.includes(genre) ?? false)
+      );
 
     return matchesLanguage && matchesStatus && matchesGenres;
   }

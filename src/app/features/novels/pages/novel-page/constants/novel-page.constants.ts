@@ -85,3 +85,48 @@ export function resolveNovelStatusUI(rawStatus: string | undefined): NovelStatus
     dotClass: 'bg-[var(--color-primary)]',
   };
 }
+
+export interface ScheduleDayItem {
+  key: string;
+  label: string;
+  fullName: string;
+  isActive: boolean;
+}
+
+export const DAYS_OF_WEEK_DEF = [
+  { key: 'lun', label: 'Lun', fullName: 'Lunes', aliases: ['lun', 'lunes', 'mon', 'monday'] },
+  { key: 'mar', label: 'Mar', fullName: 'Martes', aliases: ['mar', 'martes', 'tue', 'tuesday'] },
+  { key: 'mie', label: 'Mié', fullName: 'Miércoles', aliases: ['mié', 'mie', 'miercoles', 'miércoles', 'wed', 'wednesday'] },
+  { key: 'jue', label: 'Jue', fullName: 'Jueves', aliases: ['jue', 'jueves', 'thu', 'thursday'] },
+  { key: 'vie', label: 'Vie', fullName: 'Viernes', aliases: ['vie', 'viernes', 'fri', 'friday'] },
+  { key: 'sab', label: 'Sáb', fullName: 'Sábado', aliases: ['sáb', 'sab', 'sabado', 'sábado', 'sat', 'saturday'] },
+  { key: 'dom', label: 'Dom', fullName: 'Domingo', aliases: ['dom', 'domingo', 'sun', 'sunday'] },
+];
+
+export function resolveWeeklySchedule(scheduledDays: string[] | undefined): ScheduleDayItem[] {
+  const normalizedScheduled = (scheduledDays || []).map(d => d.trim().toLowerCase());
+
+  return DAYS_OF_WEEK_DEF.map(dayDef => {
+    const match = normalizedScheduled.find(sch =>
+      dayDef.aliases.some(alias => sch.startsWith(alias) || sch === alias)
+    );
+
+    if (match) {
+      const multiplierMatch = match.match(/x\s*\d+/i);
+      const label = multiplierMatch ? `${dayDef.label} ${multiplierMatch[0]}` : dayDef.label;
+      return {
+        key: dayDef.key,
+        label,
+        fullName: dayDef.fullName,
+        isActive: true,
+      };
+    }
+
+    return {
+      key: dayDef.key,
+      label: dayDef.label,
+      fullName: dayDef.fullName,
+      isActive: false,
+    };
+  });
+}

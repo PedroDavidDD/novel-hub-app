@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal } f
 import { CommonModule } from '@angular/common';
 import { CustomBadgeComponent } from '../../../../../../shared/components/custom-badge/custom-badge.component';
 import { ReleaseDayBadgeComponent } from '../../../../../../shared/components/release-day-badge/release-day-badge.component';
-import { INovel, INovelCategory } from '../../../../services/novels.service';
-import { NOVEL_PAGE_TEXTS, NovelStatusUI } from '../../constants/novel-page.constants';
+import { TagSecondaryComponent } from '../../../../../../shared/components/tag-secondary/tag-secondary.component';
+import { INovel, INovelTag } from '../../../../services/novels.service';
+import { NOVEL_PAGE_TEXTS, NovelStatusUI, resolveWeeklySchedule, ScheduleDayItem } from '../../constants/novel-page.constants';
 
 @Component({
   selector: 'app-novel-description-section',
   standalone: true,
-  imports: [CommonModule, CustomBadgeComponent, ReleaseDayBadgeComponent],
+  imports: [CommonModule, CustomBadgeComponent, ReleaseDayBadgeComponent, TagSecondaryComponent],
   templateUrl: './novel-description-section.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -24,20 +25,28 @@ export class NovelDescriptionSectionComponent {
   readonly texts = NOVEL_PAGE_TEXTS;
   readonly isDescriptionExpanded = signal<boolean>(false);
 
-  readonly mainCategories = computed<INovelCategory[]>(() => {
-    const categories = this.novel()?.categories;
-    if (categories && categories.length > 0) {
-      return categories.filter(c => c.status === 1);
+  readonly mainTags = computed<INovelTag[]>(() => {
+    const tags = this.novel()?.tags;
+    if (tags && tags.length > 0) {
+      return tags.filter(t => t.status === 1);
     }
-    return (this.novel()?.genres || []).map(name => ({ name, status: 1 as const }));
+    return [];
   });
 
-  readonly secondaryCategories = computed<INovelCategory[]>(() => {
-    const categories = this.novel()?.categories;
-    if (categories && categories.length > 0) {
-      return categories.filter(c => c.status === 2);
+  readonly secondaryTags = computed<INovelTag[]>(() => {
+    const tags = this.novel()?.tags;
+    if (tags && tags.length > 0) {
+      return tags.filter(t => t.status === 2);
     }
-    return (this.novel()?.tags || []).map(name => ({ name, status: 2 as const }));
+    return [];
+  });
+
+  // Aliases retrocompatibles
+  readonly mainCategories = this.mainTags;
+  readonly secondaryCategories = this.secondaryTags;
+
+  readonly weeklySchedule = computed<ScheduleDayItem[]>(() => {
+    return resolveWeeklySchedule(this.novel()?.releaseSchedule?.days);
   });
 
   toggleDescription(): void {

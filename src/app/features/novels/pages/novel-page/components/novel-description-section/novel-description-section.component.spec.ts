@@ -14,8 +14,12 @@ describe('NovelDescriptionSectionComponent', () => {
     author: 'Test Author',
     description: 'This is a test description that can be expanded or collapsed.',
     image: '/assets/images/novel1.jpg',
-    genres: ['Fantasy', 'Action'],
-    tags: ['#Magic', '#Adventure'],
+    tags: [
+      { name: 'Fantasy', status: 1 },
+      { name: 'Action', status: 1 },
+      { name: 'Magic', status: 2 },
+      { name: 'Adventure', status: 2 },
+    ],
     language: 'Spanish',
     status: 'Ongoing',
     popularity: 100,
@@ -61,39 +65,55 @@ describe('NovelDescriptionSectionComponent', () => {
     expect(clickedGenre).toBe('Fantasy');
   });
 
-  it('should compute mainCategories (status 1) and secondaryCategories (status 2), omitting status 0', () => {
-    const novelWithCategories: INovel = {
+  it('should compute mainTags (status 1) and secondaryTags (status 2), omitting status 0', () => {
+    const novelWithTags: INovel = {
       ...mockNovel,
-      categories: [
+      tags: [
         { name: 'Magia', status: 1 },
         { name: 'Aventura', status: 1 },
         { name: 'Misterio', status: 2 },
         { name: 'Oculto', status: 0 },
       ],
     };
-    fixture.componentRef.setInput('novel', novelWithCategories);
+    fixture.componentRef.setInput('novel', novelWithTags);
     fixture.detectChanges();
 
-    expect(component.mainCategories()).toEqual([
+    expect(component.mainTags()).toEqual([
       { name: 'Magia', status: 1 },
       { name: 'Aventura', status: 1 },
     ]);
-    expect(component.secondaryCategories()).toEqual([
+    expect(component.secondaryTags()).toEqual([
       { name: 'Misterio', status: 2 },
     ]);
   });
 
-  it('should fallback to genres as status 1 and tags as status 2 when categories is empty', () => {
+  it('should compute tags from mockNovel correctly', () => {
     fixture.componentRef.setInput('novel', mockNovel);
     fixture.detectChanges();
 
-    expect(component.mainCategories()).toEqual([
+    expect(component.mainTags()).toEqual([
       { name: 'Fantasy', status: 1 },
       { name: 'Action', status: 1 },
     ]);
-    expect(component.secondaryCategories()).toEqual([
-      { name: '#Magic', status: 2 },
-      { name: '#Adventure', status: 2 },
+    expect(component.secondaryTags()).toEqual([
+      { name: 'Magic', status: 2 },
+      { name: 'Adventure', status: 2 },
     ]);
+  });
+
+  it('should compute weeklySchedule with 7 days and mark days as active or disabled', () => {
+    fixture.componentRef.setInput('novel', mockNovel);
+    fixture.detectChanges();
+
+    const schedule = component.weeklySchedule();
+    expect(schedule.length).toBe(7);
+
+    const mon = schedule.find(d => d.key === 'lun');
+    const tue = schedule.find(d => d.key === 'mar');
+    const fri = schedule.find(d => d.key === 'vie');
+
+    expect(mon?.isActive).toBeTrue();
+    expect(tue?.isActive).toBeFalse();
+    expect(fri?.isActive).toBeTrue();
   });
 });
