@@ -14,12 +14,8 @@ describe('NovelDescriptionSectionComponent', () => {
     author: 'Test Author',
     description: 'This is a test description that can be expanded or collapsed.',
     image: '/assets/images/novel1.jpg',
-    tags: [
-      { name: 'Fantasy', status: 1 },
-      { name: 'Action', status: 1 },
-      { name: 'Magic', status: 2 },
-      { name: 'Adventure', status: 2 },
-    ],
+    genres: ['Fantasy', 'Action'],
+    tags: ['Magic', 'Adventure'],
     language: 'Spanish',
     status: 'Ongoing',
     popularity: 100,
@@ -65,40 +61,19 @@ describe('NovelDescriptionSectionComponent', () => {
     expect(clickedGenre).toBe('Fantasy');
   });
 
-  it('should compute mainTags (status 1) and secondaryTags (status 2), omitting status 0', () => {
-    const novelWithTags: INovel = {
-      ...mockNovel,
-      tags: [
-        { name: 'Magia', status: 1 },
-        { name: 'Aventura', status: 1 },
-        { name: 'Misterio', status: 2 },
-        { name: 'Oculto', status: 0 },
-      ],
-    };
-    fixture.componentRef.setInput('novel', novelWithTags);
-    fixture.detectChanges();
+  it('should emit tagClick output when onTagClick is called', () => {
+    let clickedTag = '';
+    component.tagClick.subscribe((tag) => {
+      clickedTag = tag;
+    });
 
-    expect(component.mainTags()).toEqual([
-      { name: 'Magia', status: 1 },
-      { name: 'Aventura', status: 1 },
-    ]);
-    expect(component.secondaryTags()).toEqual([
-      { name: 'Misterio', status: 2 },
-    ]);
+    component.onTagClick('Magic');
+    expect(clickedTag).toBe('Magic');
   });
 
-  it('should compute tags from mockNovel correctly', () => {
-    fixture.componentRef.setInput('novel', mockNovel);
-    fixture.detectChanges();
-
-    expect(component.mainTags()).toEqual([
-      { name: 'Fantasy', status: 1 },
-      { name: 'Action', status: 1 },
-    ]);
-    expect(component.secondaryTags()).toEqual([
-      { name: 'Magic', status: 2 },
-      { name: 'Adventure', status: 2 },
-    ]);
+  it('should compute genres and tags correctly', () => {
+    expect(component.genres()).toEqual(['Fantasy', 'Action']);
+    expect(component.tags()).toEqual(['Magic', 'Adventure']);
   });
 
   it('should compute weeklySchedule with 7 days and mark days as active or disabled', () => {

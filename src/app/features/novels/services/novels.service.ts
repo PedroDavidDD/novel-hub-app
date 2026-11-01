@@ -33,8 +33,8 @@ export interface INovel {
   author: string;
   description: string;
   image: string;
-  tags: INovelTag[];
-  genres?: string[];
+  genres: string[];
+  tags: string[];
   categories?: INovelTag[];
   language: string;
   status: string;
@@ -62,23 +62,19 @@ export class NovelsService {
       author: '와즈샌',
       description: 'I became the flirty extra in a love comedy.\n\nTo prevent a disastrous future in the sequel, I tried to take in the defeated heroines beforehand...\n\nAs soon as my transmigration began, the original love comedy ended.',
       image: '/assets/images/novel-ibaewtidh.jpg',
-      tags: [
-        { name: 'Fantasy', status: 1 },
-        { name: 'Action', status: 1 },
-        { name: 'Harem', status: 1 },
-        { name: 'Adventure', status: 1 },
-        { name: 'Fallen Nobility', status: 2 },
-        { name: 'Game Elements', status: 2 },
-        { name: 'Misunderstood Protagonist', status: 2 },
-        { name: 'Male Protagonist', status: 2 },
-        { name: 'System', status: 2 },
-        { name: 'Dungeon', status: 2 },
-        { name: 'Weak to Strong', status: 2 },
-        { name: 'Secret Society', status: 2 },
-        { name: 'Elves', status: 2 },
-        { name: 'Beastkin', status: 2 }
-      ],
       genres: ['Fantasy', 'Action', 'Harem', 'Adventure'],
+      tags: [
+        'Fallen Nobility',
+        'Game Elements',
+        'Misunderstood Protagonist',
+        'Male Protagonist',
+        'System',
+        'Dungeon',
+        'Weak to Strong',
+        'Secret Society',
+        'Elves',
+        'Beastkin'
+      ],
       releaseDate: '2026-10-30T06:37:07.738Z',
       language: 'Korean',
       status: 'Ongoing',
@@ -101,17 +97,8 @@ export class NovelsService {
       author: 'Robespierre Fan',
       description: 'A revolutionary tale set in an alternate magical Victorian-era realm where liberty is demanded through reason, not execution.',
       image: '/assets/images/novel-guillotine.jpg',
-      tags: [
-        { name: 'Fantasy', status: 1 },
-        { name: 'Historical', status: 1 },
-        { name: 'Adventure', status: 1 },
-        { name: 'Revolution', status: 2 },
-        { name: 'Magic', status: 2 },
-        { name: 'Victorian', status: 2 },
-        { name: 'Politics', status: 2 },
-        { name: 'Genius Protagonist', status: 2 }
-      ],
       genres: ['Fantasy', 'Historical', 'Adventure'],
+      tags: ['Revolution', 'Magic', 'Victorian', 'Politics', 'Genius Protagonist'],
       releaseDate: '2026-10-30T06:37:08.222Z',
       language: 'Korean',
       status: 'Ongoing',
@@ -134,16 +121,8 @@ export class NovelsService {
       author: '연습용더mi',
       description: 'An unconventional psych-thriller where psychological suggestion borders on the supernatural, blurring perception and reality.',
       image: '/assets/images/novel-suggestion.jpg',
-      tags: [
-        { name: 'Psychological', status: 1 },
-        { name: 'Mystery', status: 1 },
-        { name: 'Supernatural', status: 1 },
-        { name: 'Psychology', status: 2 },
-        { name: 'Hypnosis', status: 2 },
-        { name: 'Mind Games', status: 2 },
-        { name: 'Modern Fantasy', status: 2 }
-      ],
       genres: ['Psychological', 'Mystery', 'Supernatural'],
+      tags: ['Psychology', 'Hypnosis', 'Mind Games', 'Modern Fantasy'],
       releaseDate: '2026-10-30T06:37:08.263Z',
       language: 'Korean',
       status: 'Ongoing',
@@ -245,16 +224,31 @@ export class NovelsService {
 
   private mapToDomain(raw: any): INovel {
     const props = raw.props || raw;
-    const rawTags = Array.isArray(props.tags) && props.tags.length > 0 ? props.tags : (Array.isArray(props.categories) ? props.categories : []);
-    const parsedTags: INovelTag[] = rawTags.map((t: any) => {
-      if (typeof t === 'string') {
-        return { name: t.replace(/^#/, ''), status: 2 as const };
+
+    // 1. Extraer géneros principales de forma defensiva
+    let genres: string[] = [];
+    if (Array.isArray(props.genres) && props.genres.length > 0) {
+      genres = props.genres.map((g: any) => String(typeof g === 'object' ? g.name : g).trim()).filter(Boolean);
+    } else if (Array.isArray(props.genre) && props.genre.length > 0) {
+      genres = props.genre.map((g: any) => String(typeof g === 'object' ? g.name : g).trim()).filter(Boolean);
+    } else if (Array.isArray(props.tags)) {
+      genres = props.tags
+        .filter((t: any) => typeof t === 'object' && t.status === 1)
+        .map((t: any) => String(t.name).trim())
+        .filter(Boolean);
+    }
+
+    // 2. Extraer tags contextuales de forma defensiva
+    let tags: string[] = [];
+    if (Array.isArray(props.tags) && props.tags.length > 0) {
+      if (typeof props.tags[0] === 'string') {
+        tags = props.tags.map((t: any) => String(t).replace(/^#/, '').trim()).filter(Boolean);
+      } else {
+        tags = props.tags
+          .filter((t: any) => typeof t === 'object' && t.status === 2)
+          .map((t: any) => String(t.name).replace(/^#/, '').trim())
+          .filter(Boolean);
       }
-      return { name: t.name, status: (t.status ?? 1) as 0 | 1 | 2 };
-    });
-    if (parsedTags.length === 0 && (Array.isArray(props.genre) || Array.isArray(props.genres))) {
-      const gList = props.genre || props.genres || [];
-      gList.forEach((g: string) => parsedTags.push({ name: g, status: 1 as const }));
     }
 
     return {
@@ -264,9 +258,8 @@ export class NovelsService {
       author: props.author || 'Unknown',
       description: props.description || '',
       image: this.normalizeImage(props.image),
-      tags: parsedTags,
-      genres: parsedTags.filter(t => t.status === 1).map(t => t.name),
-      categories: parsedTags,
+      genres,
+      tags,
       language: props.sourceLanguage || props.language || 'English',
       status: props.status || 'Ongoing',
       popularity: props.popularity || 0,

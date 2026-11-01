@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CustomBadgeComponent } from '../../../../../../shared/components/custom-badge/custom-badge.component';
 import { ReleaseDayBadgeComponent } from '../../../../../../shared/components/release-day-badge/release-day-badge.component';
 import { TagSecondaryComponent } from '../../../../../../shared/components/tag-secondary/tag-secondary.component';
-import { INovel, INovelTag } from '../../../../services/novels.service';
+import { INovel } from '../../../../services/novels.service';
 import { NOVEL_PAGE_TEXTS, NovelStatusUI, resolveWeeklySchedule, ScheduleDayItem } from '../../constants/novel-page.constants';
 
 @Component({
@@ -21,27 +21,26 @@ export class NovelDescriptionSectionComponent {
   novelStatusConfig = input<NovelStatusUI | undefined>(undefined);
 
   genreClick = output<string>();
+  tagClick = output<string>();
 
   readonly texts = NOVEL_PAGE_TEXTS;
   readonly isDescriptionExpanded = signal<boolean>(false);
 
-  readonly mainTags = computed<INovelTag[]>(() => {
-    const tags = this.novel()?.tags;
-    if (tags && tags.length > 0) {
-      return tags.filter(t => t.status === 1);
-    }
-    return [];
+  readonly genres = computed<string[]>(() => {
+    return this.novel()?.genres || [];
   });
 
-  readonly secondaryTags = computed<INovelTag[]>(() => {
-    const tags = this.novel()?.tags;
-    if (tags && tags.length > 0) {
-      return tags.filter(t => t.status === 2);
-    }
-    return [];
+  readonly tags = computed<string[]>(() => {
+    return this.novel()?.tags || [];
   });
 
-  // Aliases retrocompatibles
+  // Aliases retrocompatibles para templates y tests
+  readonly mainTags = computed<{ name: string; status: number }[]>(() => {
+    return this.genres().map(g => ({ name: g, status: 1 }));
+  });
+  readonly secondaryTags = computed<{ name: string; status: number }[]>(() => {
+    return this.tags().map(t => ({ name: t, status: 2 }));
+  });
   readonly mainCategories = this.mainTags;
   readonly secondaryCategories = this.secondaryTags;
 
@@ -55,5 +54,9 @@ export class NovelDescriptionSectionComponent {
 
   onGenreClick(genre: string): void {
     this.genreClick.emit(genre);
+  }
+
+  onTagClick(tag: string): void {
+    this.tagClick.emit(tag);
   }
 }

@@ -42,7 +42,7 @@ export class NovelPageLegacyComponent implements OnInit, OnDestroy {
   }
 
   get tags(): string[] {
-    return (this.novel()?.tags || []).map(t => (typeof t === 'string' ? t : t.name));
+    return (this.novel()?.tags || []).map(t => (typeof t === 'string' ? t : (t as any).name));
   }
 
   get status(): string {

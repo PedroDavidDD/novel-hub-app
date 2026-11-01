@@ -161,6 +161,7 @@
           [novel]="novel()"
           [novelStatusConfig]="novelStatusConfig()"
           (genreClick)="onGenreClick($event)"
+          (tagClick)="onTagClick($event)"
         />
 
         <!-- 3. TERCERA SECCIÓN: Panel de Capítulos / Imágenes con Loader Progresivo -->
@@ -379,15 +380,15 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-2 mt-1">
-          @for (tag of mainTags(); track tag.name) {
-            <app-badge [vcLabel]="tag.name" vcVariant="primary" (onClick)="onGenreClick($event)" />
+          @for (genre of mainTags(); track genre) {
+            <app-badge [vcLabel]="genre" vcVariant="primary" (onClick)="onGenreClick($event)" />
           }
         </div>
 
         @if (secondaryTags().length > 0) {
           <div class="flex flex-wrap justify-center gap-2 text-xs text-[var(--color-description)] mt-1">
-            @for (tag of secondaryTags(); track tag.name) {
-              <app-tag-secondary [vcLabel]="tag.name" (onClick)="onGenreClick($event)" />
+            @for (tag of secondaryTags(); track tag) {
+              <app-tag-secondary [vcLabel]="tag" (onClick)="onTagClick($event)" />
             }
           </div>
         }

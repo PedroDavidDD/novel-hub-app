@@ -30,12 +30,12 @@
         </span>
       </div>
 
-      <!-- Badges de Tags Principales (status: 1) -->
-      @if (mainTags().length > 0) {
+      <!-- Badges de Géneros Principales -->
+      @if (genres().length > 0) {
         <div class="flex flex-wrap gap-2 mt-3">
-          @for (tag of mainTags(); track tag.name) {
+          @for (genre of genres(); track genre) {
             <app-badge
-              [vcLabel]="tag.name"
+              [vcLabel]="genre"
               vcVariant="primary"
               (onClick)="onGenreClick($event)"
             />
@@ -43,13 +43,13 @@
         </div>
       }
 
-      <!-- Tags Secundarios (status: 2) mostrados como #tag con componente dumb -->
-      @if (secondaryTags().length > 0) {
+      <!-- Tags Secundarios mostrados como #tag con componente dumb -->
+      @if (tags().length > 0) {
         <div class="flex flex-wrap gap-2 mt-2 text-xs text-[var(--color-description)] font-medium">
-          @for (tag of secondaryTags(); track tag.name) {
+          @for (tag of tags(); track tag) {
             <app-tag-secondary
-              [vcLabel]="tag.name"
-              (onClick)="onGenreClick($event)"
+              [vcLabel]="tag"
+              (onClick)="onTagClick($event)"
             />
           }
         </div>

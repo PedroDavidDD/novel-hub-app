@@ -58,8 +58,8 @@ export class NovelPageComponent implements OnInit, OnDestroy {
   readonly novelStatusConfig = computed(() => resolveNovelStatusUI(this.novel()?.status));
   readonly readChaptersSet = computed(() => new Set(this.readingProgress()?.readChapters || []));
   readonly lastReadChapterNumber = computed(() => this.readingProgress()?.lastChapterNumber ?? null);
-  readonly mainTags = computed(() => (this.novel()?.tags || []).filter(t => t.status === 1));
-  readonly secondaryTags = computed(() => (this.novel()?.tags || []).filter(t => t.status === 2));
+  readonly mainTags = computed(() => this.novel()?.genres || []);
+  readonly secondaryTags = computed(() => this.novel()?.tags || []);
 
   readonly freeChaptersCount = computed(() => {
     return this.chapters().filter(c => !c.isPremium).length;
@@ -153,7 +153,11 @@ export class NovelPageComponent implements OnInit, OnDestroy {
     this.activeTab.set(tab);
   }
 
-  onGenreClick(tag: string): void {
+  onGenreClick(genre: string): void {
+    this.router.navigate(['/series'], { queryParams: { genre } });
+  }
+
+  onTagClick(tag: string): void {
     this.router.navigate(['/series'], { queryParams: { tag } });
   }
 
