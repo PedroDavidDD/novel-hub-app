@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { INovel, NovelsService } from '../../services/novels.service';
 import { TruncatePipe } from '../../../../shared/pipes/truncate.pipe';
 import { CardShineDirective } from '../../../../shared/directives/card-shine.directive';
@@ -25,17 +26,36 @@ const SORT_STRATEGIES: Record<SortOption, (a: INovel, b: INovel) => number> = {
 })
 export class NovelsPageComponent implements OnInit {
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly novelsService = inject(NovelsService);
 
   readonly languages: string[] = ['Any', 'English', 'Chinese', 'Korean'];
   readonly statuses: string[] = ['Any', 'Ongoing', 'Completed', 'Hiatus'];
   readonly sortByOptions: SortOption[] = ['Name', 'Popular', 'Chapters', 'New', 'Rating'];
-  readonly genres: string[] = ['Fantasy', 'Action', 'Harem', 'Adventure', 'Romance', 'Vida moderna', 'Vida escolar', 'Drama'];
 
   readonly selectedLanguage = signal<string>(ANY_FILTER);
   readonly selectedStatus = signal<string>(ANY_FILTER);
   readonly selectedSort = signal<SortOption>('Name');
-  readonly selectedGenres = signal<string[]>([]);
+  readonly selectedTags = signal<string[]>([]);
+
+  // Alias para retrocompatibilidad
+  readonly selectedGenres = this.selectedTags;
+
+  readonly availableTags = computed<string[]>(() => {
+    const allNovels = this.novelsService.novels();
+    const tagSet = new Set<string>();
+
+    allNovels.forEach(novel => {
+      novel.tags?.forEach(tag => {
+        if (tag.name && tag.status !== 0) {
+          tagSet.add(tag.name.trim());
+        }
+      });
+    });
+
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  });
 
   readonly filteredNovels = computed(() => {
     const allNovels = this.novelsService.novels();
@@ -45,6 +65,7 @@ export class NovelsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.novelsService.getAllNovels().subscribe();
+    this.initQueryParamsListener();
   }
 
   filterByLanguage(language: string): void {
@@ -59,20 +80,58 @@ export class NovelsPageComponent implements OnInit {
     this.selectedSort.set(option);
   }
 
-  onGenreChange(genre: string, event: Event): void {
+  onTagChange(tag: string, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
 
-    this.selectedGenres.update(currentGenres => {
-      if (isChecked) {
-        return [...currentGenres, genre];
-      } else {
-        return currentGenres.filter(g => g !== genre);
-      }
+    this.selectedTags.update(currentTags => {
+      const updated = isChecked
+        ? [...currentTags, tag]
+        : currentTags.filter(t => t.toLowerCase() !== tag.toLowerCase());
+      this.updateQueryParams(updated);
+      return updated;
     });
+  }
+
+  // Alias para retrocompatibilidad
+  onGenreChange(tag: string, event: Event): void {
+    this.onTagChange(tag, event);
   }
 
   navigateToNovel(novel: INovel): void {
     this.router.navigate(['/novel', novel.slug || novel.title]);
+  }
+
+  /**
+   * Sincroniza y autoselecciona los tags a partir de los queryParams de la URL.
+   */
+  syncFiltersFromQueryParams(params: Params): void {
+    const tagParam = params['tag'];
+
+    if (!tagParam) {
+      this.selectedTags.set([]);
+      return;
+    }
+
+    const rawList = Array.isArray(tagParam) ? tagParam : String(tagParam).split(',');
+    const parsedTags = rawList
+      .map(t => String(t).trim())
+      .filter(t => t.length > 0);
+
+    this.selectedTags.set(parsedTags);
+  }
+
+  private initQueryParamsListener(): void {
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => this.syncFiltersFromQueryParams(params));
+  }
+
+  private updateQueryParams(tags: string[]): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tag: tags.length > 0 ? tags.join(',') : null },
+      queryParamsHandling: 'merge',
+    });
   }
 
   private shouldShowNovel(novel: INovel): boolean {
@@ -84,15 +143,17 @@ export class NovelsPageComponent implements OnInit {
       this.selectedStatus() === ANY_FILTER || 
       novel.status === this.selectedStatus();
 
-    const currentGenres = this.selectedGenres();
-    const matchesGenres = 
-      currentGenres.length === 0 || 
-      currentGenres.some(genre => 
-        novel.tags?.some(t => t.name.toLowerCase() === genre.toLowerCase()) || 
-        (novel.genres?.includes(genre) ?? false)
+    const currentTags = this.selectedTags();
+    const matchesTags = 
+      currentTags.length === 0 || 
+      currentTags.some(selectedTag => 
+        novel.tags?.some(t => 
+          t.name.trim().toLowerCase() === selectedTag.trim().toLowerCase() && 
+          t.status !== 0
+        )
       );
 
-    return matchesLanguage && matchesStatus && matchesGenres;
+    return matchesLanguage && matchesStatus && matchesTags;
   }
 
   private sortNovels(novels: INovel[]): INovel[] {

@@ -51,23 +51,25 @@
       </div>
     </div>
 
-    <!-- Filtro por Géneros -->
+    <!-- Filtro por Tags (Dinámico desde base de datos) -->
     <div class="filters__group col-span-12 lg:col-span-4">
-      <h3 class="filters__title">Genres</h3>
+      <h3 class="filters__title">Tags</h3>
       <div class="filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-        @for (genre of genres; track genre) {
+        @for (tag of availableTags(); track tag) {
           <label
             [class.filters__checkboxLabel]="true"
-            [class.filters__checkboxLabel--selected]="selectedGenres().includes(genre)"
+            [class.filters__checkboxLabel--selected]="selectedTags().includes(tag)"
           >
             <input
               type="checkbox"
-              [value]="genre"
-              [checked]="selectedGenres().includes(genre)"
-              (change)="onGenreChange(genre, $event)"
+              [value]="tag"
+              [checked]="selectedTags().includes(tag)"
+              (change)="onTagChange(tag, $event)"
             />
-            <span>{{ genre }}</span>
+            <span>{{ tag }}</span>
           </label>
+        } @empty {
+          <span class="text-xs text-[var(--color-description)] py-2 col-span-full">No hay tags disponibles</span>
         }
       </div>
     </div>
