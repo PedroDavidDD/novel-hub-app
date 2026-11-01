@@ -35,4 +35,11 @@ describe('ChapterMetaComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).toContain('15,420');
   });
+
+  it('should apply primary color class when isRead is true', () => {
+    fixture.componentRef.setInput('isRead', true);
+    fixture.detectChanges();
+    const div = fixture.nativeElement.querySelector('div');
+    expect(div.className).toContain('text-[var(--color-primary-dark)]');
+  });
 });
