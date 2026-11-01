@@ -35,16 +35,14 @@ export class HomePageComponent implements OnInit {
   }
 
   private applyLatestFilter(novels: INovel[]): INovel[] {
-    return novels
-      .filter(novel => novel.releaseDate)
-      .sort((a, b) => {
-        const dateA = new Date(a.releaseDate!);
-        const dateB = new Date(b.releaseDate!);
-        return dateB.getTime() - dateA.getTime();
-      });
+    return [...novels].sort((a, b) => {
+      const dateA = a.releaseDate ? new Date(a.releaseDate).getTime() : 0;
+      const dateB = b.releaseDate ? new Date(b.releaseDate).getTime() : 0;
+      return dateB - dateA;
+    });
   }
 
   private applyPopularFilter(novels: INovel[]): INovel[] {
-    return [...novels].sort((a, b) => b.popularity - a.popularity);
+    return [...novels].sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
   }
 }

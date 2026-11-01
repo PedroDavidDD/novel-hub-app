@@ -20,10 +20,11 @@ export interface IChapterItem {
   publishedAt?: string;
 }
 
-export interface INovelCategory {
+export interface INovelTag {
   name: string;
   status: 0 | 1 | 2; // 0 = Inactiva | 1 = Principal | 2 = Secundaria
 }
+export type INovelCategory = INovelTag;
 
 export interface INovel {
   id: string;
@@ -32,9 +33,9 @@ export interface INovel {
   author: string;
   description: string;
   image: string;
-  genres: string[];
-  tags: string[];
-  categories?: INovelCategory[];
+  tags: INovelTag[];
+  genres?: string[];
+  categories?: INovelTag[];
   language: string;
   status: string;
   popularity: number;
@@ -61,8 +62,24 @@ export class NovelsService {
       author: '와즈샌',
       description: 'I became the flirty extra in a love comedy.\n\nTo prevent a disastrous future in the sequel, I tried to take in the defeated heroines beforehand...\n\nAs soon as my transmigration began, the original love comedy ended.',
       image: '/assets/images/novel-ibaewtidh.jpg',
+      tags: [
+        { name: 'Fantasy', status: 1 },
+        { name: 'Action', status: 1 },
+        { name: 'Harem', status: 1 },
+        { name: 'Adventure', status: 1 },
+        { name: 'Fallen Nobility', status: 2 },
+        { name: 'Game Elements', status: 2 },
+        { name: 'Misunderstood Protagonist', status: 2 },
+        { name: 'Male Protagonist', status: 2 },
+        { name: 'System', status: 2 },
+        { name: 'Dungeon', status: 2 },
+        { name: 'Weak to Strong', status: 2 },
+        { name: 'Secret Society', status: 2 },
+        { name: 'Elves', status: 2 },
+        { name: 'Beastkin', status: 2 }
+      ],
       genres: ['Fantasy', 'Action', 'Harem', 'Adventure'],
-      tags: ['#Fallen Nobility', '#Game Elements', '#Misunderstood Protagonist', '#Male Protagonist', '#System', '#Dungeon', '#Weak to Strong', '#Secret Society', '#Elves', '#Beastkin'],
+      releaseDate: '2026-10-30T06:37:07.738Z',
       language: 'Korean',
       status: 'Ongoing',
       popularity: 1540,
@@ -84,8 +101,18 @@ export class NovelsService {
       author: 'Robespierre Fan',
       description: 'A revolutionary tale set in an alternate magical Victorian-era realm where liberty is demanded through reason, not execution.',
       image: '/assets/images/novel-guillotine.jpg',
+      tags: [
+        { name: 'Fantasy', status: 1 },
+        { name: 'Historical', status: 1 },
+        { name: 'Adventure', status: 1 },
+        { name: 'Revolution', status: 2 },
+        { name: 'Magic', status: 2 },
+        { name: 'Victorian', status: 2 },
+        { name: 'Politics', status: 2 },
+        { name: 'Genius Protagonist', status: 2 }
+      ],
       genres: ['Fantasy', 'Historical', 'Adventure'],
-      tags: ['#Revolution', '#Magic', '#Victorian', '#Politics', '#Genius Protagonist'],
+      releaseDate: '2026-10-30T06:37:08.222Z',
       language: 'Korean',
       status: 'Ongoing',
       popularity: 980,
@@ -107,8 +134,17 @@ export class NovelsService {
       author: '연습용더mi',
       description: 'An unconventional psych-thriller where psychological suggestion borders on the supernatural, blurring perception and reality.',
       image: '/assets/images/novel-suggestion.jpg',
+      tags: [
+        { name: 'Psychological', status: 1 },
+        { name: 'Mystery', status: 1 },
+        { name: 'Supernatural', status: 1 },
+        { name: 'Psychology', status: 2 },
+        { name: 'Hypnosis', status: 2 },
+        { name: 'Mind Games', status: 2 },
+        { name: 'Modern Fantasy', status: 2 }
+      ],
       genres: ['Psychological', 'Mystery', 'Supernatural'],
-      tags: ['#Psychology', '#Hypnosis', '#Mind Games', '#Modern Fantasy'],
+      releaseDate: '2026-10-30T06:37:08.263Z',
       language: 'Korean',
       status: 'Ongoing',
       popularity: 2100,
@@ -137,7 +173,9 @@ export class NovelsService {
       map(res => {
         const rawList = res?.data || res;
         if (Array.isArray(rawList) && rawList.length > 0) {
-          return rawList.map((item: any) => this.mapToDomain(item));
+          const domainList = rawList.map((item: any) => this.mapToDomain(item));
+          this.novelsSignal.set(domainList);
+          return domainList;
         }
         return this.novelsSignal();
       }),
@@ -199,26 +237,36 @@ export class NovelsService {
   private normalizeImage(img?: string): string {
     if (!img) return '/assets/images/novel1.jpg';
     if (img.startsWith('http://') || img.startsWith('https://')) return img;
-    return img.startsWith('/') ? img : `/${img}`;
+    if (img.startsWith('/assets/') || img.startsWith('assets/')) {
+      return img.startsWith('/') ? img : `/${img}`;
+    }
+    return `/assets/images/${img}`;
   }
 
   private mapToDomain(raw: any): INovel {
     const props = raw.props || raw;
+    const rawTags = Array.isArray(props.tags) && props.tags.length > 0 ? props.tags : (Array.isArray(props.categories) ? props.categories : []);
+    const parsedTags: INovelTag[] = rawTags.map((t: any) => {
+      if (typeof t === 'string') {
+        return { name: t.replace(/^#/, ''), status: 2 as const };
+      }
+      return { name: t.name, status: (t.status ?? 1) as 0 | 1 | 2 };
+    });
+    if (parsedTags.length === 0 && (Array.isArray(props.genre) || Array.isArray(props.genres))) {
+      const gList = props.genre || props.genres || [];
+      gList.forEach((g: string) => parsedTags.push({ name: g, status: 1 as const }));
+    }
+
     return {
       id: raw.id || raw._id || '',
       title: props.title || 'Untitled',
       slug: props.slug || (props.title ? props.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') : ''),
       author: props.author || 'Unknown',
       description: props.description || '',
-      image: props.image || '/assets/images/novel-ibaewtidh.jpg',
-      genres: Array.isArray(props.genre) ? props.genre : (Array.isArray(props.genres) ? props.genres : []),
-      tags: Array.isArray(props.tags) ? props.tags : [],
-      categories: Array.isArray(props.categories) && props.categories.length > 0
-        ? props.categories.map((c: any) => ({ name: c.name, status: c.status as 0 | 1 | 2 }))
-        : [
-            ...(Array.isArray(props.genre) ? props.genre.map((g: string) => ({ name: g, status: 1 as const })) : []),
-            ...(Array.isArray(props.tags) ? props.tags.map((t: string) => ({ name: t.replace(/^#/, ''), status: 2 as const })) : []),
-          ],
+      image: this.normalizeImage(props.image),
+      tags: parsedTags,
+      genres: parsedTags.filter(t => t.status === 1).map(t => t.name),
+      categories: parsedTags,
       language: props.sourceLanguage || props.language || 'English',
       status: props.status || 'Ongoing',
       popularity: props.popularity || 0,

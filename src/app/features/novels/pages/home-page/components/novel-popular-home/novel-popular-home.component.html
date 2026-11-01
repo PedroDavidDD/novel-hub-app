@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    @for (novel of novels(); track novel.id) {
+    @for (novel of novels(); track novel.id || $index) {
       <div class="novelItem cursor-pointer" appCardShine (click)="navigateToNovel(novel)">
         <div class="novelItem__image">
           <img [src]="novel.image" [alt]="novel.title" (error)="onImgError($event)" />
@@ -18,9 +18,9 @@
               {{ novel.description }}
             </span>
           </div>
-          <p class="novelItem__genres--text">Gender:</p>
+          <p class="novelItem__genres--text">Géneros:</p>
           <div class="novelItem__genres">
-            @for (genre of novel.genres.slice(0, 6); track $index) {
+            @for (genre of getGenres(novel); track $index) {
               <span class="novelItem__genre--text">
                 {{ genre }}
               </span>
