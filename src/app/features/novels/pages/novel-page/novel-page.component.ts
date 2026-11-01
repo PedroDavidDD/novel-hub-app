@@ -36,6 +36,9 @@ type ChapterFilterTab = 'free' | 'premium' | 'images';
   templateUrl: './novel-page.component.html',
   styleUrls: ['./novel-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'block w-full min-w-0',
+  },
 })
 export class NovelPageComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
