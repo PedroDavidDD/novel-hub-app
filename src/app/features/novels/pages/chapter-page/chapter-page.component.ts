@@ -12,6 +12,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { NovelsService, INovel, IChapterItem } from '../../services/novels.service';
+import { ReadingHistoryService } from '../../services/reading-history.service';
 import { CustomButtonComponent, AdBannerComponent } from '../../../../shared/components';
 
 @Component({
@@ -26,6 +27,7 @@ export class ChapterPageComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly novelsService = inject(NovelsService);
+  private readonly readingHistoryService = inject(ReadingHistoryService);
   private readonly titleService = inject(Title);
   private readonly destroy$ = new Subject<void>();
 
@@ -95,6 +97,10 @@ export class ChapterPageComponent implements OnInit, OnDestroy {
               this.allChapters.set(chapters);
               const found = chapters.find(c => c.chapterNumber === chapterNum) || chapters[0];
               this.currentChapter.set(found);
+
+              if (found && novel.id) {
+                this.readingHistoryService.saveProgress(novel.id, found.chapterNumber).subscribe();
+              }
 
               // Set browser document title as requested
               const chTitle = found ? (found.title.includes(':') ? found.title : `Chapter ${found.chapterNumber}: ${found.title}`) : `Chapter ${chapterNum}`;

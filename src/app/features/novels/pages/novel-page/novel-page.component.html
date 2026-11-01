@@ -272,7 +272,11 @@
                         </svg>
                       </span>
                     }
-                    <span class="text-sm font-medium text-[var(--color-black)] group-hover:text-[var(--color-primary-dark)] dark:group-hover:text-[var(--color-primary)] truncate" [title]="ch.title">
+                    <span
+                      class="text-sm truncate transition-colors"
+                      [ngClass]="isChapterRead(ch.chapterNumber) ? 'text-[var(--color-primary-dark)] dark:text-[var(--color-primary)] font-bold' : 'text-[var(--color-black)] font-medium group-hover:text-[var(--color-primary-dark)] dark:group-hover:text-[var(--color-primary)]'"
+                      [title]="ch.title"
+                    >
                       {{ ch.title }}
                     </span>
                   </div>
@@ -281,6 +285,7 @@
                   <app-chapter-meta
                     [vcViews]="ch.views"
                     [vcDate]="ch.publishedAt"
+                    [isRead]="isChapterRead(ch.chapterNumber)"
                   />
                 </div>
               } @empty {
@@ -498,10 +503,17 @@
                 class="py-2.5 flex items-center justify-between cursor-pointer hover:bg-[var(--color-border)]/20 px-1 gap-2"
                 (click)="onChapterClick(ch)"
               >
-                <span class="text-sm font-medium text-[var(--color-black)] truncate pr-2 min-w-0" [title]="ch.title">{{ ch.title }}</span>
+                <span
+                  class="text-sm truncate pr-2 min-w-0 transition-colors"
+                  [ngClass]="isChapterRead(ch.chapterNumber) ? 'text-[var(--color-primary-dark)] dark:text-[var(--color-primary)] font-bold' : 'text-[var(--color-black)] font-medium'"
+                  [title]="ch.title"
+                >
+                  {{ ch.title }}
+                </span>
                 <app-chapter-meta
                   [vcViews]="ch.views"
                   [vcDate]="ch.publishedAt"
+                  [isRead]="isChapterRead(ch.chapterNumber)"
                 />
               </div>
             }

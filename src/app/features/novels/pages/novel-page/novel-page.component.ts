@@ -12,6 +12,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { NovelsService, INovel, IChapterItem } from '../../services/novels.service';
+import { ReadingHistoryService, IReadingProgress } from '../../services/reading-history.service';
 import { CustomButtonComponent, CustomBadgeComponent, ChapterMetaComponent, TagSecondaryComponent } from '../../../../shared/components';
 import { CardShineDirective } from '../../../../shared/directives/card-shine.directive';
 import { NOVEL_PAGE_TEXTS, resolveNovelStatusUI } from './constants/novel-page.constants';
@@ -40,6 +41,7 @@ export class NovelPageComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly novelsService = inject(NovelsService);
+  private readonly readingHistoryService = inject(ReadingHistoryService);
   private readonly titleService = inject(Title);
   private readonly destroy$ = new Subject<void>();
 
@@ -47,12 +49,15 @@ export class NovelPageComponent implements OnInit, OnDestroy {
 
   readonly novel = signal<INovel | undefined>(undefined);
   readonly chapters = signal<IChapterItem[]>([]);
+  readonly readingProgress = signal<IReadingProgress | null>(null);
   readonly isNovelLoading = signal<boolean>(true);
   readonly isChaptersLoading = signal<boolean>(true);
   readonly isImageLoaded = signal<boolean>(false);
   readonly activeTab = signal<ChapterFilterTab>('free');
 
   readonly novelStatusConfig = computed(() => resolveNovelStatusUI(this.novel()?.status));
+  readonly readChaptersSet = computed(() => new Set(this.readingProgress()?.readChapters || []));
+  readonly lastReadChapterNumber = computed(() => this.readingProgress()?.lastChapterNumber ?? null);
   readonly mainTags = computed(() => (this.novel()?.tags || []).filter(t => t.status === 1));
   readonly secondaryTags = computed(() => (this.novel()?.tags || []).filter(t => t.status === 2));
 
@@ -105,6 +110,13 @@ export class NovelPageComponent implements OnInit, OnDestroy {
         if (novel) {
           this.titleService.setTitle(`${novel.title} - Novel Hub`);
 
+          if (novel.id) {
+            this.readingHistoryService.getProgressByNovelId(novel.id).subscribe({
+              next: (p) => this.readingProgress.set(p),
+              error: () => this.readingProgress.set(null),
+            });
+          }
+
           this.novelsService.getChaptersByNovel(novel.slug || novel.id).subscribe({
             next: (chaptersList) => {
               this.chapters.set(chaptersList);
@@ -141,8 +153,8 @@ export class NovelPageComponent implements OnInit, OnDestroy {
     this.activeTab.set(tab);
   }
 
-  onGenreClick(genre: string): void {
-    this.router.navigate(['/series'], { queryParams: { genre } });
+  onGenreClick(tag: string): void {
+    this.router.navigate(['/series'], { queryParams: { tag } });
   }
 
   onFirstChapter(): void {
@@ -153,20 +165,22 @@ export class NovelPageComponent implements OnInit, OnDestroy {
     this.router.navigate(['/novel', n.slug || n.id, 'chapter', targetChapter]);
   }
 
+  isChapterRead(chapterNumber: number): boolean {
+    return this.readChaptersSet().has(chapterNumber);
+  }
+
   onLastReadChapter(): void {
     const n = this.novel();
     const list = this.chapters();
     if (!n) return;
-    const key = `novel_hub_last_read_${n.slug || n.id}`;
-    const stored = localStorage.getItem(key);
-    if (stored !== null) {
-      const num = parseInt(stored, 10);
-      if (!isNaN(num)) {
-        this.router.navigate(['/novel', n.slug || n.id, 'chapter', num]);
-        return;
-      }
+
+    const lastRead = this.lastReadChapterNumber();
+    if (typeof lastRead === 'number' && lastRead > 0) {
+      this.router.navigate(['/novel', n.slug || n.id, 'chapter', lastRead]);
+      return;
     }
-    const targetChapter = list.length > 0 ? list[list.length - 1].chapterNumber : 0;
+
+    const targetChapter = list.length > 0 ? list[0].chapterNumber : 0;
     this.router.navigate(['/novel', n.slug || n.id, 'chapter', targetChapter]);
   }
 
