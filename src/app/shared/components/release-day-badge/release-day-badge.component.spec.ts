@@ -32,7 +32,35 @@ describe('ReleaseDayBadgeComponent', () => {
     expect(classes).toContain('hover:border-[var(--color-primary)]');
   });
 
-  it('should emit onClick event when clicked', () => {
+  it('should apply disabled styling and aria-disabled when disabled is true', () => {
+    fixture.componentRef.setInput('disabled', true);
+    fixture.detectChanges();
+
+    const classes = component.badgeClasses();
+    expect(classes).toContain('cursor-not-allowed');
+    expect(classes).toContain('opacity-40');
+    expect(component.isDisabled()).toBeTrue();
+
+    const span = fixture.nativeElement.querySelector('span');
+    expect(span.getAttribute('aria-disabled')).toBe('true');
+  });
+
+  it('should not emit onClick when disabled', () => {
+    fixture.componentRef.setInput('disabled', true);
+    fixture.detectChanges();
+
+    let clicked = false;
+    component.onClick.subscribe(() => {
+      clicked = true;
+    });
+
+    const span = fixture.nativeElement.querySelector('span');
+    span.click();
+
+    expect(clicked).toBeFalse();
+  });
+
+  it('should emit onClick event when enabled and clicked', () => {
     let emitted = '';
     component.onClick.subscribe((val) => {
       emitted = val;
