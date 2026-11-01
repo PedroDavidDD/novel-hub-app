@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { INovel, NovelsService } from '../../services/novels.service';
 import { TruncatePipe } from '../../../../shared/pipes/truncate.pipe';
 import { CardShineDirective } from '../../../../shared/directives/card-shine.directive';
@@ -19,7 +20,7 @@ const SORT_STRATEGIES: Record<SortOption, (a: INovel, b: INovel) => number> = {
 @Component({
   selector: 'app-novels-page',
   standalone: true,
-  imports: [TruncatePipe, CardShineDirective],
+  imports: [CommonModule, TruncatePipe, CardShineDirective],
   templateUrl: './novels-page.component.html',
   styleUrls: ['./novels-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,10 +38,22 @@ export class NovelsPageComponent implements OnInit {
   readonly selectedLanguage = signal<string>(ANY_FILTER);
   readonly selectedStatus = signal<string>(ANY_FILTER);
   readonly selectedSort = signal<SortOption>('Name');
+
+  readonly selectedGenres = signal<string[]>([]);
   readonly selectedTags = signal<string[]>([]);
 
-  // Alias para retrocompatibilidad
-  readonly selectedGenres = this.selectedTags;
+  readonly availableGenres = computed<string[]>(() => {
+    const allNovels = this.novelsService.novels();
+    const genreSet = new Set<string>();
+
+    allNovels.forEach(novel => {
+      novel.genres?.forEach(genre => {
+        if (genre) genreSet.add(genre.trim());
+      });
+    });
+
+    return Array.from(genreSet).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  });
 
   readonly availableTags = computed<string[]>(() => {
     const allNovels = this.novelsService.novels();
@@ -48,9 +61,7 @@ export class NovelsPageComponent implements OnInit {
 
     allNovels.forEach(novel => {
       novel.tags?.forEach(tag => {
-        if (tag.name && tag.status !== 0) {
-          tagSet.add(tag.name.trim());
-        }
+        if (tag) tagSet.add(tag.trim());
       });
     });
 
@@ -80,21 +91,35 @@ export class NovelsPageComponent implements OnInit {
     this.selectedSort.set(option);
   }
 
-  onTagChange(tag: string, event: Event): void {
-    const isChecked = (event.target as HTMLInputElement).checked;
+  toggleGenre(genre: string): void {
+    this.selectedGenres.update(current => {
+      const exists = current.some(g => g.toLowerCase() === genre.toLowerCase());
+      const updated = exists
+        ? current.filter(g => g.toLowerCase() !== genre.toLowerCase())
+        : [...current, genre];
+      this.updateQueryParams(updated, this.selectedTags());
+      return updated;
+    });
+  }
 
-    this.selectedTags.update(currentTags => {
-      const updated = isChecked
-        ? [...currentTags, tag]
-        : currentTags.filter(t => t.toLowerCase() !== tag.toLowerCase());
-      this.updateQueryParams(updated);
+  toggleTag(tag: string): void {
+    this.selectedTags.update(current => {
+      const exists = current.some(t => t.toLowerCase() === tag.toLowerCase());
+      const updated = exists
+        ? current.filter(t => t.toLowerCase() !== tag.toLowerCase())
+        : [...current, tag];
+      this.updateQueryParams(this.selectedGenres(), updated);
       return updated;
     });
   }
 
   // Alias para retrocompatibilidad
-  onGenreChange(tag: string, event: Event): void {
-    this.onTagChange(tag, event);
+  onTagChange(tag: string, event: Event): void {
+    this.toggleTag(tag);
+  }
+
+  onGenreChange(genre: string, event: Event): void {
+    this.toggleGenre(genre);
   }
 
   navigateToNovel(novel: INovel): void {
@@ -102,22 +127,24 @@ export class NovelsPageComponent implements OnInit {
   }
 
   /**
-   * Sincroniza y autoselecciona los tags a partir de los queryParams de la URL.
+   * Sincroniza y autoselecciona los filtros a partir de los queryParams de la URL.
    */
   syncFiltersFromQueryParams(params: Params): void {
-    const tagParam = params['tag'];
-
-    if (!tagParam) {
-      this.selectedTags.set([]);
-      return;
+    const genreParam = params['genre'];
+    if (genreParam) {
+      const rawList = Array.isArray(genreParam) ? genreParam : String(genreParam).split(',');
+      this.selectedGenres.set(rawList.map(g => String(g).trim()).filter(Boolean));
+    } else {
+      this.selectedGenres.set([]);
     }
 
-    const rawList = Array.isArray(tagParam) ? tagParam : String(tagParam).split(',');
-    const parsedTags = rawList
-      .map(t => String(t).trim())
-      .filter(t => t.length > 0);
-
-    this.selectedTags.set(parsedTags);
+    const tagParam = params['tag'];
+    if (tagParam) {
+      const rawList = Array.isArray(tagParam) ? tagParam : String(tagParam).split(',');
+      this.selectedTags.set(rawList.map(t => String(t).trim()).filter(Boolean));
+    } else {
+      this.selectedTags.set([]);
+    }
   }
 
   private initQueryParamsListener(): void {
@@ -126,10 +153,13 @@ export class NovelsPageComponent implements OnInit {
       .subscribe(params => this.syncFiltersFromQueryParams(params));
   }
 
-  private updateQueryParams(tags: string[]): void {
+  private updateQueryParams(genres: string[], tags: string[]): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { tag: tags.length > 0 ? tags.join(',') : null },
+      queryParams: {
+        genre: genres.length > 0 ? genres.join(',') : null,
+        tag: tags.length > 0 ? tags.join(',') : null,
+      },
       queryParamsHandling: 'merge',
     });
   }
@@ -143,17 +173,21 @@ export class NovelsPageComponent implements OnInit {
       this.selectedStatus() === ANY_FILTER || 
       novel.status === this.selectedStatus();
 
-    const currentTags = this.selectedTags();
-    const matchesTags = 
-      currentTags.length === 0 || 
-      currentTags.some(selectedTag => 
-        novel.tags?.some(t => 
-          t.name.trim().toLowerCase() === selectedTag.trim().toLowerCase() && 
-          t.status !== 0
-        )
+    const curGenres = this.selectedGenres();
+    const matchesGenres = 
+      curGenres.length === 0 || 
+      curGenres.some(sg => 
+        (novel.genres || []).some(g => g.trim().toLowerCase() === sg.trim().toLowerCase())
       );
 
-    return matchesLanguage && matchesStatus && matchesTags;
+    const curTags = this.selectedTags();
+    const matchesTags = 
+      curTags.length === 0 || 
+      curTags.some(st => 
+        (novel.tags || []).some(t => t.trim().toLowerCase() === st.trim().toLowerCase())
+      );
+
+    return matchesLanguage && matchesStatus && matchesGenres && matchesTags;
   }
 
   private sortNovels(novels: INovel[]): INovel[] {

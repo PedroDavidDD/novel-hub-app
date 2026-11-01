@@ -27,11 +27,8 @@ describe('NovelsPageComponent', () => {
       opinionsCount: 20,
       freeChaptersCount: 3,
       premiumChaptersCount: 2,
-      tags: [
-        { name: 'Fantasía Épica', status: 1 },
-        { name: 'Aventura', status: 1 },
-        { name: 'Magia', status: 2 },
-      ],
+      genres: ['Fantasía Épica', 'Aventura'],
+      tags: ['Magia', 'Universidad'],
     },
     {
       id: '2',
@@ -48,11 +45,8 @@ describe('NovelsPageComponent', () => {
       opinionsCount: 10,
       freeChaptersCount: 5,
       premiumChaptersCount: 0,
-      tags: [
-        { name: 'Ciencia Ficción', status: 1 },
-        { name: 'Aventura', status: 1 },
-        { name: 'Inactivo', status: 0 },
-      ],
+      genres: ['Ciencia Ficción', 'Aventura'],
+      tags: ['Espacio', 'Política'],
     },
   ];
 
@@ -89,53 +83,58 @@ describe('NovelsPageComponent', () => {
     expect(component.filteredNovels().length).toBe(2);
   });
 
-  it('should compute availableTags dynamically from loaded novels excluding status 0', () => {
+  it('should compute availableGenres and availableTags dynamically from loaded novels', () => {
+    const genres = component.availableGenres();
+    expect(genres).toContain('Aventura');
+    expect(genres).toContain('Fantasía Épica');
+    expect(genres).toContain('Ciencia Ficción');
+
     const tags = component.availableTags();
-    expect(tags).toContain('Aventura');
-    expect(tags).toContain('Fantasía Épica');
     expect(tags).toContain('Magia');
-    expect(tags).toContain('Ciencia Ficción');
-    expect(tags).not.toContain('Inactivo');
+    expect(tags).toContain('Universidad');
+    expect(tags).toContain('Espacio');
+    expect(tags).toContain('Política');
   });
 
-  it('should auto-select tag from queryParams via syncFiltersFromQueryParams', () => {
-    queryParamsSubject.next({ tag: 'Aventura' });
+  it('should auto-select genre and tag from queryParams via syncFiltersFromQueryParams', () => {
+    queryParamsSubject.next({ genre: 'Aventura', tag: 'Magia' });
     fixture.detectChanges();
 
-    expect(component.selectedTags()).toEqual(['Aventura']);
-    expect(component.filteredNovels().length).toBe(2);
-  });
-
-  it('should handle comma-separated tags in queryParams', () => {
-    queryParamsSubject.next({ tag: 'Magia, Fantasía Épica' });
-    fixture.detectChanges();
-
-    expect(component.selectedTags()).toEqual(['Magia', 'Fantasía Épica']);
+    expect(component.selectedGenres()).toEqual(['Aventura']);
+    expect(component.selectedTags()).toEqual(['Magia']);
     expect(component.filteredNovels().length).toBe(1);
     expect(component.filteredNovels()[0].slug).toBe('endv');
   });
 
-  it('should reset selectedTags when queryParams has no tag', () => {
-    queryParamsSubject.next({ tag: 'Aventura' });
-    expect(component.selectedTags()).toEqual(['Aventura']);
+  it('should handle comma-separated filters in queryParams', () => {
+    queryParamsSubject.next({ genre: 'Aventura, Ciencia Ficción' });
+    fixture.detectChanges();
 
-    queryParamsSubject.next({});
-    expect(component.selectedTags()).toEqual([]);
+    expect(component.selectedGenres()).toEqual(['Aventura', 'Ciencia Ficción']);
     expect(component.filteredNovels().length).toBe(2);
   });
 
-  it('should update selectedTags and navigate with queryParams on tag checkbox change', () => {
-    const mockEvent = {
-      target: { checked: true } as HTMLInputElement,
-    } as unknown as Event;
+  it('should toggle genre selection and update queryParams', () => {
+    component.toggleGenre('Ciencia Ficción');
 
-    component.onTagChange('Magia', mockEvent);
-
-    expect(component.selectedTags()).toContain('Magia');
+    expect(component.selectedGenres()).toContain('Ciencia Ficción');
     expect(mockRouter.navigate).toHaveBeenCalledWith(
       [],
       jasmine.objectContaining({
-        queryParams: { tag: 'Magia' },
+        queryParams: { genre: 'Ciencia Ficción', tag: null },
+        queryParamsHandling: 'merge',
+      })
+    );
+  });
+
+  it('should toggle tag selection and update queryParams', () => {
+    component.toggleTag('Espacio');
+
+    expect(component.selectedTags()).toContain('Espacio');
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      [],
+      jasmine.objectContaining({
+        queryParams: { genre: null, tag: 'Espacio' },
         queryParamsHandling: 'merge',
       })
     );

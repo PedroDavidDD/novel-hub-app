@@ -1,13 +1,16 @@
 <div class="father__container container max-w-7xl mx-auto">
-  <div class="filters grid">
+  <div class="filters grid grid-cols-12 gap-4">
     <!-- Filtro por lenguaje -->
-    <div class="filters__group col-span-12 lg:col-span-2">
+    <div class="filters__group col-span-12 lg:col-span-3">
       <h3 class="filters__title">Languages</h3>
-      <div class="filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2">
+      <div class="flex flex-wrap gap-2 items-center">
         @for (language of languages; track language) {
           <button
-            [class.button]="true"
-            [class.button--selected]="language === selectedLanguage()"
+            type="button"
+            class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap w-fit cursor-pointer select-none transition-all border"
+            [ngClass]="language === selectedLanguage()
+              ? 'bg-[var(--color-primary)] text-black border-[var(--color-primary)] font-bold shadow-sm'
+              : 'bg-[var(--color-bg-card)] text-[var(--color-description)] border-[var(--color-border)] hover:text-[var(--color-black)] hover:border-[var(--color-primary)]'"
             [attr.aria-pressed]="language === selectedLanguage()"
             (click)="filterByLanguage(language)"
           >
@@ -18,13 +21,16 @@
     </div>
 
     <!-- Filtro por estado -->
-    <div class="filters__group col-span-12 lg:col-span-2">
+    <div class="filters__group col-span-12 lg:col-span-3">
       <h3 class="filters__title">Status</h3>
-      <div class="filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2">
+      <div class="flex flex-wrap gap-2 items-center">
         @for (status of statuses; track status) {
           <button
-            [class.button]="true"
-            [class.button--selected]="status === selectedStatus()"
+            type="button"
+            class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap w-fit cursor-pointer select-none transition-all border"
+            [ngClass]="status === selectedStatus()
+              ? 'bg-[var(--color-primary)] text-black border-[var(--color-primary)] font-bold shadow-sm'
+              : 'bg-[var(--color-bg-card)] text-[var(--color-description)] border-[var(--color-border)] hover:text-[var(--color-black)] hover:border-[var(--color-primary)]'"
             [attr.aria-pressed]="status === selectedStatus()"
             (click)="filterByStatus(status)"
           >
@@ -35,13 +41,16 @@
     </div>
 
     <!-- Filtro por ordenamiento -->
-    <div class="filters__group col-span-12 lg:col-span-4">
+    <div class="filters__group col-span-12 lg:col-span-6">
       <h3 class="filters__title">Sort By</h3>
-      <div class="filters__buttonGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+      <div class="flex flex-wrap gap-2 items-center">
         @for (option of sortByOptions; track option) {
           <button
-            [class.button]="true"
-            [class.button--selected]="option === selectedSort()"
+            type="button"
+            class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap w-fit cursor-pointer select-none transition-all border"
+            [ngClass]="option === selectedSort()
+              ? 'bg-[var(--color-primary)] text-black border-[var(--color-primary)] font-bold shadow-sm'
+              : 'bg-[var(--color-bg-card)] text-[var(--color-description)] border-[var(--color-border)] hover:text-[var(--color-black)] hover:border-[var(--color-primary)]'"
             [attr.aria-pressed]="option === selectedSort()"
             (click)="sortBy(option)"
           >
@@ -51,25 +60,44 @@
       </div>
     </div>
 
-    <!-- Filtro por Tags (Dinámico desde base de datos) -->
-    <div class="filters__group col-span-12 lg:col-span-4">
-      <h3 class="filters__title">Tags</h3>
-      <div class="filters__checkboxGroup grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-        @for (tag of availableTags(); track tag) {
-          <label
-            [class.filters__checkboxLabel]="true"
-            [class.filters__checkboxLabel--selected]="selectedTags().includes(tag)"
+    <!-- Filtro por Géneros (Genres) -->
+    <div class="filters__group col-span-12 mt-2">
+      <h3 class="filters__title">Genres</h3>
+      <div class="flex flex-wrap gap-2 items-center">
+        @for (genre of availableGenres(); track genre) {
+          <button
+            type="button"
+            class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap w-fit cursor-pointer select-none transition-all border"
+            [ngClass]="selectedGenres().includes(genre)
+              ? 'bg-[var(--color-primary)] text-black border-[var(--color-primary)] font-bold shadow-sm'
+              : 'bg-[var(--color-bg-card)] text-[var(--color-description)] border-[var(--color-border)] hover:text-[var(--color-black)] hover:border-[var(--color-primary)]'"
+            (click)="toggleGenre(genre)"
           >
-            <input
-              type="checkbox"
-              [value]="tag"
-              [checked]="selectedTags().includes(tag)"
-              (change)="onTagChange(tag, $event)"
-            />
-            <span>{{ tag }}</span>
-          </label>
+            {{ genre }}
+          </button>
         } @empty {
-          <span class="text-xs text-[var(--color-description)] py-2 col-span-full">No hay tags disponibles</span>
+          <span class="text-xs text-[var(--color-description)] py-1">No hay géneros disponibles</span>
+        }
+      </div>
+    </div>
+
+    <!-- Filtro por Etiquetas (Tags) -->
+    <div class="filters__group col-span-12 mt-2">
+      <h3 class="filters__title">Tags</h3>
+      <div class="flex flex-wrap gap-2 items-center">
+        @for (tag of availableTags(); track tag) {
+          <button
+            type="button"
+            class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap w-fit cursor-pointer select-none transition-all border"
+            [ngClass]="selectedTags().includes(tag)
+              ? 'bg-[var(--color-primary)] text-black border-[var(--color-primary)] font-bold shadow-sm'
+              : 'bg-[var(--color-bg-card)] text-[var(--color-description)] border-[var(--color-border)] hover:text-[var(--color-black)] hover:border-[var(--color-primary)]'"
+            (click)="toggleTag(tag)"
+          >
+            {{ tag }}
+          </button>
+        } @empty {
+          <span class="text-xs text-[var(--color-description)] py-1">No hay tags disponibles</span>
         }
       </div>
     </div>
