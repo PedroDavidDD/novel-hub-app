@@ -6,3 +6,4 @@ export * from './custom-badge/custom-badge.component';
 export * from './ad-banner/ad-banner.component';
 export * from './chapter-meta/chapter-meta.component';
 export * from './release-day-badge/release-day-badge.component';
+export * from './tag-secondary/tag-secondary.component';
